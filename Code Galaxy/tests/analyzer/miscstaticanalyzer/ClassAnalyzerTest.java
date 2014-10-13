@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 /**
  * Test class for ClassAnalyzer
@@ -66,5 +67,36 @@ public class ClassAnalyzerTest extends TestCase {
     public void testGetPackage() throws Exception {
         classAnalyzer = new ClassAnalyzer(new File("test_resources/Test.java"));
         assertEquals("test", classAnalyzer.getPackage());
+    }
+
+
+    /**
+     * Tests whether the names of the class and its nested classes are as expected in the
+     * list of ClassInfo objects returned by getClassInfo()
+     * Expected Result: 4
+     * @throws Exception
+     */
+    public void testClassNames() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/ClassWithInnerClasses.java"));
+
+        // Gets the class info for the class and its nested classes
+        // Each nested class is its own ClassInfo object
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        int correctClassNameCount = 0;
+        for(ClassInfo classInfo : classInfos) {
+            String className = classInfo.getClassName();
+            if(className.equals("ClassWithInnerClasses")) {
+                correctClassNameCount++;
+            } else if(className.equals("InnerClass")) {
+                correctClassNameCount++;
+            } else if(className.equals("InnerClass2")) {
+                correctClassNameCount++;
+            } else if(className.equals("InnerInnerClass")) {
+                correctClassNameCount++;
+            }
+        }
+
+        assertEquals(correctClassNameCount, 4);
     }
 }
