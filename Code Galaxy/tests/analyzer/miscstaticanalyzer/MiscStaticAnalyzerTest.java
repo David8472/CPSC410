@@ -22,7 +22,6 @@ public class MiscStaticAnalyzerTest extends TestCase {
     /**
      * Tests constructor with a valid path argument
      * Expected Result: No exception is thrown
-     *
      * @throws Exception
      */
     public void testConstructorWithValidPathArgument() throws Exception {
@@ -37,7 +36,6 @@ public class MiscStaticAnalyzerTest extends TestCase {
     /**
      * Tests constructor with an non-existing path argument
      * Expected Result: An IllegalArgumentException is thrown
-     *
      * @throws Exception
      */
     public void testConstructorWithInvalidPathArgument() throws Exception {
@@ -54,7 +52,6 @@ public class MiscStaticAnalyzerTest extends TestCase {
      * Tests whether getSourceFiles() correctly adds all the .java files in the codebase
      * to private field member 'sourceFiles'
      * Expected Result: Test should pass
-     *
      * @throws Exception
      */
     public void testSourceFiles() throws Exception {

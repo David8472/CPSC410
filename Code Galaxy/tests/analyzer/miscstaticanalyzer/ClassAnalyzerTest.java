@@ -16,7 +16,6 @@ public class ClassAnalyzerTest extends TestCase {
     /**
      * Tests constructor by passing in a non-existing file as an argument
      * Expected Result: A FileNotFoundException should be thrown
-     *
      * @throws Exception
      */
     public void testConstructorWithNonExistingFile() throws Exception {
@@ -32,7 +31,6 @@ public class ClassAnalyzerTest extends TestCase {
     /**
      * Tests constructor with a Java file that has syntax errors as an argument
      * Expected Result: A ParseException should be thrown
-     *
      * @throws Exception
      */
     public void testConstructorWithSyntaxErrorJavaFile() throws Exception {
@@ -48,7 +46,6 @@ public class ClassAnalyzerTest extends TestCase {
     /**
      * Tests constructor with a non-Java file as an argument
      * Expected Result: An IllegalArgumentException should be thrown
-     *
      * @throws Exception
      */
     public void testConstructorWithNonJavaFile() throws Exception {
@@ -64,7 +61,6 @@ public class ClassAnalyzerTest extends TestCase {
     /**
      * Tests getPackage() method to see if the correct package for a class is returned
      * Expected Result: "test"
-     *
      * @throws Exception
      */
     public void testGetPackage() throws Exception {

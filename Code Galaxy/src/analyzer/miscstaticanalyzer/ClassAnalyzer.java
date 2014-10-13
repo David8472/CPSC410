@@ -16,8 +16,7 @@ public class ClassAnalyzer {
     private CompilationUnit compilationUnit;
 
     /**
-     * Constructs a ClassAnalyzer to analyze the java file passed in the argument
-     *
+     * Constructs a ClassAnalyzer to perform static analysis operations on the java file passed in the argument
      * @param javaFile - Java file to analyze
      * @throws IOException
      * @throws ParseException
@@ -40,7 +39,6 @@ public class ClassAnalyzer {
 
     /**
      * Returns the package of the java class being analyzed
-     *
      * @return
      */
     public String getPackage() {
