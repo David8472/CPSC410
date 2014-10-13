@@ -161,7 +161,7 @@ public class ClassAnalyzerTest extends TestCase {
 
     /**
      * Tests whether the ClassInfo object returned by getClassInfo() has a class type of
-     * 'Concrete' for a concrete java Class
+     * 'Concrete' for a concrete java Class with concrete inner classes
      * @throws Exception
      */
     public void testConcreteClassWithInnerClasses() throws Exception {
@@ -173,4 +173,8 @@ public class ClassAnalyzerTest extends TestCase {
             assertEquals(classInfo.getClassType(), "Concrete");
         }
     }
+
+
+
+
 }
