@@ -3,7 +3,9 @@ package analyzer.miscstaticanalyzer;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
@@ -11,6 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Performs static code analysis operations on a Java file
@@ -79,8 +83,9 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
 
         String className = getClassName(javaClass);
         String classType = getClassType(javaClass);
+        int classLOC = getLinesOfCode(javaClass);
 
-        classInfos.add(new ClassInfo(className, null, classType, 0, null));
+        classInfos.add(new ClassInfo(className, getPackage(), classType, classLOC, null));
     }
 
 
@@ -107,6 +112,29 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
         } else {
             return "Concrete";
         }
+    }
+
+
+    /**
+     * Gets the lines of code (excluding comments and blank spaces) of a class or method
+     * @param methodOrClass - Expects a ClassOrInterfaceDeclaration or MethodDeclaration object
+     * @return Returns lines of code for the method or class, and -1 if anything else is passed in as
+     * an argument
+     */
+    private int getLinesOfCode(BodyDeclaration methodOrClass) {
+        if(methodOrClass instanceof MethodDeclaration || methodOrClass instanceof ClassOrInterfaceDeclaration) {
+            int LOC = 0;
+            String str = methodOrClass.toString().trim().replaceAll("(?m)^\\s*$[\n\r]{1,}", "");
+            Matcher m = Pattern.compile("(\\n)|(\\r)|(\\r\\n)").matcher(str);
+            while(m.find()) {
+                LOC++;
+            }
+
+            // Add 1 to result to take into account the last closing brace of method or class
+            return LOC + 1;
+        }
+
+        return -1;
     }
 
 

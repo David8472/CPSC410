@@ -174,4 +174,28 @@ public class ClassAnalyzerTest extends TestCase {
         }
     }
 
+
+    /**
+     * Tests whether the ClassInfo object returned by getClassInfo() has the expected
+     * class LOC of the class(es)
+     * Expected Result: ClassLOCTest - 27, InnerClassLOCTest - 15
+     * @throws Exception
+     */
+    public void testClassLOC() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/ClassLOCTest.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        for(ClassInfo classInfo : classInfos) {
+            if(classInfo.getClassName().equals("ClassLOCTest")) {
+                assertEquals(classInfo.getLinesOfCode(), 27);
+            } else if(classInfo.getClassName().equals("InnerClassLOCTest")) {
+                assertEquals(classInfo.getLinesOfCode(), 15);
+            } else {
+                fail();
+            }
+        }
+
+    }
+
 }
