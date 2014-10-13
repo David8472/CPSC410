@@ -6,6 +6,9 @@ import junit.framework.TestCase;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+/**
+ * Test class for ClassAnalyzer
+ */
 public class ClassAnalyzerTest extends TestCase {
 
     private ClassAnalyzer classAnalyzer;
