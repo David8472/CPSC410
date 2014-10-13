@@ -4,6 +4,7 @@ import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
@@ -68,15 +69,18 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
 
 
     /**
-     * Visits class and all its nested classes recursively
+     * Visits class and all its nested classes recursively in the AST
      * @param javaClass
      * @param arg
      */
     @Override
     public void visit(ClassOrInterfaceDeclaration javaClass, Object arg) {
         super.visit(javaClass, arg);
+
         String className = getClassName(javaClass);
-        classInfos.add(new ClassInfo(className, null, null, 0, null));
+        String classType = getClassType(javaClass);
+
+        classInfos.add(new ClassInfo(className, null, classType, 0, null));
     }
 
 
@@ -87,6 +91,22 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
      */
     private String getClassName(ClassOrInterfaceDeclaration javaClass) {
         return javaClass.getName();
+    }
+
+
+    /**
+     * Gets the type of a class indicated by the argument class node
+     * @param javaClass - Node in AST that represents a class
+     * @return
+     */
+    private String getClassType(ClassOrInterfaceDeclaration javaClass) {
+        if(javaClass.isInterface()) {
+            return "Interface";
+        } else if(ModifierSet.isAbstract(javaClass.getModifiers())) {
+            return "Abstract";
+        } else {
+            return "Concrete";
+        }
     }
 
 

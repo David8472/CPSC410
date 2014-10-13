@@ -83,6 +83,10 @@ public class ClassAnalyzerTest extends TestCase {
         // Each nested class is its own ClassInfo object
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
 
+        if(classInfos.size() != 4) {
+            fail();
+        }
+
         int correctClassNameCount = 0;
         for(ClassInfo classInfo : classInfos) {
             String className = classInfo.getClassName();
@@ -98,5 +102,75 @@ public class ClassAnalyzerTest extends TestCase {
         }
 
         assertEquals(correctClassNameCount, 4);
+    }
+
+
+    /**
+     * Tests whether the ClassInfo object returned by getClassInfo() has a class type of
+     * 'Abstract' for an Abstract java class
+     * @throws Exception
+     */
+    public void testAbstractClass() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/AbstractClass.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        if(classInfos.size() != 1) {
+            fail();
+        }
+
+        assertEquals(classInfos.get(0).getClassType(), "Abstract");
+    }
+
+
+    /**
+     * Tests whether the ClassInfo object returned by getClassInfo() has a class type of
+     * 'Interface' for an java Interface
+     * @throws Exception
+     */
+    public void testInterface() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/MyInterface.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        if(classInfos.size() != 1) {
+            fail();
+        }
+
+        assertEquals(classInfos.get(0).getClassType(), "Interface");
+    }
+
+
+    /**
+     * Tests whether the ClassInfo object returned by getClassInfo() has a class type of
+     * 'Concrete' for a concrete java Class
+     * @throws Exception
+     */
+    public void testConcreteClass() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/ConcreteClass.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        if(classInfos.size() != 1) {
+            fail();
+        }
+
+        assertEquals(classInfos.get(0).getClassType(), "Concrete");
+    }
+
+
+    /**
+     * Tests whether the ClassInfo object returned by getClassInfo() has a class type of
+     * 'Concrete' for a concrete java Class
+     * @throws Exception
+     */
+    public void testConcreteClassWithInnerClasses() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/Test.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        for(ClassInfo classInfo : classInfos) {
+            assertEquals(classInfo.getClassType(), "Concrete");
+        }
     }
 }
