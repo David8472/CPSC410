@@ -101,7 +101,7 @@ public class ClassAnalyzerTest extends TestCase {
             }
         }
 
-        assertEquals(correctClassNameCount, 4);
+        assertEquals(4, correctClassNameCount);
     }
 
 
@@ -119,7 +119,7 @@ public class ClassAnalyzerTest extends TestCase {
             fail();
         }
 
-        assertEquals(classInfos.get(0).getClassType(), "Abstract");
+        assertEquals("Abstract", classInfos.get(0).getClassType());
     }
 
 
@@ -137,7 +137,7 @@ public class ClassAnalyzerTest extends TestCase {
             fail();
         }
 
-        assertEquals(classInfos.get(0).getClassType(), "Interface");
+        assertEquals("Interface", classInfos.get(0).getClassType());
     }
 
 
@@ -155,7 +155,7 @@ public class ClassAnalyzerTest extends TestCase {
             fail();
         }
 
-        assertEquals(classInfos.get(0).getClassType(), "Concrete");
+        assertEquals("Concrete", classInfos.get(0).getClassType());
     }
 
 
@@ -170,11 +170,8 @@ public class ClassAnalyzerTest extends TestCase {
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
 
         for(ClassInfo classInfo : classInfos) {
-            assertEquals(classInfo.getClassType(), "Concrete");
+            assertEquals("Concrete", classInfo.getClassType());
         }
     }
-
-
-
 
 }
