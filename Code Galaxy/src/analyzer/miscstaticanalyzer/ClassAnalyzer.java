@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,8 +85,9 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
         String className = getClassName(javaClass);
         String classType = getClassType(javaClass);
         int classLOC = getLinesOfCode(javaClass);
+        ArrayList<MethodInfo> methods = getMethods(javaClass);
 
-        classInfos.add(new ClassInfo(className, getPackage(), classType, classLOC, null));
+        classInfos.add(new ClassInfo(className, getPackage(), classType, classLOC, methods));
     }
 
 
@@ -135,6 +137,30 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
         }
 
         return -1;
+    }
+
+
+    /**
+     * Gets all the methods and their information of a class
+     * @param javaClass - Node in AST that represents a class
+     * @return
+     */
+    private ArrayList<MethodInfo> getMethods(ClassOrInterfaceDeclaration javaClass) {
+
+        ArrayList<MethodInfo> methods = new ArrayList<MethodInfo>();
+
+        List<BodyDeclaration> members = javaClass.getMembers();
+        for(BodyDeclaration member : members) {
+            if(member instanceof MethodDeclaration) {
+                String methodName = ((MethodDeclaration) member).getName();
+                String containerClass = javaClass.getName();
+                String returnType = ((MethodDeclaration) member).getType().toString();
+                int methodLOC = getLinesOfCode(member);
+                methods.add(new MethodInfo(methodName, containerClass, returnType, methodLOC));
+            }
+        }
+
+        return methods;
     }
 
 
