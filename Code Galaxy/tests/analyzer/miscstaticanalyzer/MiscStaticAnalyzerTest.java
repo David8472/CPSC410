@@ -3,9 +3,8 @@ package analyzer.miscstaticanalyzer;
 import junit.framework.TestCase;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 /**
@@ -20,56 +19,64 @@ public class MiscStaticAnalyzerTest extends TestCase {
 
 
     /**
-     * Tests constructor with a valid path argument
+     * Tests getSourceFiles() with a valid path argument to see if all .java files in
+     * argument path are returned
      * Expected Result: No exception is thrown
      * @throws Exception
      */
-    public void testConstructorWithValidPathArgument() throws Exception {
+    public void testGetSourceFilesWithValidPathArgument() throws Exception {
         try {
-            miscStaticAnalyzer = new MiscStaticAnalyzer(VALID_PATH);
-        } catch(IllegalArgumentException e) {
+            Method getSourceFiles = MiscStaticAnalyzer.class.getDeclaredMethod("getSourceFiles", String.class);
+            getSourceFiles.setAccessible(true);
+
+            Collection<File> files = (Collection<File>) getSourceFiles.invoke(getSourceFiles, VALID_PATH);
+
+            boolean myClass = false;
+            boolean myClass2 = false;
+            boolean myClass3 = false;
+            boolean myClass4 = false;
+            boolean myClass5 = false;
+
+            for(File file : files) {
+                if(file.getName().equals("MyClass.java")) {
+                    myClass = true;
+                } else if(file.getName().equals("MyClass2.java")) {
+                    myClass2 = true;
+                } else if(file.getName().equals("MyClass3.java")) {
+                    myClass3 = true;
+                } else if(file.getName().equals("MyClass4.java")) {
+                    myClass4 = true;
+                } else if(file.getName().equals("MyClass5.java")) {
+                    myClass5 = true;
+                } else {
+                    fail();
+                }
+            }
+
+            assertTrue(myClass && myClass2 && myClass3 && myClass4 && myClass5);
+
+        } catch(InvocationTargetException e) {
             fail();
         }
     }
 
 
     /**
-     * Tests constructor with an non-existing path argument
+     * Tests getSourceFiles() with a non-existing path argument
      * Expected Result: An IllegalArgumentException is thrown
      * @throws Exception
      */
-    public void testConstructorWithInvalidPathArgument() throws Exception {
+    public void testGetSourceFilesWithInvalidPathArgument() throws Exception {
         try {
-            miscStaticAnalyzer = new MiscStaticAnalyzer(INVALID_PATH);
+            Method getSourceFiles = MiscStaticAnalyzer.class.getDeclaredMethod("getSourceFiles", String.class);
+            getSourceFiles.setAccessible(true);
+
+            Collection<File> files = (Collection<File>) getSourceFiles.invoke(getSourceFiles, INVALID_PATH);
             fail();
-        } catch(IllegalArgumentException e) {
 
+        } catch(InvocationTargetException e) {
+            assertTrue(e.getTargetException() instanceof IllegalArgumentException);
         }
     }
 
-
-    /**
-     * Tests whether getSourceFiles() correctly adds all the .java files in the codebase
-     * to private field member 'sourceFiles'
-     * Expected Result: Test should pass
-     * @throws Exception
-     */
-    public void testSourceFiles() throws Exception {
-        miscStaticAnalyzer = new MiscStaticAnalyzer(VALID_PATH);
-
-        Field field = MiscStaticAnalyzer.class.getDeclaredField("sourceFiles");
-        field.setAccessible(true);
-
-        Collection<File> actualFiles = (Collection<File>) field.get(miscStaticAnalyzer);
-
-        String[] filenames = {"MyClass.java", "MyClass2.java", "MyClass3.java", "MyClass4.java", "MyClass5.java"};
-        ArrayList<String> expectedFiles = new ArrayList<String>(Arrays.asList(filenames));
-
-        for(File file : actualFiles) {
-            // If actual file is not found in list of expected files, test fails
-            if(!expectedFiles.contains(file.getName())) {
-                fail();
-            }
-        }
-    }
 }

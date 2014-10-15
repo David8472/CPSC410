@@ -12,24 +12,15 @@ import java.util.Collection;
  */
 public class MiscStaticAnalyzer {
 
-    private Collection<File> sourceFiles;
-
-    /**
-     * Constructs a MiscStaticAnalyzer to get static code analysis metrics of an entire codebases
-     * @param codebasePath - the path to the codebase
-     */
-    public MiscStaticAnalyzer(String codebasePath) {
-        getSourceFiles(codebasePath);
-    }
-
-    
     /**
      * Gets all .java files from input parameter path
-     * @param codebasePath
+     * @param codebasePath - The path to the codebase
+     * @return
      */
-    private void getSourceFiles(String codebasePath) {
-        sourceFiles = FileUtils.listFiles(FileUtils.getFile(codebasePath), FileFilterUtils.suffixFileFilter(".java"),
+    private static Collection<File> getSourceFiles(String codebasePath) {
+        return FileUtils.listFiles(FileUtils.getFile(codebasePath), FileFilterUtils.suffixFileFilter(".java"),
                 TrueFileFilter.TRUE);
     }
+
 
 }
