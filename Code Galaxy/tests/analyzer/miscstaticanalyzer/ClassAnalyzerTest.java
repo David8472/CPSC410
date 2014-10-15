@@ -87,21 +87,26 @@ public class ClassAnalyzerTest extends TestCase {
             fail();
         }
 
-        int correctClassNameCount = 0;
+        // Flags for each of the expected class. Set to true if class is visited.
+        boolean classWithInnerClasses = false;
+        boolean innerClass = false;
+        boolean innerClass2 = false;
+        boolean innerInnerClass = false;
+
         for(ClassInfo classInfo : classInfos) {
             String className = classInfo.getClassName();
             if(className.equals("ClassWithInnerClasses")) {
-                correctClassNameCount++;
+                classWithInnerClasses = true;
             } else if(className.equals("InnerClass")) {
-                correctClassNameCount++;
+                innerClass = true;
             } else if(className.equals("InnerClass2")) {
-                correctClassNameCount++;
+                innerClass2 = true;
             } else if(className.equals("InnerInnerClass")) {
-                correctClassNameCount++;
+                innerInnerClass = true;
             }
         }
 
-        assertEquals(4, correctClassNameCount);
+        assertTrue(classWithInnerClasses && innerClass && innerClass2 && innerInnerClass);
     }
 
 
@@ -110,7 +115,7 @@ public class ClassAnalyzerTest extends TestCase {
      * 'Abstract' for an Abstract java class
      * @throws Exception
      */
-    public void testAbstractClass() throws Exception {
+    public void testAbstractClassType() throws Exception {
         classAnalyzer = new ClassAnalyzer(new File("test_resources/AbstractClass.java"));
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
@@ -128,7 +133,7 @@ public class ClassAnalyzerTest extends TestCase {
      * 'Interface' for an java Interface
      * @throws Exception
      */
-    public void testInterface() throws Exception {
+    public void testInterfaceType() throws Exception {
         classAnalyzer = new ClassAnalyzer(new File("test_resources/MyInterface.java"));
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
@@ -146,7 +151,7 @@ public class ClassAnalyzerTest extends TestCase {
      * 'Concrete' for a concrete java Class
      * @throws Exception
      */
-    public void testConcreteClass() throws Exception {
+    public void testConcreteClassType() throws Exception {
         classAnalyzer = new ClassAnalyzer(new File("test_resources/ConcreteClass.java"));
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
@@ -164,7 +169,7 @@ public class ClassAnalyzerTest extends TestCase {
      * 'Concrete' for a concrete java Class with concrete inner classes
      * @throws Exception
      */
-    public void testConcreteClassWithInnerClasses() throws Exception {
+    public void testConcreteClassWithInnerClassesType() throws Exception {
         classAnalyzer = new ClassAnalyzer(new File("test_resources/Test.java"));
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
@@ -261,6 +266,7 @@ public class ClassAnalyzerTest extends TestCase {
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
 
+        // Flags for each of the expected methods. Set to true if method is visited.
         boolean outerMethod = false;
         boolean innerMethod = false;
         boolean innerMethod2 = false;
@@ -315,6 +321,7 @@ public class ClassAnalyzerTest extends TestCase {
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
 
+        // Flags for each of the expected methods. Set to true if method is visited.
         boolean methodInt = false;
         boolean methodVoid = false;
         boolean methodBoolean = false;
@@ -354,6 +361,7 @@ public class ClassAnalyzerTest extends TestCase {
 
         ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
 
+        // Flags for each of the expected methods. Set to true if method is visited.
         boolean methodInt = false;
         boolean methodVoid = false;
         boolean methodBoolean = false;
@@ -370,6 +378,54 @@ public class ClassAnalyzerTest extends TestCase {
                 assertEquals(3, method.getLinesOfCode());
                 methodBoolean = true;
             } else if(method.getMethodName().equals("methodArrayListString")) {
+                assertEquals(6, method.getLinesOfCode());
+                methodArrayListString = true;
+            } else {
+                fail();
+            }
+        }
+
+        // Ensures that all methods were visited
+        assertTrue(methodInt && methodVoid && methodBoolean && methodArrayListString);
+    }
+
+
+    /**
+     * Test for getClassInfo()
+     * @throws Exception
+     */
+    public void testGetClassInfo() throws Exception {
+
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/DifferentMethods.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        assertEquals("DifferentMethods", classInfos.get(0).getClassName());
+        assertEquals("mypackage", classInfos.get(0).getPackageName());
+        assertEquals(17, classInfos.get(0).getLinesOfCode());
+        assertEquals("Concrete", classInfos.get(0).getClassType());
+
+        // Flags for each of the expected methods. Set to true if method is visited.
+        boolean methodInt = false;
+        boolean methodVoid = false;
+        boolean methodBoolean = false;
+        boolean methodArrayListString = false;
+
+        for(MethodInfo method : classInfos.get(0).getMethods()) {
+            if(method.getMethodName().equals("methodInt")) {
+                assertEquals("int", method.getReturnType());
+                assertEquals(4, method.getLinesOfCode());
+                methodInt = true;
+            } else if(method.getMethodName().equals("methodVoid")) {
+                assertEquals("void", method.getReturnType());
+                assertEquals(2, method.getLinesOfCode());
+                methodVoid = true;
+            } else if(method.getMethodName().equals("methodBoolean")) {
+                assertEquals("boolean", method.getReturnType());
+                assertEquals(3, method.getLinesOfCode());
+                methodBoolean = true;
+            } else if(method.getMethodName().equals("methodArrayListString")) {
+                assertEquals("ArrayList<String>", method.getReturnType());
                 assertEquals(6, method.getLinesOfCode());
                 methodArrayListString = true;
             } else {
