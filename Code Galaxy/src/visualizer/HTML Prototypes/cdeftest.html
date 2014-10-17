@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>Celestial Object Test 3JS</title>
+ <style>canvas { width: 100%; height: 100% }</style>
+</head>
+<body>
+<script src="js/three.min.js"></script>
+<script>
+var Celestial = function(parameters) {
+
+	this.geometry = new THREE.SphereGeometry(0.1, 8, 8);
+	this.material = new THREE.MeshLambertMaterial({color:0xffffff});
+	this.mesh = new THREE.Mesh(this.geometry, this.material);
+	this.origin = false;
+	
+	this.orbitradx = 0;
+	this.orbitrady = 0;
+	this.orbitradz = 0;
+	
+	this.orbitoffx = 0;
+	this.orbitoffy = 0;
+	this.orbitoffz = 0;
+	
+	this.xsin = true;
+	this.ysin = true;
+	this.zsin = true;
+	
+	this.rotx = 0;
+	this.roty = 0;
+	this.rotz = 0;
+	
+	this.tfactor = 1;
+	
+	this.light = false;
+	this.plight = false;
+	
+	this.setValues(parameters);
+
+};
+
+Celestial.prototype.setValues = function (values) {
+	
+	for ( var key in values) {
+		var nValue = values[key];
+		if(key in this) {
+			if(key == 'material') {
+				this[key] = nValue;
+				this.mesh.material = nValue;
+			} else if(key == 'geometry') {
+				this[key] = nValue;
+				this.mesh.geometry = nValue;
+			} else {
+				this[key] = nValue;
+			}
+		}
+	}
+};
+
+//celestial.prototype.projectedpos = function ( time ) {
+	
+//};
+
+Celestial.prototype.updatepos = function ( time ) {
+	var temp = new THREE.Vector3();
+	if(this.origin != false) {
+		temp = this.origin.mesh.position;
+	}
+	if(this.xsin == true) {
+		this.mesh.position.x = temp.x + this.orbitoffx + this.orbitradx * Math.sin(time * this.tfactor);
+	} else {
+		this.mesh.position.x = temp.x + this.orbitoffx + this.orbitradx * Math.cos(time * this.tfactor);
+	}
+	if(this.ysin == true) {
+		this.mesh.position.y = temp.y + this.orbitoffy + this.orbitrady * Math.sin(time * this.tfactor);
+	} else {
+		this.mesh.position.y = temp.y + this.orbitoffy + this.orbitrady * Math.cos(time * this.tfactor);
+	}
+	if(this.zsin == true) {
+		this.mesh.position.z = temp.z + this.orbitoffz + this.orbitradz * Math.sin(time * this.tfactor);
+	} else {
+		this.mesh.position.z = temp.z + this.orbitoffz + this.orbitradz * Math.cos(time * this.tfactor);
+	}
+	this.mesh.rotation.x += this.rotx;
+	this.mesh.rotation.y += this.roty;
+	this.mesh.rotation.z += this.rotz;
+	if(this.light == true) {
+		this.plight.position = this.mesh.position;
+	}
+}
+
+THREE.Scene.prototype.addC = function( celes ) {
+	this.add(celes.mesh);
+	if(celes.light == true)
+		this.add(celes.plight);
+};
+
+var scene = new THREE.Scene(); 
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); 
+var renderer = new THREE.WebGLRenderer(); 
+renderer.setSize(window.innerWidth, window.innerHeight); 
+document.body.appendChild(renderer.domElement); 
+
+//star
+var star1 = new Celestial({
+	geometry: new THREE.SphereGeometry(1, 10, 10),
+	material: new THREE.MeshBasicMaterial({color: 0xffdd22}),
+	light: true,
+	plight: new THREE.PointLight( 0xffddbb, 1, 1000 ),
+	rotx: 0.01, 
+	roty: 0.01, 
+	rotz: 0.01});
+scene.addC(star1);
+
+//planet
+var planet1 = new Celestial({
+	geometry: new THREE.SphereGeometry(0.3, 10, 10),
+	material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xffffff, map: THREE.ImageUtils.loadTexture('textures/water.jpg')}),
+	origin: star1, 
+	orbitradx: 2.5, 
+	orbitrady: -3, 
+	orbitoffy: -1, 
+	ysin: false,
+	rotx: 0.01, 
+	roty: 0.01, 
+	rotz: 0.01});
+scene.addC(planet1); 
+
+//moon
+var moon1 = new Celestial({
+	geometry: new THREE.SphereGeometry(0.1, 8, 8),
+	material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xffff00, map: THREE.ImageUtils.loadTexture('textures/water.jpg')}),
+	origin: planet1,
+	orbitradx: 0.45, 
+	orbitrady: -0.5, 
+	orbitradz: 0.45, 
+	zsin: false,
+	rotx: 0.01, 
+	roty: 0.01, 
+	rotz: 0.01,
+	tfactor: 2.5});
+scene.addC(moon1);
+
+var t = 0;
+
+camera.position.z = 5; 
+var render = function () { 
+	t += Math.PI/360;
+	requestAnimationFrame(render); 
+	star1.updatepos(t);
+	planet1.updatepos(t);
+	moon1.updatepos(t);
+	renderer.render(scene, camera); 
+}; 
+render();
+</script>
+</body>
+</html>

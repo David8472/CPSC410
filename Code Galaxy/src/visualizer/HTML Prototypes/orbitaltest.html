@@ -14,13 +14,13 @@ document.body.appendChild(renderer.domElement);
 
 //planet
 var geometry = new THREE.SphereGeometry(0.3, 10, 10); 
-var material = new THREE.MeshLambertMaterial({color: 0xffffff, map: THREE.ImageUtils.loadTexture('textures/water.jpg')}); 
+var material = new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xffffff, map: THREE.ImageUtils.loadTexture('textures/water.jpg')}); 
 var sphere = new THREE.Mesh(geometry, material); 
 scene.add(sphere); 
 
 //moon
 var moonmetry = new THREE.SphereGeometry(0.1, 8, 8);
-var moonmaterial = new THREE.MeshLambertMaterial({color: 0xffff00, map: THREE.ImageUtils.loadTexture('textures/water.jpg')});
+var moonmaterial = new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xffff00, map: THREE.ImageUtils.loadTexture('textures/water.jpg')});
 var moon = new THREE.Mesh(moonmetry, moonmaterial);
 scene.add(moon);
 
