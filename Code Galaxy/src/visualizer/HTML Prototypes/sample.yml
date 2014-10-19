@@ -18,8 +18,8 @@ commit_0:
                                 lines: 20
                         dependencies:
                             
-            dependencies:
-                
+                dependencies:
+                    
 commit_1:
     author: name
     modified:
@@ -40,5 +40,5 @@ commit_1:
                                 lines: 20
                         dependencies:
                             
-            dependencies:
-                
+                dependencies:
+                    

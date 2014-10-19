@@ -35,7 +35,6 @@ var Celestial = function(parameters) {
     this.toffz = 0;
     
     this.light = false;
-    this.plight = false;
     
     this.setValues(parameters);
 
@@ -108,15 +107,15 @@ Celestial.prototype.updatepos = function ( time ) {
     this.mesh.rotation.x += this.rotx;
     this.mesh.rotation.y += this.roty;
     this.mesh.rotation.z += this.rotz;
-    if(this.light == true) {
-        this.plight.position = this.mesh.position;
+    if(this.light != false) {
+        this.light.position = this.mesh.position;
     }
 }
 
 THREE.Scene.prototype.addC = function( celes ) {
     this.add(celes.mesh);
-    if(celes.light == true)
-        this.add(celes.plight);
+    if(celes.light != false)
+        this.add(celes.light);
 };
 
 var scene = new THREE.Scene(); 
@@ -130,8 +129,7 @@ var celestials = [];
 var star1 = new Celestial({
     geometry: new THREE.SphereGeometry(1, 12, 12),
     material: new THREE.MeshBasicMaterial({color: 0xffdd22}),
-    light: true,
-    plight: new THREE.PointLight( 0xffddbb, 1, 1000 ),
+    light: new THREE.PointLight( 0xffddbb, 1, 1000 ),
     rotx: 0.01, 
     roty: 0.01, 
     rotz: 0.01});
