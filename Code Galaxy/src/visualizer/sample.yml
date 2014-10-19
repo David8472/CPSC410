@@ -1,0 +1,41 @@
+commit_0:
+    author: Oddish
+    modified:
+        changed:
+        added:
+        removed:
+    present:
+        packages:
+            MainPackage:
+                lines: 123
+                classes:
+                    MainClass:
+                        lines: 40
+                        type: full
+                        methods:
+                            sin:
+                                lines: 5
+                            cos:
+                                lines: 5
+                            tan:
+                                lines: 5
+                            asin:
+                                lines: 5
+                            acos:
+                                lines: 5
+                            atan:
+                                lines: 5
+                        dependencies:
+                            
+                    OtherClass:
+                        lines: 20
+                        type: abstract
+                        methods:
+                            foo:
+                                lines: 10
+                            bar:
+                                lines: 5
+                        dependencies:
+                            
+                dependencies:
+                    
