@@ -127,6 +127,8 @@ var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeigh
 var renderer = new THREE.WebGLRenderer(); 
 renderer.setSize(window.innerWidth, window.innerHeight); 
 document.body.appendChild(renderer.domElement); 
+var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
+var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
 var celestials = [];\n\n"
 end
 
@@ -154,7 +156,7 @@ def gen_planet(package_name, class_name, class_map, package_idx, class_idx)
     text = "//#{package_name} class: #{class_name}
 #{class_name}_#{class_idx}.setValues({
     geometry: new THREE.SphereGeometry(#{class_map["radius"]}, 10, 10),
-    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: #{class_map["colour"]}, map: THREE.ImageUtils.loadTexture('textures/planet.jpg')}),
+    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: #{class_map["colour"]}, map: planet_texture}),
     origin: #{package_name}_#{package_idx}, 
     orbitradx: #{(Random.rand(2) == 0)? "" : "-"}#{class_map["off"]}, 
     orbitrady: #{(Random.rand(2) == 0)? "" : "-"}#{class_map["off"]}, 
@@ -162,7 +164,7 @@ def gen_planet(package_name, class_name, class_map, package_idx, class_idx)
     rotx: 0.01, 
     roty: 0.01, 
     rotz: 0.01,
-    tfactor: #{Random.rand * 3}});
+    tfactor: #{Random.rand * 5/(class_idx + 1)}});
 scene.addC(#{class_name}_#{class_idx}); 
 celestials[celestials.length] = #{class_name}_#{class_idx};\n\n"
     return text
@@ -172,7 +174,7 @@ def gen_moon(class_name, method_name, method_map, class_idx, method_idx)
     text = "//#{class_name} function: #{method_name}
 var #{method_name}_#{method_idx} = new Celestial({
     geometry: new THREE.SphereGeometry(#{method_map["radius"]}, 8, 8),
-    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xbb8800, map: THREE.ImageUtils.loadTexture('textures/planet.jpg')}),
+    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xbb8800, map: planet_texture}),
     origin: #{class_name}_#{class_idx},
     orbitradx: #{(Random.rand(2) == 0)? "" : "-"}#{method_map["off"]}, 
     orbitrady: #{(Random.rand(2) == 0)? "" : "-"}#{method_map["off"]}, 
@@ -190,7 +192,7 @@ def gen_star(package_name, package_map, package_idx)
     text = "//#{package_name}
 var #{package_name}_#{package_idx} = new Celestial({
     geometry: new THREE.SphereGeometry(#{package_map["radius"]}, 12, 12),
-    material: new THREE.MeshBasicMaterial({color: 0xffdd22}),
+    material: new THREE.MeshBasicMaterial({color: 0xffdd22, map: star_texture}),
     light: new THREE.PointLight( 0xffddbb, 1, 1000 ),
     rotx: 0.01, 
     roty: 0.01, 
