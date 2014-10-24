@@ -2,14 +2,73 @@ require 'yaml'
 
 # First component of the html output
 def html_start (title)
+    debug = true
     return "<html>
 <head>
 <title>#{title}</title>
 <style>canvas { width: 100%; height: 100% }</style>
 </head>
 <body>
+#{(debug)? "<div id=\"debug\"></div>" : ""}
 <script src=\"js/three.min.js\"></script>
 <script>
+#{(debug)? "var debug = function(text) {
+    document.getElementById(\"debug\").innerHTML += text;
+    document.getElementById(\"debug\").innerHTML += \"<br>\";
+};" : ""}
+var Ship = function(parameters) {
+
+    this.origin = false;
+    this.start = false;
+    this.destination = false;
+    this.target = false;
+    this.eta = 0;
+    this.offset = 0;
+    this.material = new THREE.SpriteMaterial( { color: 0xffffff, fog: true} );
+    this.spr = new THREE.Sprite(this.material);
+    this.loop = false;
+    
+    this.setValues(parameters);
+
+};
+
+Ship.prototype.setValues = function(values) {
+    for ( var key in values) {
+        var nValue = values[key];
+        if(key in this) {
+            if(key == 'material') {
+                this[key] = nValue;
+                this.spr.material = nValue;
+            } else if(key == 'eta' || key == 'offset') {
+                this[key] = nValue * Math.PI;
+            } else {
+                this[key] = nValue;
+            }
+        }
+    }
+};
+
+Ship.prototype.updatepos = function(time) {
+    if(this.origin == false) {
+        this.origin = this.spr.clone();
+    }
+    if(this.target != false) {
+        if((time > this.eta && this.loop == false) || this.eta <= 0) {
+            this.spr.position = this.target.position;
+        } else {
+            var t = time + this.offset;
+            if(this.loop == true)
+                t = t % this.eta;
+            if(t < 0.01) {
+                this.start = this.origin.position.clone();
+                this.destination = this.target.projectedpos(time + this.eta);
+            } 
+            this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*t;
+            this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*t;
+        }
+    }
+};
+
 var Celestial = function(parameters) {
 
     this.geometry = new THREE.SphereGeometry(0.1, 8, 8);
@@ -39,6 +98,8 @@ var Celestial = function(parameters) {
     this.toffz = 0;
     
     this.light = false;
+    
+    this.trade = [];
     
     this.setValues(parameters);
 
@@ -114,12 +175,20 @@ Celestial.prototype.updatepos = function ( time ) {
     if(this.light != false) {
         this.light.position = this.mesh.position;
     }
-}
+    var i = 0;
+    for(i = 0; i < this.trade.length; i++) {
+        this.trade[i].updatepos(time);
+    }
+};
 
 THREE.Scene.prototype.addC = function( celes ) {
     this.add(celes.mesh);
     if(celes.light != false)
         this.add(celes.light);
+    var i = 0;
+    for(i = 0; i < celes.trade.length; i++) {
+        this.add(celes.trade[i].spr);
+    }
 };
 
 var scene = new THREE.Scene(); 
@@ -129,21 +198,22 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement); 
 var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
 var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
+var trade_texture = THREE.ImageUtils.loadTexture('textures/trade_ship.png');
 var celestials = [];\n\n"
 end
 
-def html_end 
+def html_end(z)
     return "var t = 0;
 var index;
 
-camera.position.z = 60; 
+camera.position.z = #{z}; 
 var render = function () { 
-    t += Math.PI/360;
     requestAnimationFrame(render); 
     for(index = 0; index < celestials.length; index++) {
         celestials[index].updatepos(t);
     }
     renderer.render(scene, camera); 
+    t += Math.PI/360;
 }; 
 render();
 </script>
@@ -164,8 +234,7 @@ def gen_planet(package_name, class_name, class_map, package_idx, class_idx)
     rotx: 0.01, 
     roty: 0.01, 
     rotz: 0.01,
-    tfactor: #{Random.rand * 5/(class_idx + 1)}});
-scene.addC(#{class_name}_#{class_idx}); 
+    tfactor: #{1 + Random.rand * 4/(class_idx + 1)}});
 celestials[celestials.length] = #{class_name}_#{class_idx};\n\n"
     return text
 end
@@ -183,7 +252,6 @@ var #{method_name}_#{method_idx} = new Celestial({
     roty: 0.01, 
     rotz: 0.01,
     tfactor: #{2 + Random.rand * 2}});
-scene.addC(#{method_name}_#{method_idx});
 celestials[celestials.length] = #{method_name}_#{method_idx};\n\n"
     return text
 end
@@ -197,29 +265,50 @@ var #{package_name}_#{package_idx} = new Celestial({
     rotx: 0.01, 
     roty: 0.01, 
     rotz: 0.01});
-scene.addC(#{package_name}_#{package_idx});
 celestials[celestials.length] = #{package_name}_#{package_idx};\n\n"
+    return text
+end
+
+def gen_route(class_map, target_map, dep_idx, dep_map)
+    text = "// Dependency Route: #{class_map["indexed_name"]} -> #{target_map["indexed_name"]}\n"
+    temp = 0
+    eta = 0.15
+    while(temp < dep_map["strength"])
+        text += "var dep_#{dep_idx}_#{temp} = new Ship({
+        material: new THREE.SpriteMaterial({map: trade_texture, color: 0xffffff, fog: true}),
+        origin: #{class_map["indexed_name"]}.mesh,
+        target: #{target_map["indexed_name"]},
+        offset: #{eta*temp/dep_map["strength"]},
+        eta: #{eta},
+        loop: true});
+#{class_map["indexed_name"]}.trade[#{class_map["indexed_name"]}.trade.length] = dep_#{dep_idx}_#{temp};\n\n"
+        temp += 1
+    end
     return text
 end
 
 ARGV.each do |filename|
     data = YAML.load_file(filename)
     output = html_start(filename)
+    total_dist = 0;
     data.each do |commit_key, commit_map|
         # TODO incorporate commit history into a full animation
         # Consider using a merged hash object to determine all created objects
         class_idx = 0
         method_idx = 0
         package_idx = 0
+        dep_idx = 0
         commit_map["present"]["packages"].each do |p_name, p_map|
             # Calculate diameter of star
             p_map["radius"] = Math.log10(p_map["lines"])
             planet_dist = p_map["radius"] + 0.5
+            p_map["indexed_name"] = "#{p_name}_#{package_idx}"
             output += gen_star(p_name, p_map, package_idx)
             p_map["classes"].each do |c_name, c_map|
                 # Calculate diameter of planet
                 c_map["radius"] = Math.log10(c_map["lines"])
                 moon_dist = c_map["radius"]
+                c_map["indexed_name"] = "#{c_name}_#{class_idx}"
                 output += "var #{c_name}_#{class_idx} = new Celestial();\n"
                 c_map["methods"].each do |m_name, m_map| 
                     # Calculate diameter of moon
@@ -227,6 +316,7 @@ ARGV.each do |filename|
                     moon_dist += m_map["radius"] + 0.05
                     m_map["off"] = moon_dist
                     moon_dist += m_map["radius"] + 0.05
+                    m_map["indexed_name"] = "#{m_name}_#{method_idx}"
                     output += gen_moon(c_name, m_name, m_map, class_idx, method_idx)
                     method_idx += 1
                 end
@@ -236,12 +326,32 @@ ARGV.each do |filename|
                 output += gen_planet(p_name, c_name, c_map, package_idx, class_idx)
                 class_idx += 1
             end
+            total_dist += planet_dist * 1.5
             package_idx += 1
+        end
+        # generate trade routes and add objects to scene
+        commit_map["present"]["packages"].each do |p_name, p_map|
+            output += "    scene.addC(#{p_map["indexed_name"]});\n"
+            p_map["classes"].each do |c_name, c_map|
+                unless(c_map["dependencies"].nil?)
+                    c_map["dependencies"].each do |d_class, d_map|
+                        d_map["index"] = dep_idx
+                        output += gen_route(c_map, p_map["classes"][d_class], dep_idx, d_map)
+                        dep_idx += 1
+                    end
+                end
+                output += "    scene.addC(#{c_map["indexed_name"]});\n"
+                c_map["methods"].each do |m_name, m_map|
+                    output += "    scene.addC(#{m_map["indexed_name"]});\n"
+                end
+                
+            end
+            
         end
         # remove break when using full history
         break
     end
-    output += html_end
+    output += html_end(total_dist)
     File.open("HTML Output\\#{filename.gsub(".", "_")}_output.html", 'w') do |new_file|
         new_file.puts output
     end

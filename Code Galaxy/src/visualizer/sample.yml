@@ -7,10 +7,10 @@ commit_0:
     present:
         packages:
             MainPackage:
-                lines: 123
+                lines: 500
                 classes:
                     MainClass:
-                        lines: 40
+                        lines: 300
                         type: full
                         methods:
                             sin:
@@ -25,8 +25,46 @@ commit_0:
                                 lines: 5
                             atan:
                                 lines: 5
+                            rsin:
+                                lines: 5
+                            rcos:
+                                lines: 5
+                            rtan:
+                                lines: 5
+                            rasin:
+                                lines: 5
+                            racos:
+                                lines: 5
+                            ratan:
+                                lines: 5
+                            sin2:
+                                lines: 5
+                            cos2:
+                                lines: 5
+                            tan2:
+                                lines: 5
+                            asin2:
+                                lines: 5
+                            acos2:
+                                lines: 5
+                            atan2:
+                                lines: 5
+                            rsin2:
+                                lines: 5
+                            rcos2:
+                                lines: 5
+                            rtan2:
+                                lines: 5
+                            rasin2:
+                                lines: 5
+                            racos2:
+                                lines: 5
+                            ratan2:
+                                lines: 5
                         dependencies:
-                            
+                            OtherClass:
+                                type: inheritance
+                                strength: 5
                     OtherClass:
                         lines: 20
                         type: abstract
