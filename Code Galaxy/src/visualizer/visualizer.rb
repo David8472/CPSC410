@@ -11,6 +11,7 @@ def html_start (title)
 <body>
 #{(debug)? "<div id=\"debug\"></div>" : ""}
 <script src=\"js/three.min.js\"></script>
+<script src=\"js/OrbitControls.js\"></script>
 <script>
 #{(debug)? "var debug = function(text) {
     document.getElementById(\"debug\").innerHTML += text;
@@ -191,15 +192,22 @@ THREE.Scene.prototype.addC = function( celes ) {
     }
 };
 
+THREE.MOUSE={LEFT:0,MIDDLE:1,RIGHT:2};
 var scene = new THREE.Scene(); 
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); 
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000); 
 var renderer = new THREE.WebGLRenderer(); 
 renderer.setSize(window.innerWidth, window.innerHeight); 
 document.body.appendChild(renderer.domElement); 
 var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
 var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
 var trade_texture = THREE.ImageUtils.loadTexture('textures/trade_ship.png');
-var celestials = [];\n\n"
+var celestials = [];\n\n
+
+var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
+cameraControls.target.set( 0, 40, 0);
+cameraControls.maxDistance = 1500;
+cameraControls.minDistance = 10;
+cameraControls.update();\n\n"
 end
 
 def html_end(z)
