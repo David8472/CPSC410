@@ -49,6 +49,8 @@ Ship.prototype.setValues = function(values) {
     }
 };
 
+var s_up = new THREE.Vector3(0,1,0);
+
 Ship.prototype.updatepos = function(time) {
     if(this.origin == false) {
         this.origin = this.spr.clone();
@@ -63,6 +65,11 @@ Ship.prototype.updatepos = function(time) {
             if(t < 0.01) {
                 this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
+                var y = this.destination.clone().normalize();
+                this.spr.material.rotation = Math.acos(s_up.dot(y));
+                if(this.start.x <= this.destination.x) {
+                    this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;
+                }
             } 
             this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*t;
             this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*t;
@@ -289,7 +296,8 @@ def gen_route(class_map, target_map, dep_idx, dep_map)
         offset: #{eta*temp/dep_map["strength"]},
         eta: #{eta},
         loop: true});
-#{class_map["indexed_name"]}.trade[#{class_map["indexed_name"]}.trade.length] = dep_#{dep_idx}_#{temp};\n\n"
+#{class_map["indexed_name"]}.trade[#{class_map["indexed_name"]}.trade.length] = dep_#{dep_idx}_#{temp};
+dep_#{dep_idx}_#{temp}.spr.scale.set(2,2,1);\n\n"
         temp += 1
     end
     return text
