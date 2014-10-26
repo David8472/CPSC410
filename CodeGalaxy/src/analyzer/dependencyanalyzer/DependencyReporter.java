@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /*
  * Dependency reporter based on Classycle
+ * Reference: http://classycle.sourceforge.net/measures.html
  * Date: October 25, 2014
  */
 public class DependencyReporter {
@@ -12,7 +13,14 @@ public class DependencyReporter {
 
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
-		try {	
+		try {
+			// -------------- Instructions for Classycle -------------------------------------//
+			// Execute: java -jar <location>\classycle.jar -xmlFile=<filename>.xml <directory>
+			// <location> is the location on your machine where classycle.jar is located.
+			// <filename> is the name of the report file that will be created by the tool.
+			//				This file will be stored in the project directory.
+			// <directory> is the address of the directory containing class files to be analysed.
+			// --------------------------------------------------------------------------------//
 			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=pay.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
 			int exitVal = proc.waitFor();
 			System.out.println("Process exitValue: " + exitVal);
