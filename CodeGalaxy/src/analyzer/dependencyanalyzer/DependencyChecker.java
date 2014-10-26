@@ -7,7 +7,7 @@ import java.io.IOException;
  * Reference: http://classycle.sourceforge.net/measures.html
  * Date: October 25, 2014
  */
-public class DependencyReporter {
+public class DependencyChecker {
 
 	public static void main(String args[]){
 
@@ -21,7 +21,7 @@ public class DependencyReporter {
 			//				This file will be stored in the project directory.
 			// <directory> is the address of the directory containing class files to be analysed.
 			// --------------------------------------------------------------------------------//
-			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=pay.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
+			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=yik.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
 			int exitVal = proc.waitFor();
 			System.out.println("Process exitValue: " + exitVal);
 		} catch (IOException e) {
