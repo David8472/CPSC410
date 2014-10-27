@@ -9,9 +9,8 @@ import java.util.Vector;
 
 public class PackageDependencyInfo {
 	
-	private int numUsedBy; // number of classes/packages this object is used by
-	private int numInternalDependencies; // number of classes/packages that this object uses
-
+	private int numUsedBy; // number of packages this object is used by
+	private int numInternalDependencies; // number of packages that this object uses
 	private Vector<String> usedByVector = new Vector<String>();
 	private Vector<String> usesInternalVector = new Vector<String>();
 	
@@ -59,7 +58,7 @@ public class PackageDependencyInfo {
 	}
 	
 	/** 
-	 * Returns the length of the vector containing all internal packages.
+	 * Returns the length of the vector containing all internal package dependencies.
 	 * @return Length of the internal packages vector.
 	 */
 	public int getInternalVectorLength(){
