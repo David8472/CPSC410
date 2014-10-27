@@ -9,7 +9,26 @@ import java.io.IOException;
  */
 public class DependencyAnalyzer {
 
+	private static String command;
+	private static int exitValue;
+
+	/**
+	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
+	 */
+	public DependencyAnalyzer(String stringCommand){
+		command = stringCommand;
+	}
+
+	/**
+	 * Main() method of the Dependency Analyzer tool.
+	 * Used for running the code as it's being updated.
+	 */
 	public static void main(String args[]){
+
+		//command = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=jay.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+
+		//System.out.println("Running main()...");
+		//System.out.println("Command: " + command);
 
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
@@ -21,17 +40,18 @@ public class DependencyAnalyzer {
 			//				This file will be stored in the project directory.
 			// <directory> is the address of the directory containing class files to be analysed.
 			// --------------------------------------------------------------------------------//
-			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=dependencies.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
-			int exitVal = proc.waitFor();
-			System.out.println("Process exitValue: " + exitVal);
-			
+
+			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=mocking.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
+			exitValue = proc.waitFor();
+			System.out.println("Process exitValue: " + exitValue);
+
 			// Parse the XML output file
 			MockXmlParser parser = new MockXmlParser();
 			parser.analyzeXmlClassInfo();
 			parser.analyzeXmlPackageInfo();
 			parser.printClassSummary();
 			parser.printPackageSummary();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,4 +63,54 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Runs the Classycle tool in the command line.
+	 */
+	public void runClassycle(){
+		Runtime rt = Runtime.getRuntime();
+		Process proc;
+		try {
+			// -------------- Instructions for Classycle -------------------------------------//
+			// Execute: java -jar <location>\classycle.jar -xmlFile=<filename>.xml <directory>
+			// <location> is the location on your machine where classycle.jar is located.
+			// <filename> is the name of the report file that will be created by the tool.
+			//				This file will be stored in the project directory.
+			// <directory> is the address of the directory containing class files to be analysed.
+			// --------------------------------------------------------------------------------//
+			if(command!= null){
+				proc = rt.exec(command);
+				exitValue = proc.waitFor();
+				System.out.println("Process exitValue: " + exitValue);
+
+				// Parse the XML output file
+				MockXmlParser parser = new MockXmlParser();
+				parser.analyzeXmlClassInfo();
+				parser.analyzeXmlPackageInfo();
+				parser.printClassSummary();
+				parser.printPackageSummary();
+			}
+			else{
+				exitValue = -1;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch(IllegalThreadStateException e){
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Returns the status of the command execution.
+	 * @Return Command execution status.
+	 */
+	public int getExitStatus(){
+		return exitValue;
+	}
+
 }
