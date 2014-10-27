@@ -2,10 +2,10 @@ package analyzer.dependencyanalyzer;
 
 import java.io.IOException;
 
-/*
- * Dependency reporter based on Classycle
+/**
+ * Dependency reporter based on the Classycle tool.
  * Reference: http://classycle.sourceforge.net/measures.html
- * Date: October 25, 2014
+ * Created on October 25, 2014.
  */
 public class DependencyChecker {
 
@@ -25,10 +25,12 @@ public class DependencyChecker {
 			int exitVal = proc.waitFor();
 			System.out.println("Process exitValue: " + exitVal);
 			
-			// Parse XML
+			// Parse the XML output file
 			MockXmlParser parser = new MockXmlParser();
 			parser.analyzeXmlClassInfo();
 			parser.analyzeXmlPackageInfo();
+			parser.printClassSummary();
+			parser.printPackageSummary();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -40,7 +42,5 @@ public class DependencyChecker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
 }
