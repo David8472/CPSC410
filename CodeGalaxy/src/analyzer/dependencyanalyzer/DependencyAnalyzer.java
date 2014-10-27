@@ -6,7 +6,7 @@ import java.util.Vector;
 /**
  * Dependency reporter based on the Classycle tool.
  * Reference: http://classycle.sourceforge.net/measures.html
- * Created on October 25, 2014.
+ * Created: October 25, 2014.
  */
 public class DependencyAnalyzer {
 
