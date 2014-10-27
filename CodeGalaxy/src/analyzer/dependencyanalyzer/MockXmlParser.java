@@ -63,7 +63,7 @@ public class MockXmlParser{
 	}
 
 	/**
-	 * Returns a vector of ClassDependencyInfo object.
+	 * Returns a vector of ClassDependencyInfo objects.
 	 * Each such object contains info on the given class dependencies.
 	 */
 	public Vector<ClassDependencyInfo> getClassSummary(){
@@ -94,6 +94,7 @@ public class MockXmlParser{
 				System.out.println("Uses " + classVector.get(i).getInternalVectorElem(k));
 			}
 		}
+		System.out.println("DONE");
 	}
 
 	/**
@@ -112,6 +113,7 @@ public class MockXmlParser{
 				System.out.println("Uses " + packageVector.get(i).getInternalVectorElem(k));
 			}
 		}
+		System.out.println("DONE");
 	}
 
 }

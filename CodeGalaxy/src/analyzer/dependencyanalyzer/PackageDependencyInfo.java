@@ -7,7 +7,7 @@ import java.util.Vector;
  * A class to hold the class dependency information.
  */
 
-public class PackageDependencyInfo extends GenericDependency{
+public class PackageDependencyInfo {
 	
 	private int numUsedBy; // number of classes/packages this object is used by
 	private int numInternalDependencies; // number of classes/packages that this object uses
