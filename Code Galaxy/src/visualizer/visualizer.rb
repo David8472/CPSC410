@@ -60,21 +60,26 @@ ARGV.each do |filename|
                 output += gen_planet(p_name, c_name, c_map, package_idx, class_idx)
                 class_idx += 1
             end
+            p_map["orbit_radius"] = planet_dist
+            package_idx += 1
+        end
+        # generate trade routes and add objects to scene
+        # Also generate star positions
+        commit_map["present"]["packages"].each do |p_name, p_map|
+            output += "scene.addC(#{p_map["indexed_name"]});\n"
             # Place the star at static coordinates.
             # First star will be at position v,v where v = radius of the system-wide orbit
             # Otherwise will add stars aiming for relatively equal placement in x and y columns
             if(p_map == commit_map["present"]["packages"].values.first)
-                total_dist_x += planet_dist * 2
-                total_dist_y += planet_dist * 2
-                output += "#{p_map["indexed_name"]}.mesh.position.x = #{total_dist_x/2.0};
-#{p_map["indexed_name"]}.mesh.position.y = #{total_dist_y/2.0};\n\n"
+                rad = p_map["orbit_radius"]
+                output += "#{p_map["indexed_name"]}.mesh.position.x = #{rad};
+#{p_map["indexed_name"]}.mesh.position.y = #{rad};\n\n"
+                total_dist_x += rad * 2
+                total_dist_y += rad * 2
                 star_pos[0][0] = [total_dist_x, total_dist_y]
+            else
+                
             end
-            package_idx += 1
-        end
-        # generate trade routes and add objects to scene
-        commit_map["present"]["packages"].each do |p_name, p_map|
-            output += "scene.addC(#{p_map["indexed_name"]});\n"
             p_map["classes"].each do |c_name, c_map|
                 # Dependencies might be empty in the yml
                 unless(c_map["dependencies"].nil?)
@@ -82,7 +87,7 @@ ARGV.each do |filename|
                     c_map["dependencies"].each do |d_class, d_map|
                         d_map["index"] = dep_idx
                         # Generate route text for each dependency
-                        output += gen_route(c_map, p_map["classes"][d_class], dep_idx, d_map)
+                        output += gen_route(c_map, commit_map["present"]["packages"][d_map["package"]]["classes"][d_class], dep_idx, d_map)
                         dep_idx += 1
                     end
                 end

@@ -37,33 +37,10 @@ commit_0:
                                 lines: 5
                             ratan:
                                 lines: 5
-                            sin2:
-                                lines: 5
-                            cos2:
-                                lines: 5
-                            tan2:
-                                lines: 5
-                            asin2:
-                                lines: 5
-                            acos2:
-                                lines: 5
-                            atan2:
-                                lines: 5
-                            rsin2:
-                                lines: 5
-                            rcos2:
-                                lines: 5
-                            rtan2:
-                                lines: 5
-                            rasin2:
-                                lines: 5
-                            racos2:
-                                lines: 5
-                            ratan2:
-                                lines: 5
                         dependencies:
                             OtherClass:
                                 type: inheritance
+                                package: MainPackage
                                 strength: 5
                     OtherClass:
                         lines: 20
@@ -72,6 +49,38 @@ commit_0:
                             foo:
                                 lines: 10
                             bar:
+                                lines: 5
+                        dependencies:
+                            
+                dependencies:
+                    
+            Package2:
+                lines: 100
+                classes:
+                    PClass:
+                        lines: 30
+                        type: full
+                        methods:
+                            afun:
+                                lines: 15
+                            bfun:
+                                lines: 5
+                        dependencies:
+                            OtherClass:
+                                type: uses
+                                package: MainPackage
+                                strength: 10
+                            QClass:
+                                type: inheritance
+                                package: Package2
+                                strength: 3
+                    QClass:
+                        lines: 20
+                        type: abstract
+                        methods:
+                            xfun:
+                                lines: 10
+                            yfun:
                                 lines: 5
                         dependencies:
                             
