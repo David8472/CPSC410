@@ -1,6 +1,7 @@
 package analyzer.dependencyanalyzer;
 
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Dependency reporter based on the Classycle tool.
@@ -11,6 +12,9 @@ public class DependencyAnalyzer {
 
 	private static String command;
 	private static int exitValue;
+	private static MockXmlParser parser;
+	private Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
+	private Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 
 	/**
 	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
@@ -46,7 +50,7 @@ public class DependencyAnalyzer {
 			System.out.println("Process exitValue: " + exitValue);
 
 			// Parse the XML output file
-			MockXmlParser parser = new MockXmlParser();
+			parser = new MockXmlParser();
 			parser.analyzeXmlClassInfo();
 			parser.analyzeXmlPackageInfo();
 			parser.printClassSummary();
@@ -84,9 +88,14 @@ public class DependencyAnalyzer {
 				System.out.println("Process exitValue: " + exitValue);
 
 				// Parse the XML output file
-				MockXmlParser parser = new MockXmlParser();
+				//MockXmlParser parser = new MockXmlParser();
+				parser = new MockXmlParser();
 				parser.analyzeXmlClassInfo();
 				parser.analyzeXmlPackageInfo();
+				
+				classesDepInfo = parser.getClassSummary();
+				packagesDepInfo = parser.getPackageSummary();
+				
 				parser.printClassSummary();
 				parser.printPackageSummary();
 			}
@@ -112,5 +121,18 @@ public class DependencyAnalyzer {
 	public int getExitStatus(){
 		return exitValue;
 	}
-
+	
+	/**
+	 * Returns dependencies info of all classes.
+	 */
+	public Vector<ClassDependencyInfo> getAllClassesDependencies(){
+		return classesDepInfo;
+	}
+	
+	/**
+	 * Returns dependencies info of all packages.
+	 */
+	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
+		return packagesDepInfo;
+	}
 }
