@@ -24,6 +24,12 @@ public class DependencyChecker {
 			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=yik.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
 			int exitVal = proc.waitFor();
 			System.out.println("Process exitValue: " + exitVal);
+			
+			// Parse XML
+			MockXmlParser parser = new MockXmlParser();
+			parser.analyzeXmlClassInfo();
+			parser.analyzeXmlPackageInfo();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,6 +42,5 @@ public class DependencyChecker {
 		}
 
 	}
-
 
 }

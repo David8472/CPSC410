@@ -4,10 +4,10 @@ import java.util.Vector;
 
 /*
  * Created on Oct 26, 2014 by Ellina.
- * Mock class for Package Dependency Info.
+ * A class to hold the class dependency information.
  */
 
-public class MockPackageDependency extends GenericDependency{
+public class ClassDependencyInfo extends GenericDependency{
 	
 	private int numUsedBy; // number of classes/packages this object is used by
 	private int numInternalDependencies; // number of classes/packages that this object uses
@@ -15,10 +15,10 @@ public class MockPackageDependency extends GenericDependency{
 	private Vector<String> usedByVector = new Vector<String>();
 	private Vector<String> usesInternalVector = new Vector<String>();
 	
-	public MockPackageDependency(){
+	public ClassDependencyInfo(){
 	}
 	
-	public MockPackageDependency(int numUsedby, int numInt){
+	public ClassDependencyInfo(int numUsedby, int numInt){
 		this.numUsedBy = numUsedby;
 		this.numInternalDependencies = numInt;
 	}
