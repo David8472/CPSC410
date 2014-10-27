@@ -1,8 +1,9 @@
-package analyzer.gitcommmitcomponent;
+package analyzer.gitcommitcomponent;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.jgit.api.Git;
@@ -19,8 +20,8 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 
 public class CommitAnalyzer{
 	private String repoDirectory;
-	private ArrayList<ArrayList<String>> repoInfo = new ArrayList<ArrayList<String>>();
-	
+	private ArrayList<ArrayList<String>> repoFiles = new ArrayList<ArrayList<String>>();
+	private ArrayList<String> authorNames = new ArrayList<String>();
 	public CommitAnalyzer(String repoDirectory){
 		this.repoDirectory=repoDirectory;		
 	}
@@ -38,29 +39,35 @@ public class CommitAnalyzer{
 		    
 		    Iterable<RevCommit> logs = git.log().call();
 		    
-		    Ref head = repository.getRef("HEAD");
-		    RevCommit commit = revWalk.parseCommit(head.getObjectId());
-	        RevTree tree = commit.getTree();
-	        TreeWalk treeWalk = new TreeWalk(repository);
-	        treeWalk.addTree(tree);
-	        treeWalk.setRecursive(true);
-	        
+		    
+		   // Ref head = repository.getRef("HEAD");
 
 		    while(logs.iterator().hasNext()) {
+		    	
+			    //RevCommit commit = revWalk.parseCommit(head.getObjectId());
+		        
 		        revCommit = logs.iterator().next();
 		        
-		        tempInfo.add(revCommit.getAuthorIdent().getName());
+		        RevTree tree = revCommit.getTree();
+		        TreeWalk treeWalk = new TreeWalk(repository);
+		        treeWalk.addTree(tree);
+		        treeWalk.setRecursive(true);
+		        
+		       //tempInfo.add(new String (revCommit.getAuthorIdent().getName()));
 		        
 		        while (treeWalk.next()) {
 		        	if(javaFileCheck(treeWalk.getNameString())){
-		        		tempInfo.add(treeWalk.getNameString());
-		        		//System.out.println(treeWalk.getNameString());
+		        		tempInfo.add(new String(treeWalk.getNameString()));
+		        		System.out.println(treeWalk.getNameString());
 		        	}
 		        }
-		        
-		        
-		        repoInfo.add(tempInfo);
-		        //System.out.println(revCommit.getAuthorIdent().getName());
+		        //treeWalk.reset();
+		        if(tempInfo.size()>1){
+		        	authorNames.add(revCommit.getAuthorIdent().getName());
+		        	repoFiles.add(new ArrayList<String>(tempInfo));
+		        }
+		        tempInfo.clear();
+		        System.out.println(revCommit.getAuthorIdent().getName());
 		        //System.out.println(revCommit.getFullMessage());
 		        
 		        
@@ -73,10 +80,46 @@ public class CommitAnalyzer{
 			e.printStackTrace();
 		}
 		
+		Collections.reverse(repoFiles);
+		Collections.reverse(authorNames);
 	}
 	
-	public ArrayList<ArrayList<String>> getCommitInfo(){
-		return repoInfo;
+	public ArrayList<ArrayList<String>> getFileNames(){
+		return repoFiles;
+	}
+	
+	public ArrayList<ArrayList<String>> getFilesAdded(){
+		ArrayList<ArrayList<String>> filesAdded = new ArrayList<ArrayList<String>>();
+		filesAdded.add(repoFiles.get(0));
+		
+		ArrayList<String> temp = new ArrayList<String>();
+		for(int i = 1; i < repoFiles.size(); i++){
+			temp.addAll(repoFiles.get(i));
+			temp.removeAll(repoFiles.get(i-1));
+			filesAdded.add(new ArrayList<String>(temp));
+			temp.clear();
+		}
+		
+		return filesAdded;
+	}
+	
+	public ArrayList<ArrayList<String>> getFilesRemoved(){
+		ArrayList<ArrayList<String>> filesRemoved = new ArrayList<ArrayList<String>>();
+		filesRemoved.add(new ArrayList<String>());
+		ArrayList<String> temp = new ArrayList<String>();
+		
+		for(int i = 1; i < repoFiles.size(); i++){
+			temp.addAll(repoFiles.get(i-1));
+			temp.removeAll(repoFiles.get(i));
+			filesRemoved.add(new ArrayList<String>(temp));
+			temp.clear();
+		}
+		
+		return filesRemoved;
+	}
+	
+	public ArrayList<String> getAuthorNames(){
+		return authorNames;
 	}
 	
 	private boolean javaFileCheck(String fileName){
