@@ -143,7 +143,7 @@ Celestial.prototype.projectedpos = function ( time ) {
 };
 
 Celestial.prototype.updatepos = function ( time ) {
-    var temp = new THREE.Vector3();
+    var temp = this.mesh.position;
     if(this.origin != false) {
         temp = this.origin.mesh.position;
     }
