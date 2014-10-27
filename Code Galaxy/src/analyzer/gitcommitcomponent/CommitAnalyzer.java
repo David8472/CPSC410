@@ -1,4 +1,4 @@
-package analyzer.gitcommmitcomponent;
+package analyzer.gitcommitcomponent;
 
 import java.io.File;
 import java.io.IOException;
