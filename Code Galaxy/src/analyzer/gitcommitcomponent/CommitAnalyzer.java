@@ -1,4 +1,4 @@
-package sprintOne;
+package gitcommmitcomponent;
 
 import java.io.File;
 import java.io.IOException;
