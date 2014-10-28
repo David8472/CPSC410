@@ -1,0 +1,44 @@
+commit_0:
+    author: name
+    modified:
+        changed:
+            name: type
+        added:
+        removed:
+    present:
+        packages:
+            package_name:
+                lines: 123
+                classes:
+                    class_name:
+                        lines: 20
+                        type: full
+                        methods:
+                            method_name:
+                                lines: 20
+                        dependencies:
+                            
+                dependencies:
+                    
+commit_1:
+    author: name
+    modified:
+        changed:
+            name: type
+        added:
+        removed:
+    present:
+        packages:
+            package_name:
+                lines: 123
+                classes:
+                    class_name:
+                        lines: 20
+                        type: full
+                        methods:
+                            method_name:
+                                lines: 20
+                        dependencies:
+                            
+                dependencies:
+                    
