@@ -2,4 +2,8 @@
 *.class
 *.exe
 .idea/
-
+out/
+*.bin
+.classpath
+.project
+bin/
