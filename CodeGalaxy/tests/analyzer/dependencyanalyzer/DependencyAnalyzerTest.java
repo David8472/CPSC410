@@ -14,7 +14,7 @@ public class DependencyAnalyzerTest{
 	private DependencyAnalyzer analyzer;
 
 	/**
-	 * Tests if the command to run Classycle exited correctly
+	 * Tests if the command to run Classycle has exited correctly
 	 * 		given the correct command string.
 	 * 0 = successful exit, non-zero = error.
 	 */
@@ -33,7 +33,7 @@ public class DependencyAnalyzerTest{
 	}
 
 	/**
-	 * Tests if the command to run Classycle exited correctly
+	 * Tests if the command to run Classycle has exited correctly
 	 * 			given the incorrect command string.
 	 */
 	@Test
