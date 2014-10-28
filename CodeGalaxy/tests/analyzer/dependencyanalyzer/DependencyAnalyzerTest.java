@@ -14,7 +14,7 @@ public class DependencyAnalyzerTest{
 	private DependencyAnalyzer analyzer;
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
+	 * Tests if the command to run Classycle exited correctly
 	 * 		given the correct command string.
 	 * 0 = successful exit, non-zero = error.
 	 */
@@ -51,7 +51,7 @@ public class DependencyAnalyzerTest{
 	}
 
 	/**
-	 * Tests the analyzer given the null command string;
+	 * Tests the analyzer given the null command string.
 	 */
 	@Test
 	public void nullCommandTest(){
