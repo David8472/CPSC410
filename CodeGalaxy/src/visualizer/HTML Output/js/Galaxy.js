@@ -143,7 +143,7 @@ Celestial.prototype.projectedpos = function ( time ) {
 };
 
 Celestial.prototype.updatepos = function ( time ) {
-    var temp = new THREE.Vector3();
+    var temp = this.mesh.position;
     if(this.origin != false) {
         temp = this.origin.mesh.position;
     }
@@ -166,7 +166,8 @@ Celestial.prototype.updatepos = function ( time ) {
     this.mesh.rotation.y += this.roty;
     this.mesh.rotation.z += this.rotz;
     if(this.light != false) {
-        this.light.position = this.mesh.position;
+        this.light.position.x = this.mesh.position.x;
+        this.light.position.y = this.mesh.position.y;
     }
     var i = 0;
     for(i = 0; i < this.trade.length; i++) {

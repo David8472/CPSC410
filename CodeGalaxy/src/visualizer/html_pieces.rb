@@ -37,12 +37,12 @@ end
 ####################################
 # Last component of the html output
 ####################################
-def html_end(z)
+def html_end(max_dist)
     return "var t = 0;
 var index;
 
-cameraControls.target.set(0,0,0);
-camera.position.z = #{z}; 
+cameraControls.target.set(#{max_dist[:x]/2.0},#{max_dist[:y]/2.0},0);
+camera.position.set(#{max_dist[:x]/2.0}, #{max_dist[:y]/2.0}, #{(max_dist[:x] > max_dist[:y]) ? max_dist[:x]*0.75 : max_dist[:y]*0.75}); 
 cameraControls.update();
 var render = function () { 
     requestAnimationFrame(render); 
