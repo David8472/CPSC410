@@ -33,7 +33,7 @@ public class DependencyAnalyzerTest{
 	}
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
+	 * Tests if the command to run Classycle exited correctly
 	 * 			given the incorrect command string.
 	 */
 	@Test
