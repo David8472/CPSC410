@@ -7,4 +7,9 @@ out/
 .classpath
 .project
 bin/
-!classycle/samplepayment/*/*.class
+!classycle/samplepaymentclasses/adapters/*.class
+!classycle/samplepaymentclasses/commands/*.class
+!classycle/samplepaymentclasses/framework/*.class
+!classycle/samplepaymentclasses/processor/*.class
+!classycle/samplepaymentclasses/request/*.class
+!classycle/samplepaymentclasses/response/*.class
