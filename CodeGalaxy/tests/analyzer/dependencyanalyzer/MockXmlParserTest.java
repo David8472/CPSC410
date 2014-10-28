@@ -1,6 +1,7 @@
 package analyzer.dependencyanalyzer;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,10 +20,13 @@ public class MockXmlParserTest{
 	@Test
 	public void testClassUsedByVectorLength(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test3.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test3.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		//then
 		int parameter = analyzer.getAllClassesDependencies().get(2).getNumUsedBy();
 		int length = analyzer.getAllClassesDependencies().get(2).getUsedByVectorLength();
@@ -39,10 +43,13 @@ public class MockXmlParserTest{
 	@Test
 	public void testClassUsesInternalVectorLength(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test4.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test4.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		//then
 		int parameter = analyzer.getAllClassesDependencies().get(0).getNumInternalDependencies();
 		int length = analyzer.getAllClassesDependencies().get(0).getInternalVectorLength();
@@ -59,10 +66,13 @@ public class MockXmlParserTest{
 	@Test
 	public void testPackageUsedByVectorLength(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test5.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test5.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		//then
 		int parameter = analyzer.getAllPackagesDependencies().get(0).getNumUsedBy();
 		int length = analyzer.getAllPackagesDependencies().get(0).getUsedByVectorLength();
@@ -79,10 +89,13 @@ public class MockXmlParserTest{
 	@Test
 	public void testPackageUsesInternalVectorLength(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test6.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test6.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		//then
 		int parameter = analyzer.getAllPackagesDependencies().get(0).getNumInternalDependencies();
 		int length = analyzer.getAllPackagesDependencies().get(0).getInternalVectorLength();

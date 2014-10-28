@@ -1,6 +1,7 @@
 package analyzer.dependencyanalyzer;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,29 +14,32 @@ public class DependencyAnalyzerTest{
 	private DependencyAnalyzer analyzer;
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
+	 * Tests if the command to run Classycle has exited correctly
 	 * 		given the correct command string.
 	 * 0 = successful exit, non-zero = error.
 	 */
 	@Test
 	public void succesfulExitValueTest(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test1.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test1.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
 		//then
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		assertEquals(analyzer.getExitStatus(), 0);
 	}
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
+	 * Tests if the command to run Classycle has exited correctly
 	 * 			given the incorrect command string.
 	 */
 	@Test
 	public void failExitValueTest(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classyce.jar -xmlFile=test2.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classyce.jar -xmlFile=test2.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
@@ -47,7 +51,7 @@ public class DependencyAnalyzerTest{
 	}
 
 	/**
-	 * Tests the analyzer given the null command string;
+	 * Tests the analyzer given the null command string.
 	 */
 	@Test
 	public void nullCommandTest(){
