@@ -6,7 +6,7 @@ import java.util.Vector;
 /**
  * Dependency reporter based on the Classycle tool.
  * Reference: http://classycle.sourceforge.net/measures.html
- * Created: October 25, 2014.
+ * Created on October 25, 2014.
  */
 public class DependencyAnalyzer {
 
@@ -24,7 +24,8 @@ public class DependencyAnalyzer {
 	}
 
 	/**
-	 * Entry point of the Dependency Analyzer tool.
+	 * This method is for developing purposes only and will be removed afterwards.
+	 * Main() of the Dependency Analyzer tool.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
 	public static void main (String[] args){
@@ -39,18 +40,18 @@ public class DependencyAnalyzer {
 			// <directory> is the address of the directory containing class files to be analysed.
 			// --------------------------------------------------------------------------------//
 
-			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=reporrt.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
+			proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=with_no_dot.xml classycle\\samplepayment");
 			exitValue = proc.waitFor();
 			System.out.println("Process exitValue: " + exitValue);
 
-			// Parse the XML output file
+			// ----- Parse the XML output file -----//
 			parser = new MockXmlParser();
 			parser.analyzeXmlClassInfo();
 			parser.analyzeXmlPackageInfo();
 			classesDepInfo = parser.getClassSummary();
 			packagesDepInfo = parser.getPackageSummary();	
-			parser.printClassSummary();
-			parser.printPackageSummary();
+			//parser.printClassSummary();
+			//parser.printPackageSummary();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -91,8 +92,8 @@ public class DependencyAnalyzer {
 				parser.analyzeXmlPackageInfo();
 				classesDepInfo = parser.getClassSummary();
 				packagesDepInfo = parser.getPackageSummary();	
-				parser.printClassSummary();
-				parser.printPackageSummary();
+				//parser.printClassSummary();
+				//parser.printPackageSummary();
 			}
 			else{
 				exitValue = -1;
