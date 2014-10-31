@@ -20,11 +20,14 @@ public class DependencyAnalyzerTest{
 	@Test
 	public void succesfulExitValueTest(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=test1.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test1.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();
 		//then
+		if(analyzer.getExitStatus() != 0){
+			fail();
+		}
 		assertEquals(analyzer.getExitStatus(), 0);
 	}
 
@@ -35,7 +38,7 @@ public class DependencyAnalyzerTest{
 	@Test
 	public void failExitValueTest(){
 		// given
-		String commandStr = "java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classyce.jar -xmlFile=test2.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment";
+		String commandStr = "java -jar classycle\\classyce.jar -xmlFile=test2.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
 		analyzer.runClassycle();

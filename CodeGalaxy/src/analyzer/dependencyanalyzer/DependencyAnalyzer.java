@@ -27,48 +27,6 @@ public class DependencyAnalyzer {
 	 * Entry point of the Dependency Analyzer tool.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
-	public static void main (String[] args){
-		Runtime rt = Runtime.getRuntime();
-		Process proc;
-		try {
-			// -------------- Instructions for Classycle -------------------------------------//
-			// Execute: java -jar <location>\classycle.jar -xmlFile=<filename>.xml <directory>
-			// <location> is the location on your machine where classycle.jar is located.
-			// <filename> is the name of the report file that will be created by the tool.
-			//				This file will be stored in the project directory.
-			// <directory> is the address of the directory containing class files to be analysed.
-			// --------------------------------------------------------------------------------//
-
-			proc = rt.exec("java -jar C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\classycle.jar -xmlFile=reporrt.xml C:\\Users\\Ellina\\e410_sprint1\\CodeGalaxy\\classycle\\samplepayment");
-			exitValue = proc.waitFor();
-			System.out.println("Process exitValue: " + exitValue);
-
-			// Parse the XML output file
-			parser = new MockXmlParser();
-			parser.analyzeXmlClassInfo();
-			parser.analyzeXmlPackageInfo();
-			classesDepInfo = parser.getClassSummary();
-			packagesDepInfo = parser.getPackageSummary();	
-			parser.printClassSummary();
-			parser.printPackageSummary();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch(IllegalThreadStateException e){
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	/**
-	 * Entry point of the Dependency Analyzer tool.
-	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
-	 */
 	public void runClassycle(){
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
