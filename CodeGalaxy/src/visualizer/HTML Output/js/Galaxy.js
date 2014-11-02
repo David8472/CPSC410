@@ -54,7 +54,7 @@ Ship.prototype.updatepos = function(time) {
             if(temp_t < 0.01 * inc) {
                 this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
-                var y = this.destination.clone().normalize();
+                var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, this.destination.z - this.start.z)).normalize();
                 this.spr.material.rotation = Math.acos(s_up.dot(y));
                 if(this.start.x <= this.destination.x) {
                     this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;
