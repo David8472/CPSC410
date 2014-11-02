@@ -40,7 +40,7 @@ Ship.prototype.setValues = function(values) {
 
 var s_up = new THREE.Vector3(0,1,0);
 
-Ship.prototype.updatepos = function(time) {
+Ship.prototype.updatepos = function(time, speedx) {
     if(this.origin == false) {
         this.origin = this.spr.clone();
     }
@@ -51,7 +51,7 @@ Ship.prototype.updatepos = function(time) {
             var temp_t = time + this.offset;
             if(this.loop == true)
                 temp_t = temp_t % this.eta;
-            if(temp_t < 0.01 * inc) {
+            if(temp_t < 0.01 * speedx) {
                 this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
                 var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, this.destination.z - this.start.z)).normalize();
@@ -151,7 +151,7 @@ Celestial.prototype.projectedpos = function ( time ) {
     return new THREE.Vector3(x, y, z);
 };
 
-Celestial.prototype.updatepos = function ( time ) {
+Celestial.prototype.updatepos = function ( time, speedx ) {
     var temp = this.mesh.position;
     if(this.origin != false) {
         temp = this.origin.mesh.position;
@@ -180,7 +180,7 @@ Celestial.prototype.updatepos = function ( time ) {
     }
     var i = 0;
     for(i = 0; i < this.trade.length; i++) {
-        this.trade[i].updatepos(time);
+        this.trade[i].updatepos(time, speedx);
     }
 };
 

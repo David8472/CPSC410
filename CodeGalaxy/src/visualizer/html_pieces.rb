@@ -43,17 +43,17 @@ end
 ####################################
 def html_end(max_dist)
     return "var t = 0;
-var inc = 1;
-var def_speed = Math.PI/360;
+var speed_val = 1;
+var speed_base = Math.PI/360;
 
 var p_button = document.getElementById(\"ppbutton\");
 var s_slider = document.getElementById(\"speedslider\");
 var s_text = document.getElementById(\"speedtext\");
-s_text.value = \"Speed: \" + inc;
+s_text.value = \"Speed: \" + speed_val;
 
 var pause_or_unpause = function () {
-    if(inc > 0) {
-        inc = 0;
+    if(speed_val > 0) {
+        speed_val = 0;
         s_text.value = \"Paused\";
         p_button.value = \"Play\";
     } else {
@@ -65,8 +65,8 @@ var pause_or_unpause = function () {
 
 var update_speed = function () {
     if(s_text.value != \"Paused\") {
-        inc = Math.pow(2, s_slider.value - 3);
-        s_text.value = \"Speed: \" + inc;
+        speed_val = Math.pow(2, s_slider.value - 3);
+        s_text.value = \"Speed: \" + speed_val;
     }
 }
 
@@ -82,10 +82,10 @@ cameraControls.update();
 var render = function () { 
     requestAnimationFrame(render); 
     for(index = 0; index < celestials.length; index++) {
-        celestials[index].updatepos(t);
+        celestials[index].updatepos(t, speed_val);
     }
     renderer.render(scene, camera); 
-    t += inc * def_speed;
+    t += speed_val * speed_base;
 }; 
 render();
 </script>

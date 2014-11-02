@@ -34,9 +34,9 @@ ARGV.each do |filename|
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
     total_dist = {x: 0, y: 0}
     # Generate the combined history to gather ALL generated objects
-    combined = {}
+    combined_present = {}
     data.keys.each do |key|
-        combined = combination_merge(combined, data[key])
+        combined_present = combination_merge(combined_present, data[key]["present"]["packages"])
     end
     # TODO incorporate commit history into a full animation
     # Consider using a merged hash object to determine all created objects
@@ -46,7 +46,7 @@ ARGV.each do |filename|
     package_idx = 0
     dep_idx = 0
     # Iterate through what is present in the commit, through each package and component
-    combined["present"]["packages"].each do |p_name, p_map|
+    combined_present.each do |p_name, p_map|
         # Calculate diameter of star, and keep a reference to the radius allowable for the next
         # planetary orbit
         p_map["radius"] = Math.log10(p_map["lines"])
@@ -92,9 +92,9 @@ ARGV.each do |filename|
         package_idx += 1
     end
     # Generate star positions
-    output += gen_star_positions(combined["present"]["packages"], total_dist)
+    output += gen_star_positions(combined_present, total_dist)
     # generate trade routes and add objects to scene
-    combined["present"]["packages"].each do |p_name, p_map|
+    combined_present.each do |p_name, p_map|
         output += "scene.addC(#{p_map["indexed_name"]});\n"
         p_map["classes"].each do |c_name, c_map|
             # Dependencies might be empty in the yml
@@ -103,7 +103,7 @@ ARGV.each do |filename|
                 c_map["dependencies"].each do |d_class, d_map|
                     d_map["indexed_name"] = "dep_#{dep_idx}"
                     d_map["class_indexed_name"] = c_map["indexed_name"]
-                    d_map["dclass_indexed_name"] = combined["present"]["packages"][d_map["package"]]["classes"][d_class]["indexed_name"]
+                    d_map["dclass_indexed_name"] = combined_present[d_map["package"]]["classes"][d_class]["indexed_name"]
                     # Generate route text for each dependency
                     output += gen_route(d_map)
                     dep_idx += 1
