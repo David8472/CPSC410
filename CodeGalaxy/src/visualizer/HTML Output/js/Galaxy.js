@@ -2,6 +2,10 @@
 * @author Raela
 */
 
+/**
+* Ship definition
+* Should be able to work as a sprite for both author ships and trade ships
+*/
 var Ship = function(parameters) {
 
     this.origin = false;
@@ -44,10 +48,10 @@ Ship.prototype.updatepos = function(time) {
         if((time > this.eta && this.loop == false) || this.eta <= 0) {
             this.spr.position = this.target.position;
         } else {
-            var t = time + this.offset;
+            var temp_t = time + this.offset;
             if(this.loop == true)
-                t = t % this.eta;
-            if(t < 0.01) {
+                temp_t = temp_t % this.eta;
+            if(temp_t < 0.01 * inc) {
                 this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
                 var y = this.destination.clone().normalize();
@@ -56,11 +60,16 @@ Ship.prototype.updatepos = function(time) {
                     this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;
                 }
             } 
-            this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*t;
-            this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*t;
+            this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*temp_t;
+            this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*temp_t;
         }
     }
 };
+
+/**
+* Celestial definition
+* For Stars, Planets and Moons, anything with a repeating orbit
+*/
 
 var Celestial = function(parameters) {
 
@@ -185,4 +194,5 @@ THREE.Scene.prototype.addC = function( celes ) {
     }
 };
 
+// These constants are required to prevent a bug in OrbitalControls.js
 THREE.MOUSE={LEFT:0,MIDDLE:1,RIGHT:2};

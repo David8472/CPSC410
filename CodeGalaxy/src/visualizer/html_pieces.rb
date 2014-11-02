@@ -10,6 +10,10 @@ def html_start (title)
 </head>
 <body>
 #{(debug)? "<div id=\"debug\"></div>" : ""}
+<input type=\"button\" id=\"ppbutton\" onClick=\"pause_or_unpause()\" value=\"Pause\"></button>
+<input type=\"range\" id=\"speedslider\" onChange=\"update_speed()\" max=7 defaultValue=3></input>
+<input type=\"text\" disabled=\"true\" id=\"speedtext\"></input>
+<input type=\"button\" id=\"resetb\" onClick=\"restart()\" value=\"Restart\"></button>
 <script src=\"js/three.min.js\"></script>
 <script src=\"js/OrbitControls.js\"></script>
 <script src=\"js/Galaxy.js\"></script>
@@ -39,6 +43,37 @@ end
 ####################################
 def html_end(max_dist)
     return "var t = 0;
+var inc = 1;
+var def_speed = Math.PI/360;
+
+var p_button = document.getElementById(\"ppbutton\");
+var s_slider = document.getElementById(\"speedslider\");
+var s_text = document.getElementById(\"speedtext\");
+s_text.value = \"Speed: \" + inc;
+
+var pause_or_unpause = function () {
+    if(inc > 0) {
+        inc = 0;
+        s_text.value = \"Paused\";
+        p_button.value = \"Play\";
+    } else {
+        s_text.value = s_slider.value;
+        update_speed();
+        p_button.value = \"Pause\";
+    }
+}
+
+var update_speed = function () {
+    if(s_text.value != \"Paused\") {
+        inc = Math.pow(2, s_slider.value - 3);
+        s_text.value = \"Speed: \" + inc;
+    }
+}
+
+var restart = function () {
+    t = 0;
+}
+
 var index;
 
 cameraControls.target.set(#{max_dist[:x]/2.0},#{max_dist[:y]/2.0},0);
@@ -50,7 +85,7 @@ var render = function () {
         celestials[index].updatepos(t);
     }
     renderer.render(scene, camera); 
-    t += Math.PI/360;
+    t += inc * def_speed;
 }; 
 render();
 </script>
