@@ -119,7 +119,8 @@ ARGV.each do |filename|
     end
     output += html_end(total_dist)
     # Generate HTML file
-    File.open("HTML Output\\#{filename.gsub(".", "_")}_output.html", 'w') do |new_file|
+    Dir.chdir("HTML Output")
+    File.open("#{filename.gsub(".", "_")}_output.html", 'w') do |new_file|
         new_file.puts output
     end
 end
