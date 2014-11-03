@@ -10,7 +10,7 @@ def html_start (title)
 </head>
 <body>
 #{(debug)? "<div id=\"debug\"></div>" : ""}
-<input type=\"button\" id=\"ppbutton\" onClick=\"pause_or_unpause()\" value=\"Pause\"></button>
+<input type=\"button\" id=\"ppbutton\" onClick=\"pause_or_unpause()\" value=\"Play\"></button>
 <input type=\"range\" id=\"speedslider\" onChange=\"update_speed()\" max=7 defaultValue=3></input>
 <input type=\"text\" disabled=\"true\" id=\"speedtext\"></input>
 <input type=\"button\" id=\"resetb\" onClick=\"restart()\" value=\"Restart\"></button>
@@ -43,13 +43,13 @@ end
 ####################################
 def html_end(max_dist)
     return "var t = 0;
-var speed_val = 1;
+var speed_val = 0;
 var speed_base = Math.PI/360;
 
 var p_button = document.getElementById(\"ppbutton\");
 var s_slider = document.getElementById(\"speedslider\");
 var s_text = document.getElementById(\"speedtext\");
-s_text.value = \"Speed: \" + speed_val;
+s_text.value = \"Paused\";
 
 var pause_or_unpause = function () {
     if(speed_val > 0) {
@@ -71,7 +71,7 @@ var update_speed = function () {
 }
 
 var restart = function () {
-    t = 0;
+    location.reload();
 }
 
 var index;
