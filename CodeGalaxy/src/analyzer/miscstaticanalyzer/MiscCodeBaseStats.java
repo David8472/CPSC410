@@ -16,19 +16,37 @@ public class MiscCodeBaseStats {
         classes = new ArrayList<ClassInfo>();
     }
 
+    /**
+     * Gets the total number of packages stored in list of packages
+     * @return
+     */
     public int getNumberOfPackages() {
         return packages.size();
     }
 
+
+    /**
+     * Gets all package names stored in list of packages
+     * @return
+     */
     public ArrayList<String> getPackages() {
         return packages;
     }
 
+
+    /**
+     * Gets all ClassInfo objects stored in list of ClassInfo objects
+     * @return
+     */
     public ArrayList<ClassInfo> getClasses() {
         return classes;
     }
 
 
+    /**
+     * Gets all MethodInfo objects stored in list of MethodInfo objects
+     * @return
+     */
     public ArrayList<MethodInfo> getAllMethods() {
         ArrayList<MethodInfo> methods = new ArrayList<MethodInfo>();
         for(ClassInfo classInfo : classes) {
@@ -37,6 +55,27 @@ public class MiscCodeBaseStats {
             }
         }
         return methods;
+    }
+
+
+    /**
+     * Gets all ClassInfo objects filtered by container package
+     * @param packageName
+     * @return
+     */
+    public ArrayList<ClassInfo> getClassesByPackageName(String packageName) {
+        if(!packages.contains(packageName)) {
+            return null;
+        }
+
+        ArrayList<ClassInfo> classesInPackage = new ArrayList<ClassInfo>();
+        for(ClassInfo classInfo : classes) {
+            if(classInfo.getPackageName().equals(packageName)) {
+                classesInPackage.add(classInfo);
+            }
+        }
+
+        return classesInPackage;
     }
 
 
