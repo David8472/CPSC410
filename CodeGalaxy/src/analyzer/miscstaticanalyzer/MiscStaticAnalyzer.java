@@ -17,7 +17,6 @@ public class MiscStaticAnalyzer {
 
     /**
      * Gets all .java files from input parameter path
-     *
      * @param codebasePath - The path to the codebase
      * @return
      */
@@ -26,47 +25,69 @@ public class MiscStaticAnalyzer {
                 TrueFileFilter.TRUE);
     }
 
+
     /**
-     * Gets static code analysis metrics for a code base
-     *
+     * Gets static code analysis metrics for a code base including the following metrics:
+     * Packages - names, LOC;
+     * Classes - names, container package, LOC, type (Concrete, Abstract, Interface);
+     * Methods - names, container class, LOC, return type, accessor type (public, private, protected)
      * @param codebasePath - The path to the codebase
-     * @return
+     * @return - List of PackageInfo objects, each object containing the following metrics above for each package
      */
-    public static MiscCodeBaseStats getMiscStaticMetrics(String codebasePath) {
+    public static ArrayList<PackageInfo> getMiscStaticMetrics(String codebasePath) {
 
         // Get all Java source files from codebase
         Collection<File> sourceFiles = getSourceFiles(codebasePath);
 
-        // Bundled object that holds all the source file statistics
-        MiscCodeBaseStats statistics = new MiscCodeBaseStats();
+        // List of packages
+        ArrayList<PackageInfo> packages = new ArrayList<PackageInfo>();
 
         // Iterate through all source files
-        for (File sourceFile : sourceFiles) {
+        for(File sourceFile : sourceFiles) {
             try {
                 ClassAnalyzer analyzer = new ClassAnalyzer(sourceFile);
 
-                // Get package name for a source file and add to MiscCodeBaseStats
+                // Get package name for a source file
                 String packageName = analyzer.getPackage();
-                statistics.addPackage(packageName);
+
+                boolean isPackageInList = false;
+
+                // Checks if package was already added to packages list by iterating through packages list and comparing names
+                PackageInfo packageInfo = null;
+                for(PackageInfo pkg : packages) {
+
+                    // If package was already added to list, then get reference to respective PackageInfo object
+                    if(pkg.getPackageName().equals(packageName)) {
+                        packageInfo = pkg;
+                        isPackageInList = true;
+                        break;
+                    }
+                }
+
+                // If package is not already in list, then create a new PackageInfo object and add to list
+                if(!isPackageInList) {
+                    packageInfo = new PackageInfo(packageName);
+                    packages.add(packageInfo);
+                }
 
                 // Get class(es) information from the class analyzer
                 ArrayList<ClassInfo> classInfos = analyzer.getClassInfo();
 
                 // Iterate through all classes (they may be nested classes) for a source file
-                for (ClassInfo classInfo : classInfos) {
-                    // Add class information to MiscCodeBaseStats
-                    statistics.addClass(classInfo);
+                for(ClassInfo classInfo : classInfos) {
+                    // Add class information to respective PackageInfo object
+                    packageInfo.addClass(classInfo);
                 }
 
-            } catch (IOException e) {
+            } catch(IOException e) {
                 e.printStackTrace();
-            } catch (ParseException e) {
+            } catch(ParseException e) {
                 e.printStackTrace();
             }
         }
 
-        // Return bundled object with all static code analysis metrics for the code base
-        return statistics;
+        // Return list of packages with all static code analysis metrics for the code base
+        return packages;
     }
 
 }
