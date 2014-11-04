@@ -2,11 +2,14 @@ package analyzer;
 
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
+import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
 import analyzer.miscstaticanalyzer.ClassInfo;
 import analyzer.miscstaticanalyzer.MethodInfo;
-import analyzer.miscstaticanalyzer.MiscCodeBaseStats;
+import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class DataAggregator {
 
@@ -36,32 +39,35 @@ public class DataAggregator {
     /**
      * Writes commit(s) data to a YAML file
      */
-    public void writeDataToYAMLFile(MiscCodeBaseStats miscCodeBaseStats) {
+    public void writeCommitDataToYAMLFile(CommitAnalyzerInfo commitMetaData, ArrayList<PackageInfo> packagesInfo,
+                                          Vector<PackageDependencyInfo> packageDependencies,
+                                          Vector<ClassDependencyInfo> classDependencies) {
         try {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFilePath, true)));
-            writeCommitIDKey(0);
-            writeCommitMetaData();
+
+            // Writes commit metadata - commit ID, author, files changed / added / removed
+            writeCommitMetaData(commitMetaData);
+
             writePresentFilesKey();
             writePackagesKey();
 
-            // TO DO - For all packages
-            // writePackageInfo();
+            for(PackageInfo pkg : packagesInfo) {
+                writePackageInfo(pkg.getPackageName(), pkg.getLinesOfCode());
 
-            writeClassesKey();
+                writePackageDependenciesKey();
 
-            // TO DO - For all classes
-            // writeClassInfo();
+                // TO DO - For all package dependencies for a package
+                // writePackageDependency();
 
-            writeClassDependenciesKey();
+                writeClassesKey();
+                for(ClassInfo classInfo : pkg.getListOfClasses()) {
+                    writeClassInfo(classInfo);
+                    writeClassDependenciesKey();
 
-            // TO DO - For all class dependencies for a class
-            // writeClassDependency();
-
-            writePackageDependenciesKey();
-
-            // TO DO - For all package dependencies for a package
-            // writePackageDependency();
-
+                    // TO DO - For all class dependencies for a class
+                    // writeClassDependency();
+                }
+            }
         } catch(IOException e) {
             e.printStackTrace();
         } finally {
@@ -71,26 +77,56 @@ public class DataAggregator {
 
 
     /**
-     * Writes commit key name for a commit to output YAML file
-     * @param commitID - ID of commit
+     * Writes commit metadata to output YAML file
+     * @param commitMetaData - CommitAnalyzerInfo object that holds commitID, author, list of files
+     *                       changed / removed / added for a single commit
      */
-    private void writeCommitIDKey(int commitID) {
-        writer.println("commit_" + commitID + ":");
-    }
+    private void writeCommitMetaData(CommitAnalyzerInfo commitMetaData) {
 
+        // Writes commit ID
+        writer.println("commit_" + commitMetaData.getCommitNumber() + ":");
 
-    // TO DO
-    private void writeCommitMetaData() {
+        // Writes author
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
-        writer.println("author:");
+        writer.println("author: " + commitMetaData.getAuthorName());
+
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("modified:");
+
+        // Writes changed files (each file separated by '|')
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("changed:");
+        writer.print("changed: ");
+        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
+        for(int i = 0; i < filesChanged.size(); i++) {
+            writer.print(filesChanged.get(i));
+            if(i < filesChanged.size() - 1) {
+                writer.print(" | ");
+            } else {
+                writer.print("\n");
+            }
+        }
+
+        // Writes added files (each file separated by '|')
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
         writer.println("added:");
+        ArrayList<String> filesAdded = commitMetaData.getFilesAdded();
+        for(int i = 0; i < filesAdded.size(); i++) {
+            writer.print(filesAdded.get(i));
+            if(i < filesAdded.size() - 1) {
+                writer.print(" | ");
+            }
+        }
+
+        // Writes removed files (each file separated by '|')
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
         writer.println("removed:");
+        ArrayList<String> filesRemoved = commitMetaData.getFilesDeleted();
+        for(int i = 0; i < filesRemoved.size(); i++) {
+            writer.print(filesRemoved.get(i));
+            if(i < filesRemoved.size() - 1) {
+                writer.print(" | ");
+            }
+        }
     }
 
 
@@ -141,16 +177,22 @@ public class DataAggregator {
      * @param classInfo - ClassInfo object that holds the properties of the class
      */
     private void writeClassInfo(ClassInfo classInfo) {
+
+        // Writes class name
         writeSpacesCorrespondingToNestedLevel(CLASS_NAME_NEST_LEVEL);
         writer.println(classInfo.getClassName() + ":");
+
+        // Writes lines of code for class
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("lines: " + classInfo.getLinesOfCode());
+
+        // Writes type of class - Concrete, Abstract, or Interface
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("type: " + classInfo.getClassType());
+
+        // Write information for all methods in class
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("methods:");
-
-        // Write all method information in class
         for(MethodInfo methodInfo : classInfo.getMethods()) {
             writeMethodInfo(methodInfo);
         }
@@ -163,12 +205,18 @@ public class DataAggregator {
      * @param methodInfo - MethodInfo object that holds properties of the method
      */
     private void writeMethodInfo(MethodInfo methodInfo) {
+
+        // Writes method name
         writeSpacesCorrespondingToNestedLevel(METHOD_NAME_NEST_LEVEL);
         writer.println(methodInfo.getMethodName());
+
+        // Writes lines of code for method
         writeSpacesCorrespondingToNestedLevel(METHOD_INFO_NEST_LEVEL);
         writer.println("lines: " + methodInfo.getLinesOfCode());
 
-        // TO DO - Add method accessor type
+        // Writes accessor type for method - public, protected, private
+        writeSpacesCorrespondingToNestedLevel(METHOD_INFO_NEST_LEVEL);
+        writer.println("accessorType: " + methodInfo.getAccessorType());
     }
 
 
@@ -195,7 +243,7 @@ public class DataAggregator {
      */
     private void writePackageDependenciesKey() {
         writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL);
-        writer.println("dependencies:");
+        writer.println("packageDependencies:");
     }
 
 
