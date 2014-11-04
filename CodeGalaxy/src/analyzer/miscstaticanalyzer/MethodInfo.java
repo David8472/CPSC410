@@ -8,12 +8,15 @@ public class MethodInfo {
     private String methodName;
     private String containerClass;
     private String returnType;
+    private String accessorType;
     private int linesOfCode;
 
-    public MethodInfo(String methodName, String containerClass, String returnType, int linesOfCode) {
+    public MethodInfo(String methodName, String containerClass, String returnType, String accessorType,
+                      int linesOfCode) {
         this.methodName = methodName;
         this.containerClass = containerClass;
         this.returnType = returnType;
+        this.accessorType = accessorType;
         this.linesOfCode = linesOfCode;
     }
 
@@ -23,6 +26,10 @@ public class MethodInfo {
 
     public String getContainerClass() {
         return containerClass;
+    }
+
+    public String getAccessorType() {
+        return accessorType;
     }
 
     public String getReturnType() {

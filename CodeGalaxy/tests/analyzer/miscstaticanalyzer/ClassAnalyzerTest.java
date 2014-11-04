@@ -391,6 +391,43 @@ public class ClassAnalyzerTest extends TestCase {
 
 
     /**
+     * Tests if method accessor types are as expected for class in the ClassInfo object
+     * returned by getClassInfo()
+     * @throws Exception
+     */
+    public void testMethodAccessorType() throws Exception {
+
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/DifferentMethods2.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        // Flags for each of the expected methods. Set to true if method is visited.
+        boolean methodInt = false;
+        boolean methodVoid = false;
+        boolean methodBoolean = false;
+
+        for(MethodInfo method : classInfos.get(0).getMethods()) {
+            if(method.getMethodName().equals("methodInt")) {
+                assertEquals("public", method.getAccessorType());
+                methodInt = true;
+            } else if(method.getMethodName().equals("methodVoid")) {
+                assertEquals("private", method.getAccessorType());
+                methodVoid = true;
+            }
+            else if(method.getMethodName().equals("methodBoolean")) {
+                assertEquals("protected", method.getAccessorType());
+                methodBoolean = true;
+            } else {
+                fail();
+            }
+        }
+
+        // Ensures that all methods were visited
+        assertTrue(methodInt && methodVoid && methodBoolean);
+    }
+
+
+    /**
      * Test for getClassInfo()
      * @throws Exception
      */

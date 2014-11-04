@@ -155,8 +155,19 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
                 String methodName = ((MethodDeclaration) member).getName();
                 String containerClass = javaClass.getName();
                 String returnType = ((MethodDeclaration) member).getType().toString();
+
+                String accessorType = "";
+                int modifier = ((MethodDeclaration) member).getModifiers();
+                if(ModifierSet.isPublic(modifier)) {
+                    accessorType = "public";
+                } else if(ModifierSet.isProtected(modifier)) {
+                    accessorType = "protected";
+                } else if(ModifierSet.isPrivate(modifier)) {
+                    accessorType = "private";
+                }
+
                 int methodLOC = getLinesOfCode(member);
-                methods.add(new MethodInfo(methodName, containerClass, returnType, methodLOC));
+                methods.add(new MethodInfo(methodName, containerClass, returnType, accessorType, methodLOC));
             }
         }
 
