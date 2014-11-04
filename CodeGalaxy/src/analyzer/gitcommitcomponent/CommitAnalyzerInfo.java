@@ -1,44 +1,43 @@
 package analyzer.gitcommitcomponent;
 
-package gitcommitcomponent;
-
 import java.util.ArrayList;
 
-public class CommitAnalyzerInfo {
+public class CommitData {
 	private String repoDirectory;
-	private int numberOfCommits;
-	private ArrayList<ArrayList<String>> filesAdded = new ArrayList<ArrayList<String>>();
-	private ArrayList<ArrayList<String>> filesChanged = new ArrayList<ArrayList<String>>();
-	private ArrayList<ArrayList<String>> filesDeleted = new ArrayList<ArrayList<String>>();
-	private ArrayList<String> authorNames = new ArrayList<String>();	
-	private ArrayList<String> commitHashID = new ArrayList<String>();
+	private int commitNumber;//Commit Number is the order of the commit, Ex.) Initial commit is 1
+	private ArrayList<String> filesAdded = new ArrayList<String>();
+	private ArrayList<String> filesChanged = new ArrayList<String>();
+	private ArrayList<String> filesDeleted = new ArrayList<String>();
+	private String authorNames;
+	private String commitHashID;
 	
-	public CommitData(String repoDirectory){//Constructor
+	public CommitData(String repoDirectory, int commitNumber){//Constructor
 		this.repoDirectory = repoDirectory;
+		this.commitNumber = commitNumber;
 	}
 	
-	public int getNumberOfCommits(){
-		return numberOfCommits;
+	public int getCommitNumber(){
+		return commitNumber;
 	}
 	
-	public ArrayList<String> getFilesAdded(int commitNumber){
-		return filesAdded.get(commitNumber);
+	public ArrayList<String> getFilesAdded(){
+		return filesAdded;
 	}
 	
-	public ArrayList<String> getFilesChanged(int commitNumber){
-		return filesChanged.get(commitNumber);
+	public ArrayList<String> getFilesChanged(){
+		return filesChanged;
 	}
 	
-	public ArrayList<String> getFilesDeleted(int commitNumber){
-		return filesDeleted.get(commitNumber);
+	public ArrayList<String> getFilesDeleted(){
+		return filesDeleted;
 	}
 	
-	public String getAuthorName(int commitNumber){
-		return authorNames.get(commitNumber);
+	public String getAuthorName(){
+		return authorNames;
 	}
 	
 	public String getCommitHashID(int commitNumber){
-		return commitHashID.get(commitNumber);
+		return commitHashID;
 	}
 	
 }
