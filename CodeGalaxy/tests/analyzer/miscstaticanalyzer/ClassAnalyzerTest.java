@@ -181,6 +181,33 @@ public class ClassAnalyzerTest extends TestCase {
 
 
     /**
+     * Tests whether innerClasses are recorded as inner classes
+     * @throws Exception
+     */
+    public void testInnerClass() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/Test.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        boolean testClassVisited = false;
+        boolean innerClassVisited = false;
+
+        for(ClassInfo classInfo : classInfos) {
+            if(classInfo.getClassName().equals("Test")) {
+                testClassVisited = true;
+                assertEquals(false, classInfo.isInnerClass());
+            } else if(classInfo.getClassName().equals("InnerClass")) {
+                innerClassVisited = true;
+                assertEquals(true, classInfo.isInnerClass());
+            }
+        }
+
+        // Ensures all classes were visited
+        assertTrue(testClassVisited && innerClassVisited);
+    }
+
+
+    /**
      * Tests whether the ClassInfo object returned by getClassInfo() has the expected
      * class LOC of the class(es)
      * Expected Result: ClassLOCTest - 27, InnerClassLOCTest - 15
@@ -425,6 +452,8 @@ public class ClassAnalyzerTest extends TestCase {
         // Ensures that all methods were visited
         assertTrue(methodInt && methodVoid && methodBoolean);
     }
+
+
 
 
     /**

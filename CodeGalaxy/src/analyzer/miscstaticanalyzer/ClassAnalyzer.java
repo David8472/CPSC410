@@ -24,6 +24,7 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
 
     private CompilationUnit compilationUnit;
     private ArrayList<ClassInfo> classInfos;
+    private String fileName;
 
     /**
      * Constructs a ClassAnalyzer to perform static analysis operations on the java file passed in the argument
@@ -41,6 +42,9 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
         if(!javaFile.getName().contains(".java")) {
             throw new IllegalArgumentException();
         }
+
+        // Stores filename
+        fileName = javaFile.getName();
 
         // Parses java file and creates abstract syntax tree using JavaParser library
         compilationUnit = JavaParser.parse(javaFile);
@@ -82,12 +86,22 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
     public void visit(ClassOrInterfaceDeclaration javaClass, Object arg) {
         super.visit(javaClass, arg);
 
+        // Gets class name
         String className = getClassName(javaClass);
+
+        // Gets class type - Concrete, Abstract, or Interface
         String classType = getClassType(javaClass);
+
+        // Determines whether class is an inner class or not
+        boolean isInnerClass = isInnerClass(className);
+
+        // Gets class LOC
         int classLOC = getLinesOfCode(javaClass);
+
+        // Gets all methods in class
         ArrayList<MethodInfo> methods = getMethods(javaClass);
 
-        classInfos.add(new ClassInfo(className, getPackage(), classType, classLOC, methods));
+        classInfos.add(new ClassInfo(className, getPackage(), classType, isInnerClass, classLOC, methods));
     }
 
 
@@ -152,10 +166,17 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
         List<BodyDeclaration> members = javaClass.getMembers();
         for(BodyDeclaration member : members) {
             if(member instanceof MethodDeclaration) {
+
+                // Get method name
                 String methodName = ((MethodDeclaration) member).getName();
+
+                // Get container class name of method
                 String containerClass = javaClass.getName();
+
+                // Get return type of method
                 String returnType = ((MethodDeclaration) member).getType().toString();
 
+                // Get accessor type of method - public, private, or protected
                 String accessorType = "";
                 int modifier = ((MethodDeclaration) member).getModifiers();
                 if(ModifierSet.isPublic(modifier)) {
@@ -166,12 +187,32 @@ public class ClassAnalyzer extends VoidVisitorAdapter {
                     accessorType = "private";
                 }
 
+                // Get method LOC
                 int methodLOC = getLinesOfCode(member);
+
                 methods.add(new MethodInfo(methodName, containerClass, returnType, accessorType, methodLOC));
             }
         }
 
         return methods;
+    }
+
+
+    /**
+     * Determines if a class is an inner class by comparing the class name with the file name
+     * that it is in
+     * @param className
+     * @return
+     */
+    private boolean isInnerClass(String className) {
+
+        String fileNameWithoutExtension =  fileName.replace(".java", "");
+
+        if(fileNameWithoutExtension.equals(className)) {
+            return false;
+        }
+
+        return true;
     }
 
 

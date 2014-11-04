@@ -12,14 +12,16 @@ public class ClassInfo {
     private String classType;
     private int linesOfCode;
     private ArrayList<MethodInfo> methods;
+    private boolean isInnerClass;
 
-    public ClassInfo(String className, String packageName, String classType, int linesOfCode,
+    public ClassInfo(String className, String packageName, String classType, boolean isInnerClass, int linesOfCode,
                      ArrayList<MethodInfo> methods) {
         this.className = className;
         this.packageName = packageName;
         this.classType = classType;
         this.linesOfCode = linesOfCode;
         this.methods = methods;
+        this.isInnerClass = isInnerClass;
     }
 
     public String getClassName() {
@@ -40,5 +42,9 @@ public class ClassInfo {
 
     public ArrayList<MethodInfo> getMethods() {
         return methods;
+    }
+
+    public boolean isInnerClass() {
+        return isInnerClass;
     }
 }
