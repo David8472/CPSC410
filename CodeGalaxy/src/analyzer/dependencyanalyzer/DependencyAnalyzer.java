@@ -51,9 +51,9 @@ public class DependencyAnalyzer {
 					parser.analyzeXmlClassInfo();
 					parser.analyzeXmlPackageInfo();
 					classesDepInfo = parser.getClassesXmlSummary();
-					packagesDepInfo = parser.getPackagesXmlSummary();	
-					//parser.printClassSummary();
-					//parser.printPackageSummary();
+					packagesDepInfo = parser.getPackagesXmlSummary();
+					printClassSummary();
+					printPackageSummary();
 				}
 				else{
 					XmlParser realParser = new XmlParser();
@@ -96,4 +96,55 @@ public class DependencyAnalyzer {
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
 	}
+	
+	/**
+	 * Prints out the summary of all class dependencies.
+	 */
+	public static void printClassSummary(){
+
+		if(classesDepInfo.size() == 0){
+			System.out.println("No information on class dependencies was found.");
+		}
+		else{
+			for(int i = 0; i < classesDepInfo.size(); i++){
+				System.out.println("*** Class # " + i + " named "+ classesDepInfo.get(i).getClassName());
+				System.out.println("This class is used by " + classesDepInfo.get(i).getAfferentNum() + " classes.");
+				System.out.println("This class uses " + classesDepInfo.get(i).getEfferentNum() + " classes");
+
+				for(int j = 0; j < classesDepInfo.get(i).getAfferentVectorSize(); j++){
+					System.out.println("Used by " + classesDepInfo.get(i).getAfferentVectorElemAt(j));
+				}
+				for(int k = 0; k < classesDepInfo.get(i).getEfferentVectorSize(); k++){
+					System.out.println("Uses " + classesDepInfo.get(i).getEfferentVectorElemAt(k));
+				}
+			}
+			System.out.println("DONE");
+		}
+	}
+
+	/**
+	 * Prints out the summary of all package dependencies.
+	 */
+	public static void printPackageSummary(){
+
+		if(packagesDepInfo.size() == 0){
+			System.out.println("No information on package dependencies was found.");
+		}
+		else{
+			for(int i = 0; i < packagesDepInfo.size(); i++){
+				System.out.println("*** Package # " + i + " named " + packagesDepInfo.get(i).getPackageName());
+				System.out.println("This package is used by " + packagesDepInfo.get(i).getAfferentNum() + " packages.");
+				System.out.println("This package uses " + packagesDepInfo.get(i).getEfferentNum() + " packages.");
+
+				for(int j = 0; j < packagesDepInfo.get(i).getAfferentVectorSize(); j++){
+					System.out.println("Used by " + packagesDepInfo.get(i).getAfferentVectorElemAt(j));
+				}
+				for(int k = 0; k < packagesDepInfo.get(i).getEfferentVectorSize(); k++){
+					System.out.println("Uses " + packagesDepInfo.get(i).getEfferentVectorElemAt(k));
+				}
+			}
+			System.out.println("DONE");
+		}
+	}
+	
 }

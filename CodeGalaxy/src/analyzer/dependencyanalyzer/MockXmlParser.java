@@ -26,12 +26,14 @@ public class MockXmlParser{
 	public void analyzeXmlClassInfo(){
 
 		ClassDependencyInfo c1 = new ClassDependencyInfo(2,1);
+		c1.setClassName("Earth");
 		c1.addAfferentClass("water.lake");
 		c1.addAfferentClass("water.river");
 		c1.addEfferentClass("air.wind");
 		classVector.add(c1);
 
 		ClassDependencyInfo c2 = new ClassDependencyInfo(1,3);
+		c2.setClassName("Jupiter");
 		c2.addAfferentClass("soil.grass");
 		c2.addEfferentClass("air.wind");
 		c2.addEfferentClass("water.lake");
@@ -39,6 +41,7 @@ public class MockXmlParser{
 		classVector.add(c2);
 
 		ClassDependencyInfo c3 = new ClassDependencyInfo(0,2);
+		c3.setClassName("Saturn");
 		c3.addEfferentClass("soil.grass");
 		c3.addEfferentClass("air.wind");
 		classVector.add(c3);
@@ -52,10 +55,12 @@ public class MockXmlParser{
 	public void analyzeXmlPackageInfo(){
 
 		PackageDependencyInfo p1 = new PackageDependencyInfo(0,1);
+		p1.setPackageName("Sun");
 		p1.addEfferentPackage("water");
 		packageVector.add(p1);
 
 		PackageDependencyInfo p2 = new PackageDependencyInfo(1,2);
+		p2.setPackageName("Altair");
 		p2.addAfferentPackage("soil");
 		p2.addEfferentPackage("water");
 		p2.addEfferentPackage("air");
@@ -77,43 +82,4 @@ public class MockXmlParser{
 	public Vector<PackageDependencyInfo> getPackagesXmlSummary(){
 		return packageVector;
 	}
-
-	/**
-	 * Prints out the summary of all class dependencies.
-	 */
-	public void printClassSummary(){
-		for(int i = 0; i < classVector.size(); i++){
-			System.out.println("*** Class # " + i);
-			System.out.println("This class is used by " + classVector.get(i).getAfferentNum() + " classes.");
-			System.out.println("This class uses " + classVector.get(i).getEfferentNum() + " internal classes");
-
-			for(int j = 0; j < classVector.get(i).getAfferentVectorSize(); j++){
-				System.out.println("Used by " + classVector.get(i).getAfferentVectorElemAt(j));
-			}
-			for(int k = 0; k < classVector.get(i).getEfferentVectorSize(); k++){
-				System.out.println("Uses " + classVector.get(i).getEfferentVectorElemAt(k));
-			}
-		}
-		System.out.println("DONE");
-	}
-
-	/**
-	 * Prints out the summary of all package dependencies.
-	 */
-	public void printPackageSummary(){
-		for(int i = 0; i < packageVector.size(); i++){
-			System.out.println("*** Package # " + i);
-			System.out.println("This package is used by " + packageVector.get(i).getAfferentNum() + " packages.");
-			System.out.println("This package uses " + packageVector.get(i).getEfferentNum() + " internal packages.");
-
-			for(int j = 0; j < packageVector.get(i).getAfferentVectorSize(); j++){
-				System.out.println("Used by " + packageVector.get(i).getAfferentVectorElemAt(j));
-			}
-			for(int k = 0; k < packageVector.get(i).getEfferentVectorSize(); k++){
-				System.out.println("Uses " + packageVector.get(i).getEfferentVectorElemAt(k));
-			}
-		}
-		System.out.println("DONE");
-	}
-
 }

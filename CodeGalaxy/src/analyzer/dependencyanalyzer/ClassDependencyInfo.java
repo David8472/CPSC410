@@ -24,16 +24,16 @@ public class ClassDependencyInfo {
 	}
 	
 	/**
-	 * Sets the name of the package.
+	 * Sets the name of the class.
 	 */
-	public void setPackageName(String someName){
+	public void setClassName(String someName){
 		name = someName;
 	}
 	
 	/**
-	 * Returns the name of the package.
+	 * Returns the name of the class.
 	 */
-	public String getPackageName(){
+	public String getClassName(){
 		return name;
 	}
 	
