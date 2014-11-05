@@ -15,6 +15,7 @@ public class DependencyAnalyzer {
 	private static MockXmlParser parser;
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
+	private static boolean XmlParserInProgress = true;
 
 	/**
 	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
@@ -43,14 +44,21 @@ public class DependencyAnalyzer {
 				exitValue = proc.waitFor();
 				System.out.println("Process exitValue: " + exitValue);
 
-				// Parse the XML output file
-				parser = new MockXmlParser();
-				parser.analyzeXmlClassInfo();
-				parser.analyzeXmlPackageInfo();
-				classesDepInfo = parser.getClassesXmlSummary();
-				packagesDepInfo = parser.getPackagesXmlSummary();	
-				parser.printClassSummary();
-				parser.printPackageSummary();
+				// Gatekeeper
+				if(XmlParserInProgress){
+					parser = new MockXmlParser();
+					parser = new MockXmlParser();
+					parser.analyzeXmlClassInfo();
+					parser.analyzeXmlPackageInfo();
+					classesDepInfo = parser.getClassesXmlSummary();
+					packagesDepInfo = parser.getPackagesXmlSummary();	
+					//parser.printClassSummary();
+					//parser.printPackageSummary();
+				}
+				else{
+					XmlParser realParser = new XmlParser();
+					System.out.println("Using a real XML Parser...");
+				}
 			}
 			else{
 				exitValue = -1;
