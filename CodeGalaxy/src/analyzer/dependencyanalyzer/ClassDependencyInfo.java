@@ -9,91 +9,106 @@ import java.util.Vector;
 
 public class ClassDependencyInfo {
 	
-	private int numUsedBy; // number of classes this object is used by
-	private int numInternalDependencies; // number of classes that this object uses
-	private Vector<String> usedByVector = new Vector<String>();
-	private Vector<String> usesInternalVector = new Vector<String>();
+	private String name;
+	private int afferentNum; // number of classes this object is used by
+	private int efferentNum; // number of classes that this object uses
+	private Vector<String> afferentVector = new Vector<String>(); // contains names of afferent classes
+	private Vector<String> efferentVector = new Vector<String>(); // contains names of efferent classes
 	
 	/**
 	 * Constructs a ClassDependencyInfo object given the number of used-by and uses classes.
 	 */
-	public ClassDependencyInfo(int numUsedby, int numInt){
-		this.numUsedBy = numUsedby;
-		this.numInternalDependencies = numInt;
+	public ClassDependencyInfo(int usedByNum, int usesNum){
+		this.afferentNum = usedByNum;
+		this.efferentNum = usesNum;
 	}
 	
 	/**
-	 * Sets the number of classes that use this given class.
+	 * Sets the name of the class.
 	 */
-	public void setNumUsedBy(int num){
-		numUsedBy = num;
+	public void setClassName(String someName){
+		name = someName;
 	}
 	
 	/**
-	 * Returns the number of classes that use this given class.
+	 * Returns the name of the class.
 	 */
-	public int getNumUsedBy(){
-		return numUsedBy;
+	public String getClassName(){
+		return name;
 	}
 	
 	/**
-	 * Sets the number of internal classes that the given class is using.
+	 * Sets the number of afferent classes.
 	 */
-	public void setNumInternalDependencies(int num){
-		numInternalDependencies = num;
+	public void setAfferentNum(int num){
+		afferentNum = num;
 	}
 	
 	/**
-	 * Returns the number of internal classes that the given class is using.
+	 * Returns the number of afferent classes.
 	 */
-	public int getNumInternalDependencies(){
-		return numInternalDependencies;
+	public int getAfferentNum(){
+		return afferentNum;
 	}
 	
 	/**
-	 * Adds a class to the vector of internal classes that this given class is using.
+	 * Sets the number of efferent classes.
 	 */
-	public void addInternalUse(String s){
-		usesInternalVector.add(s);
+	public void setEfferentNum(int num){
+		efferentNum = num;
+	}
+	
+	/**
+	 * Returns the number of efferent classes.
+	 */
+	public int getEfferentNum(){
+		return efferentNum;
+	}
+	
+	/**
+	 * Records an efferent class.
+	 */
+	public void addEfferentClass(String s){
+		efferentVector.add(s);
 	}
 	
 	/** 
-	 * Returns the length of the vector containing all internal class dependencies.
-	 * @return Length of the internal classes vector.
+	 * Returns the number of efferent classes.
+	 * @return Size of the efferent classes vector.
 	 */
-	public int getInternalVectorLength(){
-		return usesInternalVector.size();
+	public int getEfferentVectorSize(){
+		return efferentVector.size();
 	}
 	
 	/**
-	 * Returns a specified class from the vector of internally used classes.
+	 * Returns a specified class from the vector of efferent classes.
+	 * @return The efferent class at index i.
+	 */
+	public String getEfferentVectorElemAt(int i){
+		return efferentVector.get(i);
+	}
+	
+	/**
+	 * Records an afferent class.
+	 */
+	public void addAfferentClass(String s){
+		afferentVector.add(s);
+	}
+	
+	/**
+	 * Returns the number of afferent classes.
+	 * @return Size of the afferent classes vector.
+	 */
+	public int getAfferentVectorSize(){
+		return afferentVector.size();
+	}
+	
+	/**
+	 * Returns a specified class from the vector of afferent classes.
 	 * @return The class at index i.
 	 */
-	public String getInternalVectorElem(int i){
-		return usesInternalVector.get(i);
-	}
-	
-	/**
-	 * Adds a class that uses this given class to the vector.
-	 */
-	public void addUsedBy(String s){
-		usedByVector.add(s);
-	}
-	
-	/**
-	 * Returns the size of vector containing all classes that use the given class.
-	 * @return Length of the referring classes vector.
-	 */
-	public int getUsedByVectorLength(){
-		return usedByVector.size();
-	}
-	
-	/**
-	 * Returns a specified class from the vector of classes referring to the given class.
-	 * @return The class at index i.
-	 */
-	public String getUsedByVectorElem(int i){
-		return usedByVector.get(i);
+	public String getAfferentVectorElemAt(int i){
+		return afferentVector.get(i);
 	}
 	
 }
