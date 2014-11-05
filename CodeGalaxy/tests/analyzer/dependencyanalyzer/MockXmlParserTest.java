@@ -27,8 +27,8 @@ public class MockXmlParserTest{
 			fail();
 		}
 		//then
-		int parameter = analyzer.getAllClassesDependencies().get(2).getNumUsedBy();
-		int length = analyzer.getAllClassesDependencies().get(2).getUsedByVectorLength();
+		int parameter = analyzer.getAllClassesDependencies().get(2).getAfferentNum();
+		int length = analyzer.getAllClassesDependencies().get(2).getAfferentVectorSize();
 		if(parameter != 0 && length == 0){
 			fail();
 		}
@@ -50,8 +50,8 @@ public class MockXmlParserTest{
 			fail();
 		}
 		//then
-		int parameter = analyzer.getAllClassesDependencies().get(0).getNumInternalDependencies();
-		int length = analyzer.getAllClassesDependencies().get(0).getInternalVectorLength();
+		int parameter = analyzer.getAllClassesDependencies().get(0).getEfferentNum();
+		int length = analyzer.getAllClassesDependencies().get(0).getEfferentVectorSize();
 		if(parameter != 0 && length == 0){
 			fail();
 		}
@@ -73,8 +73,8 @@ public class MockXmlParserTest{
 			fail();
 		}
 		//then
-		int parameter = analyzer.getAllPackagesDependencies().get(0).getNumUsedBy();
-		int length = analyzer.getAllPackagesDependencies().get(0).getUsedByVectorLength();
+		int parameter = analyzer.getAllPackagesDependencies().get(0).getAfferentNum();
+		int length = analyzer.getAllPackagesDependencies().get(0).getAfferentVectorSize();
 		if(parameter != 0 && length == 0){
 			fail();
 		}
@@ -96,8 +96,8 @@ public class MockXmlParserTest{
 			fail();
 		}
 		//then
-		int parameter = analyzer.getAllPackagesDependencies().get(0).getNumInternalDependencies();
-		int length = analyzer.getAllPackagesDependencies().get(0).getInternalVectorLength();
+		int parameter = analyzer.getAllPackagesDependencies().get(0).getEfferentNum();
+		int length = analyzer.getAllPackagesDependencies().get(0).getEfferentVectorSize();
 		if(parameter != 0 && length == 0){
 			fail();
 		}
