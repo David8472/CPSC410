@@ -23,7 +23,7 @@ public class DependencyAnalyzerTest{
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test1.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		//then
 		if(analyzer.getExitStatus() != 0){
 			fail();
@@ -41,7 +41,7 @@ public class DependencyAnalyzerTest{
 		String commandStr = "java -jar classycle\\classyce.jar -xmlFile=test2.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		//then
 		if(analyzer.getExitStatus() == 0){
 			fail();
@@ -58,7 +58,7 @@ public class DependencyAnalyzerTest{
 		String commandStr = null;
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		//then
 		if(analyzer.getExitStatus() == 0){
 			fail();

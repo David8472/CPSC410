@@ -22,7 +22,7 @@ public class MockXmlParserTest{
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test3.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -45,7 +45,7 @@ public class MockXmlParserTest{
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test4.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -68,7 +68,7 @@ public class MockXmlParserTest{
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test5.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -91,7 +91,7 @@ public class MockXmlParserTest{
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test6.xml classycle\\samplepayment";
 		analyzer = new DependencyAnalyzer(commandStr);
 		//when
-		analyzer.runClassycle();
+		analyzer.runClassycleWithCommand();
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
