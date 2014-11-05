@@ -47,8 +47,8 @@ public class DependencyAnalyzer {
 				parser = new MockXmlParser();
 				parser.analyzeXmlClassInfo();
 				parser.analyzeXmlPackageInfo();
-				classesDepInfo = parser.getClassSummary();
-				packagesDepInfo = parser.getPackageSummary();	
+				classesDepInfo = parser.getClassesXmlSummary();
+				packagesDepInfo = parser.getPackagesXmlSummary();	
 				parser.printClassSummary();
 				parser.printPackageSummary();
 			}
@@ -76,14 +76,14 @@ public class DependencyAnalyzer {
 	}
 
 	/**
-	 * Returns dependencies info of all classes.
+	 * Returns a vector with dependencies info of all classes.
 	 */
 	public Vector<ClassDependencyInfo> getAllClassesDependencies(){
 		return classesDepInfo;
 	}
 
 	/**
-	 * Returns dependencies info of all packages.
+	 * Returns a vector with dependencies info of all packages.
 	 */
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
