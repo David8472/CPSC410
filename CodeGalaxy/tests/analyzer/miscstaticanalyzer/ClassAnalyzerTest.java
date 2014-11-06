@@ -181,6 +181,33 @@ public class ClassAnalyzerTest extends TestCase {
 
 
     /**
+     * Tests whether innerClasses are recorded as inner classes
+     * @throws Exception
+     */
+    public void testInnerClass() throws Exception {
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/Test.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        boolean testClassVisited = false;
+        boolean innerClassVisited = false;
+
+        for(ClassInfo classInfo : classInfos) {
+            if(classInfo.getClassName().equals("Test")) {
+                testClassVisited = true;
+                assertEquals(false, classInfo.isInnerClass());
+            } else if(classInfo.getClassName().equals("InnerClass")) {
+                innerClassVisited = true;
+                assertEquals(true, classInfo.isInnerClass());
+            }
+        }
+
+        // Ensures all classes were visited
+        assertTrue(testClassVisited && innerClassVisited);
+    }
+
+
+    /**
      * Tests whether the ClassInfo object returned by getClassInfo() has the expected
      * class LOC of the class(es)
      * Expected Result: ClassLOCTest - 27, InnerClassLOCTest - 15
@@ -388,6 +415,45 @@ public class ClassAnalyzerTest extends TestCase {
         // Ensures that all methods were visited
         assertTrue(methodInt && methodVoid && methodBoolean && methodArrayListString);
     }
+
+
+    /**
+     * Tests if method accessor types are as expected for class in the ClassInfo object
+     * returned by getClassInfo()
+     * @throws Exception
+     */
+    public void testMethodAccessorType() throws Exception {
+
+        classAnalyzer = new ClassAnalyzer(new File("test_resources/DifferentMethods2.java"));
+
+        ArrayList<ClassInfo> classInfos = classAnalyzer.getClassInfo();
+
+        // Flags for each of the expected methods. Set to true if method is visited.
+        boolean methodInt = false;
+        boolean methodVoid = false;
+        boolean methodBoolean = false;
+
+        for(MethodInfo method : classInfos.get(0).getMethods()) {
+            if(method.getMethodName().equals("methodInt")) {
+                assertEquals("public", method.getAccessorType());
+                methodInt = true;
+            } else if(method.getMethodName().equals("methodVoid")) {
+                assertEquals("private", method.getAccessorType());
+                methodVoid = true;
+            }
+            else if(method.getMethodName().equals("methodBoolean")) {
+                assertEquals("protected", method.getAccessorType());
+                methodBoolean = true;
+            } else {
+                fail();
+            }
+        }
+
+        // Ensures that all methods were visited
+        assertTrue(methodInt && methodVoid && methodBoolean);
+    }
+
+
 
 
     /**
