@@ -5,6 +5,7 @@ import analyzer.dependencyanalyzer.PackageDependencyInfo;
 import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
 import analyzer.miscstaticanalyzer.ClassInfo;
 import analyzer.miscstaticanalyzer.MethodInfo;
+import analyzer.miscstaticanalyzer.MiscStaticAnalyzer;
 import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.io.*;
@@ -35,6 +36,12 @@ public class DataAggregator {
         }
     }
 
+    public static void main(String[] args) {
+        ArrayList<PackageInfo> packages = MiscStaticAnalyzer.getMiscStaticMetrics("/home/keval/Development/GitHub/kevalshah/CPSC410/CodeGalaxy/src");
+        DataAggregator aggregator = new DataAggregator();
+        aggregator.writeCommitDataToYAMLFile(null, packages, null, null);
+    }
+
 
     /**
      * Writes commit(s) data to a YAML file
@@ -52,20 +59,32 @@ public class DataAggregator {
             writePackagesKey();
 
             for(PackageInfo pkg : packagesInfo) {
-                writePackageInfo(pkg.getPackageName(), pkg.getLinesOfCode());
+
+                String packageName = pkg.getPackageName();
+
+                writePackageInfo(packageName, pkg.getLinesOfCode());
 
                 writePackageDependenciesKey();
 
-                // TO DO - For all package dependencies for a package
-                // writePackageDependency();
+                for(PackageDependencyInfo pkgDependencyInfo : packageDependencies) {
+                    if(packageName.equalsIgnoreCase(pkgDependencyInfo.getPackageName())) {
+                        writePackageDependency(pkgDependencyInfo);
+                    }
+                }
 
                 writeClassesKey();
                 for(ClassInfo classInfo : pkg.getListOfClasses()) {
+
+                    String className = classInfo.getClassName();
+
                     writeClassInfo(classInfo);
                     writeClassDependenciesKey();
 
-                    // TO DO - For all class dependencies for a class
-                    // writeClassDependency();
+                    for(ClassDependencyInfo classDependencyInfo : classDependencies) {
+                        if(className.equalsIgnoreCase(classDependencyInfo.getClassName())) {
+                            writeClassDependency(classDependencyInfo);
+                        }
+                    }
                 }
             }
         } catch(IOException e) {
@@ -235,6 +254,7 @@ public class DataAggregator {
      */
     private void writeClassDependency(ClassDependencyInfo classDependencyInfo) {
         // TO DO
+
     }
 
 
