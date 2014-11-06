@@ -5,7 +5,6 @@ import analyzer.dependencyanalyzer.PackageDependencyInfo;
 import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
 import analyzer.miscstaticanalyzer.ClassInfo;
 import analyzer.miscstaticanalyzer.MethodInfo;
-import analyzer.miscstaticanalyzer.MiscStaticAnalyzer;
 import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.io.*;
@@ -80,7 +79,7 @@ public class DataAggregator {
 
                     /* When found, write the dependencies to output file */
                     if(packageName.equalsIgnoreCase(pkgDependencyInfo.getPackageName())) {
-                        writePackageDependency(pkgDependencyInfo);
+                        writePackageDependencies(pkgDependencyInfo);
                         break;
                     }
                 }
@@ -107,7 +106,7 @@ public class DataAggregator {
 
                         /* When found, write the dependencies to output file */
                         if(className.equalsIgnoreCase(classDependencyInfo.getClassName())) {
-                            writeClassDependency(classDependencyInfo);
+                            writeClassDependencies(classDependencyInfo);
                             break;
                         }
                     }
@@ -285,7 +284,7 @@ public class DataAggregator {
      * Writes key and value pairs for a class dependency.
      * @param classDependencyInfo
      */
-    private void writeClassDependency(ClassDependencyInfo classDependencyInfo) {
+    private void writeClassDependencies(ClassDependencyInfo classDependencyInfo) {
 
         /* Writes all classes depended on plus their packages */
         Vector<String> classesDependendOn = classDependencyInfo.getEfferentClassDependencies();
@@ -334,7 +333,7 @@ public class DataAggregator {
      * Writes key and value pairs for package dependencies to output YAML file.
      * @param packageDependencyInfo
      */
-    private void writePackageDependency(PackageDependencyInfo packageDependencyInfo) {
+    private void writePackageDependencies(PackageDependencyInfo packageDependencyInfo) {
 
         /* Writes all packages depended on */
         writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL + 1);
@@ -390,7 +389,7 @@ public class DataAggregator {
 
         /* Go through each package */
         for(PackageInfo pkg : packages) {
-            /* For a package, iterate through its classes and add to map, class : package values */
+            /* For a package, iterate through its classes and add class : package key and values to map */
             for(ClassInfo clss : pkg.getListOfClasses()) {
                 classToPackageMap.put(clss.getClassName(), clss.getPackageName());
             }
