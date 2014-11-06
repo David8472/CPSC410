@@ -111,4 +111,30 @@ public class ClassDependencyInfo {
 		return afferentVector.get(i);
 	}
 	
+	/**
+	 * Returns a vector of afferent classes.
+	 */
+	public Vector<String> getAfferentClassDependencies(){
+		
+		Vector<String> copyVector = new Vector<String>();
+		for(int i = 0; i < afferentVector.size(); i++){
+			String s = afferentVector.get(i);
+			copyVector.add(s);
+		}
+		return copyVector;
+	}
+	
+	/**
+	 * Returns a vector of efferent classes.
+	 */
+	public Vector<String> getEfferentClassDependencies(){
+		
+		Vector<String> copyVector = new Vector<String>();
+		for(int i = 0; i < efferentVector.size(); i++){
+			String s = efferentVector.get(i);
+			copyVector.add(s);
+		}
+		return copyVector;
+	}
+	
 }
