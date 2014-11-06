@@ -111,4 +111,31 @@ public class PackageDependencyInfo {
 		return afferentVector.get(i);
 	}
 	
+	/**
+	 * Returns a vector with afferent packages.
+	 */
+	public Vector<String> getAfferentPackageDependencies(){
+		
+		Vector<String> copyVector = new Vector<String>();
+		
+		for(int i = 0; i < afferentVector.size(); i++){
+			String s = afferentVector.get(i);
+			copyVector.add(s);
+		}
+		return copyVector;
+	}
+	
+	/**
+	 * Returns a vector with efferent packages.
+	 */
+	public Vector<String> getEfferentPackageDependencies(){
+		
+		Vector<String> copyVector = new Vector<String>();
+		for(int i = 0; i < efferentVector.size(); i++){
+			String s = efferentVector.get(i);
+			copyVector.add(s);
+		}
+		return copyVector;
+	}
+	
 }
