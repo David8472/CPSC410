@@ -5,17 +5,19 @@ import analyzer.dependencyanalyzer.PackageDependencyInfo;
 import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
 import analyzer.miscstaticanalyzer.ClassInfo;
 import analyzer.miscstaticanalyzer.MethodInfo;
-import analyzer.miscstaticanalyzer.MiscStaticAnalyzer;
 import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class DataAggregator {
 
     private PrintWriter writer;
-    private final static String outputFilePath = "data.yml";
+    private Map<String, String> classToPkgMap;
+    private String outputFilePath;
 
     private final static int COMMIT_METADATA_NEST_LEVEL = 1;
     private final static int PKG_NAME_NEST_LEVEL = 3;
@@ -24,22 +26,23 @@ public class DataAggregator {
     private final static int CLASS_INFO_NEST_LEVEL = 6;
     private final static int METHOD_NAME_NEST_LEVEL = 7;
     private final static int METHOD_INFO_NEST_LEVEL = 8;
-    private final static int CLASS_DEPENDENCY_NAME_NEST_LEVEL = 7;
-    private final static int CLASS_DEPENDENCY_INFO_NEST_LEVEL = 8;
+    private final static int CLASS_DEPENDENCY_INFO_NEST_LEVEL = 7;
+    private final static int CLASS_DEPENDENCY_NAME_NEST_LEVEL = 8;
 
 
-    public DataAggregator() {
-        // Check to see if data.yml already exists. If so, then delete it.
+    public DataAggregator(String outputYAMLFilePath) {
+
+        if(!outputYAMLFilePath.contains(".yml")) {
+            outputFilePath = outputYAMLFilePath + ".yml";
+        } else {
+            outputFilePath = outputYAMLFilePath;
+        }
+
+        /* Check to see if output YAML file already exists. If so, then delete it. */
         File dataFile = new File(outputFilePath);
         if(dataFile.exists()) {
             dataFile.delete();
         }
-    }
-
-    public static void main(String[] args) {
-        ArrayList<PackageInfo> packages = MiscStaticAnalyzer.getMiscStaticMetrics("/home/keval/Development/GitHub/kevalshah/CPSC410/CodeGalaxy/src");
-        DataAggregator aggregator = new DataAggregator();
-        aggregator.writeCommitDataToYAMLFile(null, packages, null, null);
     }
 
 
@@ -50,6 +53,11 @@ public class DataAggregator {
                                           Vector<PackageDependencyInfo> packageDependencies,
                                           Vector<ClassDependencyInfo> classDependencies) {
         try {
+
+            // Build class to package mapping
+            classToPkgMap = buildClassToPackageMapping(packagesInfo);
+
+            // Create new PrintWriter to write to output YAML file
             writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFilePath, true)));
 
             // Writes commit metadata - commit ID, author, files changed / added / removed
@@ -58,31 +66,54 @@ public class DataAggregator {
             writePresentFilesKey();
             writePackagesKey();
 
+            /* Iterate through all packages in commit */
             for(PackageInfo pkg : packagesInfo) {
 
                 String packageName = pkg.getPackageName();
 
+                // Write package name and LOC for a package to output file
                 writePackageInfo(packageName, pkg.getLinesOfCode());
 
+                // Write package dependencies key to output file
                 writePackageDependenciesKey();
 
+                /*
+                Iterate through list of package dependencies for all packages until the dependencies
+                for the current package are found
+                */
                 for(PackageDependencyInfo pkgDependencyInfo : packageDependencies) {
+
+                    /* When found, write the dependencies to output file */
                     if(packageName.equalsIgnoreCase(pkgDependencyInfo.getPackageName())) {
-                        writePackageDependency(pkgDependencyInfo);
+                        writePackageDependencies(pkgDependencyInfo);
+                        break;
                     }
                 }
 
+                // Write classes key to output file
                 writeClassesKey();
+
+                /* Iterate through all classes for a package and write out info to output file */
                 for(ClassInfo classInfo : pkg.getListOfClasses()) {
 
                     String className = classInfo.getClassName();
 
+                    // Write the class info to output file
                     writeClassInfo(classInfo);
+
+                    // Write key for class dependencies to output file
                     writeClassDependenciesKey();
 
+                    /*
+                    Iterate through list of class dependencies for all classes until the dependencies
+                    for the current class are found
+                    */
                     for(ClassDependencyInfo classDependencyInfo : classDependencies) {
+
+                        /* When found, write the dependencies to output file */
                         if(className.equalsIgnoreCase(classDependencyInfo.getClassName())) {
-                            writeClassDependency(classDependencyInfo);
+                            writeClassDependencies(classDependencyInfo);
+                            break;
                         }
                     }
                 }
@@ -112,38 +143,43 @@ public class DataAggregator {
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("modified:");
 
-        // Writes changed files (each file separated by '|')
+        /* Writes changed files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.print("changed: ");
-        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
-        for(int i = 0; i < filesChanged.size(); i++) {
-            writer.print(filesChanged.get(i));
-            if(i < filesChanged.size() - 1) {
-                writer.print(" | ");
+        writer.println("changed: ");
+        // TO DO - files changed not implemented yet in Commit Analyzer
+//        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
+//        for(int i = 0; i < filesChanged.size(); i++) {
+//            writer.print(filesChanged.get(i));
+//            if(i < filesChanged.size() - 1) {
+//                writer.print("|");
+//            } else {
+//                writer.print("\n");
+//            }
+//        }
+
+        /* Writes added files (each file separated by '|') */
+        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
+        writer.print("added: ");
+        ArrayList<String> filesAdded = commitMetaData.getFilesAdded();
+        for(int i = 0; i < filesAdded.size(); i++) {
+            writer.print(filesAdded.get(i));
+            if(i < filesAdded.size() - 1) {
+                writer.print("|");
             } else {
                 writer.print("\n");
             }
         }
 
-        // Writes added files (each file separated by '|')
+        /* Writes removed files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("added:");
-        ArrayList<String> filesAdded = commitMetaData.getFilesAdded();
-        for(int i = 0; i < filesAdded.size(); i++) {
-            writer.print(filesAdded.get(i));
-            if(i < filesAdded.size() - 1) {
-                writer.print(" | ");
-            }
-        }
-
-        // Writes removed files (each file separated by '|')
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("removed:");
+        writer.print("removed: ");
         ArrayList<String> filesRemoved = commitMetaData.getFilesDeleted();
         for(int i = 0; i < filesRemoved.size(); i++) {
             writer.print(filesRemoved.get(i));
             if(i < filesRemoved.size() - 1) {
-                writer.print(" | ");
+                writer.print("|");
+            } else {
+                writer.print("\n");
             }
         }
     }
@@ -174,8 +210,11 @@ public class DataAggregator {
      * @param LOC         - Lines of code in package
      */
     private void writePackageInfo(String packageName, int LOC) {
+        /* Writes package name to output YAML file */
         writeSpacesCorrespondingToNestedLevel(PKG_NAME_NEST_LEVEL);
-        writer.println(packageName);
+        writer.println(packageName + ":");
+
+        /* Writes package LOC to output YAML file */
         writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL);
         writer.println("lines: " + LOC);
     }
@@ -197,19 +236,19 @@ public class DataAggregator {
      */
     private void writeClassInfo(ClassInfo classInfo) {
 
-        // Writes class name
+        /* Writes class name */
         writeSpacesCorrespondingToNestedLevel(CLASS_NAME_NEST_LEVEL);
         writer.println(classInfo.getClassName() + ":");
 
-        // Writes lines of code for class
+        /* Writes lines of code for class */
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("lines: " + classInfo.getLinesOfCode());
 
-        // Writes type of class - Concrete, Abstract, or Interface
+        /* Writes type of class - Concrete, Abstract, or Interface */
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("type: " + classInfo.getClassType());
 
-        // Write information for all methods in class
+        /* Write information for all methods in class */
         writeSpacesCorrespondingToNestedLevel(CLASS_INFO_NEST_LEVEL);
         writer.println("methods:");
         for(MethodInfo methodInfo : classInfo.getMethods()) {
@@ -225,15 +264,15 @@ public class DataAggregator {
      */
     private void writeMethodInfo(MethodInfo methodInfo) {
 
-        // Writes method name
+        /* Writes method name */
         writeSpacesCorrespondingToNestedLevel(METHOD_NAME_NEST_LEVEL);
-        writer.println(methodInfo.getMethodName());
+        writer.println(methodInfo.getMethodName() + ":");
 
-        // Writes lines of code for method
+        /* Writes lines of code for method */
         writeSpacesCorrespondingToNestedLevel(METHOD_INFO_NEST_LEVEL);
         writer.println("lines: " + methodInfo.getLinesOfCode());
 
-        // Writes accessor type for method - public, protected, private
+        /* Writes accessor type for method - public, protected, private */
         writeSpacesCorrespondingToNestedLevel(METHOD_INFO_NEST_LEVEL);
         writer.println("accessorType: " + methodInfo.getAccessorType());
     }
@@ -252,9 +291,39 @@ public class DataAggregator {
      * Writes key and value pairs for a class dependency.
      * @param classDependencyInfo
      */
-    private void writeClassDependency(ClassDependencyInfo classDependencyInfo) {
-        // TO DO
+    private void writeClassDependencies(ClassDependencyInfo classDependencyInfo) {
 
+        /* Writes all classes depended on plus their packages */
+        Vector<String> classesDependendOn = classDependencyInfo.getEfferentClassDependencies();
+        writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_INFO_NEST_LEVEL);
+        writer.println("uses:");
+        for(String classDependency : classesDependendOn) {
+
+            /* Writes class dependency name followed by ':' */
+            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
+            writer.println(classDependency + ":");
+
+            /* Writes package the dependency belongs to */
+            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
+            String pkgOfClassDependency = classToPkgMap.get(classDependency);
+            writer.println("package: " + pkgOfClassDependency);
+        }
+
+        /* Writes all classes that depend on this class plus their packages */
+        Vector<String> classesThatDependOnThisClass = classDependencyInfo.getAfferentClassDependencies();
+        writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_INFO_NEST_LEVEL);
+        writer.println("usedBy:");
+        for(String classDependency : classesThatDependOnThisClass) {
+
+            /* Writes class dependency name followed by ':' */
+            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
+            writer.println(classDependency + ":");
+
+            /* Writes package the dependency belongs to */
+            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
+            String pkgOfClassDependency = classToPkgMap.get(classDependency);
+            writer.println("package: " + pkgOfClassDependency);
+        }
     }
 
 
@@ -271,8 +340,33 @@ public class DataAggregator {
      * Writes key and value pairs for package dependencies to output YAML file.
      * @param packageDependencyInfo
      */
-    private void writePackageDependency(PackageDependencyInfo packageDependencyInfo) {
-        // TO DO
+    private void writePackageDependencies(PackageDependencyInfo packageDependencyInfo) {
+
+        /* Writes all packages depended on */
+        writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL + 1);
+        writer.print("PackagesDependedOn: ");
+        Vector<String> pkgDependencies = packageDependencyInfo.getEfferentPackageDependencies();
+        for(int i = 0; i < pkgDependencies.size(); i++) {
+            writer.print(pkgDependencies.get(i));
+            if(i < pkgDependencies.size() - 1) {
+                writer.print("|");
+            } else {
+                writer.print("\n");
+            }
+        }
+
+        /* Writes all packages that depend on this package */
+        writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL + 1);
+        writer.print("PackagesThatDependOnThisPackage: ");
+        Vector<String> pkgsThatDependOnThisPkg = packageDependencyInfo.getEfferentPackageDependencies();
+        for(int i = 0; i < pkgsThatDependOnThisPkg.size(); i++) {
+            writer.print(pkgsThatDependOnThisPkg.get(i));
+            if(i < pkgsThatDependOnThisPkg.size() - 1) {
+                writer.print("|");
+            } else {
+                writer.print("\n");
+            }
+        }
     }
 
 
@@ -288,6 +382,27 @@ public class DataAggregator {
         for(int i = 0; i < nestedLevel * 4; i++) {
             writer.print(" ");
         }
+    }
+
+
+    /**
+     * Builds a map where classes are keys and the packages that they belong to are values.
+     * @param packages - A list of PackageInfo objects
+     * @return - Map with the class to package mappings
+     */
+    private Map<String, String> buildClassToPackageMapping(ArrayList<PackageInfo> packages) {
+
+        Map<String, String> classToPackageMap = new HashMap<String, String>();
+
+        /* Go through each package */
+        for(PackageInfo pkg : packages) {
+            /* For a package, iterate through its classes and add class : package key and values to map */
+            for(ClassInfo clss : pkg.getListOfClasses()) {
+                classToPackageMap.put(clss.getClassName(), clss.getPackageName());
+            }
+        }
+
+        return classToPackageMap;
     }
 
 }
