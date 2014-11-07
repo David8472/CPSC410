@@ -139,16 +139,17 @@ public class DataAggregator {
 
         /* Writes changed files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.print("changed: ");
-        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
-        for(int i = 0; i < filesChanged.size(); i++) {
-            writer.print(filesChanged.get(i));
-            if(i < filesChanged.size() - 1) {
-                writer.print("|");
-            } else {
-                writer.print("\n");
-            }
-        }
+        writer.println("changed: ");
+        // TO DO - files changed not implemented yet in Commit Analyzer
+//        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
+//        for(int i = 0; i < filesChanged.size(); i++) {
+//            writer.print(filesChanged.get(i));
+//            if(i < filesChanged.size() - 1) {
+//                writer.print("|");
+//            } else {
+//                writer.print("\n");
+//            }
+//        }
 
         /* Writes added files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
