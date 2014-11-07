@@ -9,10 +9,14 @@ import analyzer.miscstaticanalyzer.PackageInfo;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ * Test driver for DataAggregator
+ */
 public class DataAggregatorTest {
 
     public static void main(String[] args) {
 
+        // Writes data to YAML file - testSample1.yml
         testSample1Data();
 
     }
