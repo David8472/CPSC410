@@ -3,6 +3,53 @@
 */
 
 /**
+* History definition
+* Encapsulation of a number of states, including special states 'start' and 'end'
+*/
+var TIME_INTERVAL = 20;
+var History = function(parameters) {
+    this.start = false;
+    this.end = false;
+    this.states = [];
+    
+    this.setValues(parameters);
+};
+
+History.prototype.getState = function(time) {
+    if(time <= 0) {
+        return this.start;
+    } else if(time > this.states.length) {
+        return this.end;
+    } else {
+        return this.states[(int)(time/TIME_INTERVAL)];
+    }
+};
+
+History.prototype.setValues = function(parameters) {
+    for ( var key in values) {
+        this[key] = nValue;
+    }
+};
+
+/**
+* State definition
+* Encapsulation of a single state, may include position, radius, and visible trade ships
+*/
+var State = function(parameters) {
+    this.radius = 0;
+    this.visible = false;
+    this.position = false;
+    this.ships = [];
+    this.setValues(parameters);
+};
+
+State.prototype.setValues = function(parameters) {
+    for ( var key in values) {
+        this[key] = nValue;
+    }
+};
+
+/**
 * Ship definition
 * Should be able to work as a sprite for both author ships and trade ships
 */

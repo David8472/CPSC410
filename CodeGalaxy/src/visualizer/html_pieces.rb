@@ -45,6 +45,7 @@ def html_end(max_dist)
     return "var t = 0;
 var speed_val = 0;
 var speed_base = Math.PI/360;
+TIME_INTERVAL *= speed_base;
 
 var p_button = document.getElementById(\"ppbutton\");
 var s_slider = document.getElementById(\"speedslider\");
