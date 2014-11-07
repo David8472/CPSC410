@@ -17,8 +17,7 @@ public class DataAggregator {
 
     private PrintWriter writer;
     private Map<String, String> classToPkgMap;
-
-    private final static String outputFilePath = "data.yml";
+    private String outputFilePath;
 
     private final static int COMMIT_METADATA_NEST_LEVEL = 1;
     private final static int PKG_NAME_NEST_LEVEL = 3;
@@ -31,8 +30,15 @@ public class DataAggregator {
     private final static int CLASS_DEPENDENCY_NAME_NEST_LEVEL = 8;
 
 
-    public DataAggregator() {
-        /* Check to see if data.yml already exists. If so, then delete it. */
+    public DataAggregator(String outputYAMLFilePath) {
+
+        if(!outputYAMLFilePath.contains(".yml")) {
+            outputFilePath = outputYAMLFilePath + ".yml";
+        } else {
+            outputFilePath = outputYAMLFilePath;
+        }
+
+        /* Check to see if output YAML file already exists. If so, then delete it. */
         File dataFile = new File(outputFilePath);
         if(dataFile.exists()) {
             dataFile.delete();
@@ -153,7 +159,7 @@ public class DataAggregator {
 
         /* Writes added files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("added:");
+        writer.print("added: ");
         ArrayList<String> filesAdded = commitMetaData.getFilesAdded();
         for(int i = 0; i < filesAdded.size(); i++) {
             writer.print(filesAdded.get(i));
@@ -166,7 +172,7 @@ public class DataAggregator {
 
         /* Writes removed files (each file separated by '|') */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("removed:");
+        writer.print("removed: ");
         ArrayList<String> filesRemoved = commitMetaData.getFilesDeleted();
         for(int i = 0; i < filesRemoved.size(); i++) {
             writer.print(filesRemoved.get(i));
@@ -206,7 +212,7 @@ public class DataAggregator {
     private void writePackageInfo(String packageName, int LOC) {
         /* Writes package name to output YAML file */
         writeSpacesCorrespondingToNestedLevel(PKG_NAME_NEST_LEVEL);
-        writer.println(packageName);
+        writer.println(packageName + ":");
 
         /* Writes package LOC to output YAML file */
         writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL);
@@ -260,7 +266,7 @@ public class DataAggregator {
 
         /* Writes method name */
         writeSpacesCorrespondingToNestedLevel(METHOD_NAME_NEST_LEVEL);
-        writer.println(methodInfo.getMethodName());
+        writer.println(methodInfo.getMethodName() + ":");
 
         /* Writes lines of code for method */
         writeSpacesCorrespondingToNestedLevel(METHOD_INFO_NEST_LEVEL);
