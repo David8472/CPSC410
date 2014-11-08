@@ -1,6 +1,12 @@
 package analyzer.dependencyanalyzer;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Vector;
 
 /**
@@ -16,6 +22,8 @@ public class DependencyAnalyzer {
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 	private static boolean XmlParserInProgress = true;
+	private static String compilerCommand;
+	private static Vector<String> fileAddresses = new Vector<String>();
 
 	/**
 	 * Default constructor.
@@ -35,6 +43,10 @@ public class DependencyAnalyzer {
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
 	public void runClassycle(){
+		
+		Path dir = Paths.get("samplesource");
+		listJavaFiles(dir);
+		
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
 		try {
@@ -201,4 +213,86 @@ public class DependencyAnalyzer {
 		}
 	}
 	
+	/**
+	 * Finds and lists Java files in a given directory.
+	 * References: http://stackoverflow.com/questions/1844688/read-all-files-in-a-folder
+	 * http://docs.oracle.com/javase/tutorial/essential/io/dirs.html#listdir
+	 * @param dir A directory where Java files are located.
+	 */
+	private static void listJavaFiles(Path dir){
+
+		Vector<String> singleFileVector;
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+			for (Path file: stream) {
+				//System.out.println("Path object: " + file.getFileName());
+				//System.out.println("Path object parent: " + file.getParent());
+
+				File myFile = file.toFile();
+				//System.out.println("Abs path: " + myFile.getAbsolutePath());
+
+				if(myFile.isFile()){
+					if(myFile.getName().endsWith(".java")){
+
+						//System.out.println(" " + myFile.getName());
+						//System.out.println("Path object parent: " + file.getParent());
+
+						// --- 1. Extract String representations ---//
+						String fileNameStr = myFile.getName();
+						String pathStr = file.getParent().toString();
+						System.out.println(" File: " + fileNameStr + " at path: " + pathStr);
+
+						// --- 2. Parse the strings into pieces (store in a vector) --- //
+
+						singleFileVector = new Vector<String>();
+						for (String retval: pathStr.split("\\\\")){
+							//System.out.println(" " + retval);
+							singleFileVector.add(retval);
+						}
+						singleFileVector.add(fileNameStr);
+
+						// --- 3. Use these pieces to build the command string --- //
+						String newAddress = buildFileAddressString(singleFileVector);
+
+						// --- 4. Record this new address in a cumulative vector of all files' addresses. ---//
+						if(newAddress != null){
+							fileAddresses.add(newAddress);
+						}
+					}
+					//System.out.println("Ends with java: " + myFile.getName().endsWith(".java"));
+				}
+				else{
+					System.out.println("Directory: " + myFile.getName());
+					listJavaFiles(myFile.toPath());
+				}
+			}		
+		} catch (IOException | DirectoryIteratorException x) {
+			// IOException can be thrown by newDirectoryStream.
+			System.err.println(x);
+		}
+	}
+	
+
+	/**
+	 * Builds a formatted string representation of a file address.
+	 * @param pathVector A vector that contains pieces of an address of a single file.
+	 */
+	private static String buildFileAddressString(Vector<String> pathVector){
+
+		StringBuilder stringBuilder = new StringBuilder();
+		for(int i = 0; i < pathVector.size(); i++){
+			if(i == pathVector.size()-1){
+				stringBuilder.append(pathVector.elementAt(i));
+			}
+			else{
+				stringBuilder.append(pathVector.elementAt(i));
+				stringBuilder.append("\\\\");
+			}
+		}
+		String finalString = stringBuilder.toString();
+		//System.out.println("We've built: " + finalString);
+		return finalString;
+	}
+
+
 }
