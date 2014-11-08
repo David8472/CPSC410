@@ -72,6 +72,8 @@ public class DependencyAnalyzer {
 
 			// -------------- Javac compiler options --------------------------------------------------//
 			//-d <directory> sets the destination directory for compiled class files.
+			// Note that this directory has to be created before calling the compiler, since
+			// compiler does not create it.
 			// --------------------------------------------------------------------------------//
 
 			// ------- Run the Javac compiler ----------//
