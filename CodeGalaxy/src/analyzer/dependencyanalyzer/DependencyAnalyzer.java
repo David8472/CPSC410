@@ -30,7 +30,7 @@ public class DependencyAnalyzer {
 	 */
 	public DependencyAnalyzer() {
 	}
-	
+
 	/**
 	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
 	 */
@@ -39,14 +39,26 @@ public class DependencyAnalyzer {
 	}
 
 	/**
+	 * Main() method for development.
+	 */
+	public static void main(String[] args){
+		runClassycle();
+	}
+	
+	/**
 	 * Entry point of the Dependency Analyzer tool.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
-	public void runClassycle(){
-		
-		Path dir = Paths.get("samplesource");
+	public static void runClassycle(){
+
+		// For now, the path to the source code is set to samplesource.
+		Path dir = Paths.get("test_resources\\samplesource");
 		listJavaFiles(dir);
-		
+
+		// Build a string that will be passed to the process running the compiler.
+		compilerCommand = buildCommandString(fileAddresses);
+		System.out.println("Compiler Command: " + compilerCommand);
+
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
 		try {
@@ -58,9 +70,21 @@ public class DependencyAnalyzer {
 			// <directory> is the address of the directory containing class files to be analysed.
 			// --------------------------------------------------------------------------------//
 
-			proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=tryinghard.xml classycle\\samplepayment");
+			// -------------- Javac compiler options --------------------------------------------------//
+			//-d <directory> sets the destination directory for compiled class files.
+			// --------------------------------------------------------------------------------//
+
+			// ------- Run the Javac compiler ----------//
+			proc = rt.exec(compilerCommand);
 			exitValue = proc.waitFor();
 			System.out.println("Process exitValue: " + exitValue);
+
+			// ------- Run the Classycle tool ----------//
+			proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
+			int anotherExitValue = proc.waitFor();
+			System.out.println("Classycle Process exitValue: " + anotherExitValue);
+
+			//proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=tryinghard.xml classycle\\samplepayment");
 
 			// Gatekeeper
 			if(XmlParserInProgress){
@@ -88,7 +112,7 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * For testing.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
@@ -162,7 +186,7 @@ public class DependencyAnalyzer {
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
 	}
-	
+
 	/**
 	 * Prints out the summary of all class dependencies.
 	 */
@@ -212,7 +236,7 @@ public class DependencyAnalyzer {
 			System.out.println("DONE");
 		}
 	}
-	
+
 	/**
 	 * Finds and lists Java files in a given directory.
 	 * References: http://stackoverflow.com/questions/1844688/read-all-files-in-a-folder
@@ -271,7 +295,7 @@ public class DependencyAnalyzer {
 			System.err.println(x);
 		}
 	}
-	
+
 
 	/**
 	 * Builds a formatted string representation of a file address.
@@ -293,6 +317,31 @@ public class DependencyAnalyzer {
 		//System.out.println("We've built: " + finalString);
 		return finalString;
 	}
+
+	/**
+	 * Builds a formatted string representation of a compiler command.
+	 * @param addresses A vector that contains addresses of all Java files.
+	 */
+	private static String buildCommandString(Vector<String> addresses){
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("javac -d samplebytecode ");
+
+		for(int i = 0; i < addresses.size(); i++){
+			if(i == addresses.size()-1){
+				stringBuilder.append(addresses.elementAt(i));
+			}
+			else{
+				stringBuilder.append(addresses.elementAt(i));
+				stringBuilder.append(" ");
+			}
+		}
+
+		String finalString = stringBuilder.toString();
+		//System.out.println("We've built: " + finalString);
+		return finalString;
+	}
+
 
 
 }
