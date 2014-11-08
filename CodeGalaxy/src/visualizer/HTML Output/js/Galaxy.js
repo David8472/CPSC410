@@ -25,9 +25,11 @@ History.prototype.getState = function(time) {
     }
 };
 
-History.prototype.setValues = function(parameters) {
+History.prototype.setValues = function(values) {
     for ( var key in values) {
-        this[key] = nValue;
+        var nValue = values[key];
+        if(key in this)
+            this[key] = nValue;
     }
 };
 
@@ -43,9 +45,11 @@ var State = function(parameters) {
     this.setValues(parameters);
 };
 
-State.prototype.setValues = function(parameters) {
+State.prototype.setValues = function(values) {
     for ( var key in values) {
-        this[key] = nValue;
+        var nValue = values[key];
+        if(key in this)
+            this[key] = nValue;
     }
 };
 
