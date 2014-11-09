@@ -24,6 +24,9 @@ public class DependencyAnalyzer {
 	private static boolean XmlParserInProgress = true;
 	private static String compilerCommand;
 	private static Vector<String> fileAddresses = new Vector<String>();
+	private static String sourceCodePath;
+	private static int classycleExitValue;
+	private static int compilerExitValue;
 
 	/**
 	 * Default constructor.
@@ -32,10 +35,12 @@ public class DependencyAnalyzer {
 	}
 
 	/**
-	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
+	 * Constructs a DependencyAnalyzer to perform analysis on the given path.
+	 * @param pathStr A string that contains the path to the source code
+	 * relative to the current directory.
 	 */
-	public DependencyAnalyzer(String stringCommand){
-		command = stringCommand;
+	public DependencyAnalyzer(String pathStr){
+		sourceCodePath = pathStr;
 	}
 
 	/**
@@ -44,16 +49,21 @@ public class DependencyAnalyzer {
 	public static void main(String[] args){
 		runClassycle();
 	}
-	
+
 	/**
 	 * Entry point of the Dependency Analyzer tool.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
 	public static void runClassycle(){
 
-		// For now, the path to the source code is set to samplesource.
-		Path dir = Paths.get("test_resources\\samplesource");
-		listJavaFiles(dir);
+		if(sourceCodePath != "" && sourceCodePath != null){
+			Path dir = Paths.get(sourceCodePath);
+			listJavaFiles(dir);
+		}
+		else{
+			System.out.println("Path cannot be null or empty. Please try again.");
+			return;
+		}
 
 		// Build a string that will be passed to the process running the compiler.
 		compilerCommand = buildCommandString(fileAddresses);
@@ -76,32 +86,47 @@ public class DependencyAnalyzer {
 			// compiler does not create it.
 			// --------------------------------------------------------------------------------//
 
-			// ------- Run the Javac compiler ----------//
-			proc = rt.exec(compilerCommand);
-			exitValue = proc.waitFor();
-			System.out.println("Process exitValue: " + exitValue);
+			if(compilerCommand != null){
 
-			// ------- Run the Classycle tool ----------//
-			proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
-			int anotherExitValue = proc.waitFor();
-			System.out.println("Classycle Process exitValue: " + anotherExitValue);
+				// ------- Run the Javac compiler ----------//
+				proc = rt.exec(compilerCommand);
+				compilerExitValue = proc.waitFor();
+				System.out.println("Process exitValue: " + compilerExitValue);
 
-			//proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=tryinghard.xml classycle\\samplepayment");
+				if(compilerExitValue == 0){ // process exited successfully
 
-			// Gatekeeper
-			if(XmlParserInProgress){
-				parser = new MockXmlParser();
-				parser = new MockXmlParser();
-				parser.analyzeXmlClassInfo();
-				parser.analyzeXmlPackageInfo();
-				classesDepInfo = parser.getClassesXmlSummary();
-				packagesDepInfo = parser.getPackagesXmlSummary();	
-				printClassSummary();
-				printPackageSummary();
+					// ------- Run the Classycle tool ----------//
+					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
+					classycleExitValue = proc.waitFor();
+					System.out.println("Classycle Process exitValue: " + classycleExitValue);
+
+					if(classycleExitValue == 0){ // process exited successfully
+						// Gatekeeper
+						if(XmlParserInProgress){
+							parser = new MockXmlParser();
+							parser = new MockXmlParser();
+							parser.analyzeXmlClassInfo();
+							parser.analyzeXmlPackageInfo();
+							classesDepInfo = parser.getClassesXmlSummary();
+							packagesDepInfo = parser.getPackagesXmlSummary();	
+							printClassSummary();
+							printPackageSummary();
+						}
+						else{
+							XmlParser realParser = new XmlParser();
+							System.out.println("Using a real XML Parser...");
+						}
+					}
+					else{
+						System.out.println("Problem: Classycle did not exit correctly. Please try again.");
+					}
+				}
+				else{
+					System.out.println("Problem: Compiler did not exit correctly. Please try again.");
+				}
 			}
 			else{
-				XmlParser realParser = new XmlParser();
-				System.out.println("Using a real XML Parser...");
+				System.out.println("Problem: Compiler string was not built right. Please try again.");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -173,6 +198,22 @@ public class DependencyAnalyzer {
 	 */
 	public int getExitStatus(){
 		return exitValue;
+	}
+	
+	/**
+	 * Returns the status of the Classycle execution.
+	 * @Return Classycle exit status.
+	 */
+	public int getClassycleExitStatus(){
+		return classycleExitValue;
+	}
+	
+	/**
+	 * Returns the status of compiler execution.
+	 * @return Compiler exit status.
+	 */
+	public int getCompilerExitStatus(){
+		return compilerExitValue;
 	}
 
 	/**
