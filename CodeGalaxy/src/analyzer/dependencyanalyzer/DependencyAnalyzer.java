@@ -44,13 +44,6 @@ public class DependencyAnalyzer {
 	}
 
 	/**
-	 * Main() method for development.
-	 */
-	public static void main(String[] args){
-		runClassycle();
-	}
-
-	/**
 	 * Entry point of the Dependency Analyzer tool.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
 	 */
@@ -199,7 +192,7 @@ public class DependencyAnalyzer {
 	public int getExitStatus(){
 		return exitValue;
 	}
-	
+
 	/**
 	 * Returns the status of the Classycle execution.
 	 * @Return Classycle exit status.
@@ -207,7 +200,7 @@ public class DependencyAnalyzer {
 	public int getClassycleExitStatus(){
 		return classycleExitValue;
 	}
-	
+
 	/**
 	 * Returns the status of compiler execution.
 	 * @return Compiler exit status.
