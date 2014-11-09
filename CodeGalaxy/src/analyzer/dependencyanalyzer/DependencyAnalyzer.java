@@ -143,9 +143,9 @@ public class DependencyAnalyzer {
 	/**
 	 * For testing.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
-	 * Requires a command to be set in the command field before calling this method.
+	 * @param command A string that contains the command for Classycle.
 	 */
-	public void runClassycleWithCommand(){
+	public void runClassycleWithCommand(String command){
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
 		try {
