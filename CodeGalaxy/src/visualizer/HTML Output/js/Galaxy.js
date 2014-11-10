@@ -16,12 +16,12 @@ var History = function(parameters) {
 };
 
 History.prototype.getState = function(time) {
-    if(time <= 0) {
+    if(time <= TIME_INTERVAL) {
         return this.start;
-    } else if(time > this.states.length*TIME_INTERVAL) {
+    } else if(time > (this.states.length+1)*TIME_INTERVAL) {
         return this.end;
     } else {
-        return this.states[parseInt(time/TIME_INTERVAL)];
+        return this.states[parseInt(time/TIME_INTERVAL)-1];
     }
 };
 
