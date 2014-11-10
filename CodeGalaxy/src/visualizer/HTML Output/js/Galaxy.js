@@ -6,7 +6,7 @@
 * History definition
 * Encapsulation of a number of states, including special states 'start' and 'end'
 */
-var TIME_INTERVAL = 20;
+var TIME_INTERVAL = 200;
 var History = function(parameters) {
     this.start = false;
     this.end = false;
@@ -18,10 +18,10 @@ var History = function(parameters) {
 History.prototype.getState = function(time) {
     if(time <= 0) {
         return this.start;
-    } else if(time > this.states.length) {
+    } else if(time > this.states.length*TIME_INTERVAL) {
         return this.end;
     } else {
-        return this.states[(int)(time/TIME_INTERVAL)];
+        return this.states[parseInt(time/TIME_INTERVAL)];
     }
 };
 
@@ -78,6 +78,7 @@ Ship.prototype.setValues = function(values) {
         var nValue = values[key];
         if(key in this) {
             if(key == 'material') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.spr.material = nValue;
             } else if(key == 'eta' || key == 'offset') {
@@ -153,6 +154,7 @@ var Celestial = function(parameters) {
     this.light = false;
     
     this.trade = [];
+    this.his = false;
     
     this.setValues(parameters);
 
@@ -164,9 +166,11 @@ Celestial.prototype.setValues = function (values) {
         var nValue = values[key];
         if(key in this) {
             if(key == 'material') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.mesh.material = nValue;
             } else if(key == 'geometry') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.mesh.geometry = nValue;
             } else {
@@ -229,9 +233,34 @@ Celestial.prototype.updatepos = function ( time, speedx ) {
         this.light.position.x = this.mesh.position.x;
         this.light.position.y = this.mesh.position.y;
     }
-    var i = 0;
-    for(i = 0; i < this.trade.length; i++) {
-        this.trade[i].updatepos(time, speedx);
+    if(this.his == false) {
+        var i = 0;
+        for(i = 0; i < this.trade.length; i++) {
+            this.trade[i].updatepos(time, speedx);
+        }
+    } else {
+        var the_st = this.his.getState(time);
+        if(the_st.radius != false) {
+            var scale = the_st.radius/this.mesh.geometry.parameters.radius;
+            this.mesh.scale.set(scale, scale, scale);
+        }
+        if(the_st.visible == true) {
+            this.mesh.visible = true;
+            if(this.light != false)
+                this.light.intensity = 1;
+        } else {
+            this.mesh.visible = false;
+            if(this.light != false)
+                this.light.intensity = 0;
+        }
+        var i = 0;
+        for(i = 0; i < this.trade.length; i++) {
+            this.trade[i].updatepos(time, speedx);
+            if(the_st.ships.indexOf(i) < 0)
+                this.trade[i].spr.visible = false;
+            else
+                this.trade[i].spr.visible = true;
+        }
     }
 };
 
