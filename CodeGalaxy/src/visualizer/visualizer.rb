@@ -1,6 +1,7 @@
 require 'yaml'
 require_relative "html_pieces"
 require_relative "system_generation"
+require_relative "history_generation"
 
 ######################
 # Helper function to merge hash objects together to retain the most information rather than overwrite
