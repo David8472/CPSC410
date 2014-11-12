@@ -34,7 +34,7 @@ ARGV.each do |filename|
     commit_keys = data.keys.sort{|x| x.match(/[0-9]+/).to_s.to_i}
     output = html_start(filename)
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
-    total_dist = {x: 0, y: 0}
+    total_dist = {x: 0, y: 0, z:0}
     #################################################################
     # Generate the combined history to gather ALL generated objects #
     #################################################################
@@ -47,9 +47,9 @@ ARGV.each do |filename|
     method_idx = 0
     package_idx = 0
     dep_idx = 0
-    #####################################################################################
-    # Iterate through what is present in the commit, through each package and component #
-    #####################################################################################
+    ###############################################################################################
+    # Iterate through what is present in the combined history, through each package and component #
+    ###############################################################################################
     combined_present.each do |p_name, p_map|
         # Calculate diameter of star, and keep a reference to the radius allowable for the next
         # planetary orbit
