@@ -1,4 +1,4 @@
-commit_0:
+commit_10:
     author: Oddish
     modified:
         changed:
@@ -14,7 +14,7 @@ commit_0:
                         type: full
                         methods:
                             sin:
-                                lines: 5
+                                lines: 25
                             cos:
                                 lines: 5
                             tan:
@@ -86,3 +86,59 @@ commit_0:
                             
                 dependencies:
                     
+commit_2:
+    author: Oddish
+    modified:
+        changed:
+        added:
+        removed:
+    present:
+        packages:
+            MainPackage:
+                lines: 100
+                classes:
+                    MainClass:
+                        lines: 45
+                        type: full
+                        methods:
+                            sin:
+                                lines: 5
+                            cos:
+                                lines: 15
+                        dependencies:
+                            OtherClass:
+                                type: inheritance
+                                package: MainPackage
+                                strength: 2
+                    OtherClass:
+                        lines: 20
+                        type: abstract
+                        methods:
+                            foo:
+                                lines: 10
+                            bar:
+                                lines: 5
+                        dependencies:
+                            
+                dependencies:
+commit_1:
+    author: Oddish
+    modified:
+        changed:
+        added:
+        removed:
+    present:
+        packages:
+            MainPackage:
+                lines: 70
+                classes:
+                    MainClass:
+                        lines: 40
+                        type: full
+                        methods:
+                            sin:
+                                lines: 5
+                            cos:
+                                lines: 25
+                        dependencies:
+                dependencies:

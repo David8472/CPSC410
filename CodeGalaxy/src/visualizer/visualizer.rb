@@ -31,22 +31,25 @@ end
 ARGV.each do |filename|
     # for each file name provided, load the yml and generate the html
     data = YAML.load_file(filename)
+    commit_keys = data.keys.sort{|x| x.match(/[0-9]+/).to_s.to_i}
     output = html_start(filename)
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
     total_dist = {x: 0, y: 0}
-    # Generate the combined history to gather ALL generated objects
+    #################################################################
+    # Generate the combined history to gather ALL generated objects #
+    #################################################################
     combined_present = {}
-    data.keys.each do |key|
+    commit_keys.each do |key|
         combined_present = combination_merge(combined_present, data[key]["present"]["packages"])
     end
-    # TODO incorporate commit history into a full animation
-    # Consider using a merged hash object to determine all created objects
     # Initialize counters at 0
     class_idx = 0
     method_idx = 0
     package_idx = 0
     dep_idx = 0
-    # Iterate through what is present in the commit, through each package and component
+    #####################################################################################
+    # Iterate through what is present in the commit, through each package and component #
+    #####################################################################################
     combined_present.each do |p_name, p_map|
         # Calculate diameter of star, and keep a reference to the radius allowable for the next
         # planetary orbit
@@ -56,7 +59,9 @@ ARGV.each do |filename|
         p_map["name"] = p_name
         # Generate the star text
         output += gen_star(p_map)
-        # Iterate through classes
+        ###########################
+        # Iterate through classes #
+        ###########################
         p_map["classes"].each do |c_name, c_map|
             c_map["name"] = c_name
             c_map["package"] = p_map["indexed_name"]
@@ -66,7 +71,9 @@ ARGV.each do |filename|
             c_map["indexed_name"] = "#{c_name}_#{class_idx}"
             # Create reference name, but not the text for the planet yet (since the orbit around the star is not yet known)
             output += "var #{c_name}_#{class_idx} = new Celestial();\n"
-            # Iterate through methods
+            ###########################
+            # Iterate through methods #
+            ########################### 
             c_map["methods"].each do |m_name, m_map| 
                 m_map["class"] = c_map["indexed_name"]
                 m_map["name"] = m_name
@@ -92,9 +99,13 @@ ARGV.each do |filename|
         p_map["orbit_radius"] = planet_dist
         package_idx += 1
     end
-    # Generate star positions
+    ###########################
+    # Generate star positions #
+    ###########################
     output += gen_star_positions(combined_present, total_dist)
-    # generate trade routes and add objects to scene
+    ##################################################
+    # generate trade routes and add objects to scene #
+    ##################################################
     combined_present.each do |p_name, p_map|
         output += "scene.addC(#{p_map["indexed_name"]});\n"
         p_map["classes"].each do |c_name, c_map|
@@ -114,9 +125,48 @@ ARGV.each do |filename|
             c_map["methods"].each do |m_name, m_map|
                 output += "scene.addC(#{m_map["indexed_name"]});\n"
             end
-            
         end
-        
+    end
+    ########################################
+    # Generate History Hash for each class #
+    ########################################
+    combined_present.each do |p_name, p_map|
+        # Top Level History (Packages)
+        p_history = []
+        commit_keys.each do |commit_num|
+            temp = data[commit_num]["present"]["packages"][p_name] rescue nil
+            unless(temp.nil?) 
+                temp["radius"] = Math.log10(temp["lines"])
+            end
+            p_history.push(temp)
+        end
+        output += gen_celestial_history(p_map["indexed_name"], p_history, p_map)
+        # Iterate through each class
+        p_map["classes"].each do |c_name, c_map|
+            # Med Level History (Classes)
+            c_history = []
+            commit_keys.each do |commit_num|
+                temp = data[commit_num]["present"]["packages"][p_name]["classes"][c_name] rescue nil
+                unless(temp.nil?) 
+                    temp["radius"] = Math.log10(temp["lines"])
+                end
+                c_history.push(temp)
+            end
+            output += gen_celestial_history(c_map["indexed_name"], c_history, c_map)
+            # Iterate through methods
+            c_map["methods"].each do |m_name, m_map|
+                # Low Level History (Methods)
+                m_history = []
+                commit_keys.each do |commit_num|
+                    temp = data[commit_num]["present"]["packages"][p_name]["classes"][c_name]["methods"][m_name] rescue nil
+                    unless(temp.nil?) 
+                        temp["radius"] = Math.log10(temp["lines"])
+                    end
+                    m_history.push(temp)
+                end
+                output += gen_celestial_history(m_map["indexed_name"], m_history, m_map)
+            end
+        end
     end
     output += html_end(total_dist)
     # Generate HTML file

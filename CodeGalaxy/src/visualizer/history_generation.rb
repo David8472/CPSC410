@@ -3,25 +3,26 @@
 ###########################################################
 def ship_array_gen(cur_dep_map, max_dep_map) 
     ships = []
-    i = 0
-    max_dep_map.each do |dep_name, dep_map|
-        if(cur_dep_map.keys.include? dep_name)
-            str = cur_dep_map[dep_name]["strength"]
-            count = str
-            x = 0
-            while( count > 0 and x < str)
-                ships.push(i + x)
-                x += 2
-                count -= 1
+    unless(cur_dep_map.nil?)
+        i = 0
+        max_dep_map.each do |dep_name, dep_map|
+            if(cur_dep_map.keys.include? dep_name)
+                count = cur_dep_map[dep_name]["strength"]
+                x = 0
+                while( count > 0 and x < dep_map["strength"])
+                    ships.push(i + x)
+                    x += 2
+                    count -= 1
+                end
+                x = 1
+                while( count > 0 and x < dep_map["strength"])
+                    ships.push(i + x)
+                    x += 2
+                    count -= 1
+                end
             end
-            x = 1
-            while( count > 0 and x < str)
-                ships.push(i + x)
-                x += 2
-                count -= 1
-            end
+            i += dep_map["strength"]
         end
-        i += dep_map["strength"]
     end
     return ships
 end
@@ -50,7 +51,8 @@ end
 ########################################################
 # Helper method to generate JS history for one Celestial
 ########################################################
-def gen_celestial_history( celestial_history_map ) 
+def gen_celestial_history( cel_indexed_name, commits, max_version ) 
+    celestial_history_map = gen_celestial_map(cel_indexed_name, commits, max_version)
     history = celestial_history_map[:states]
     text = "#{celestial_history_map[:indexed_name]}.setValues({his: 
     new History({
@@ -60,8 +62,8 @@ def gen_celestial_history( celestial_history_map )
                 ships: #{history.first[:ships]}
             }),
         end: new State({
-                radius: #{history.first[:radius]},
-                visible: #{history.first[:present]},
+                radius: #{history.last[:radius]},
+                visible: #{history.last[:present]},
                 ships: #{history.last[:ships]}
             }),
         states: [\n"
