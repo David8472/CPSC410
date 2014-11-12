@@ -86,6 +86,65 @@ commit_10:
                             
                 dependencies:
                     
+commit_3:
+    author: Oddish
+    modified:
+        changed:
+        added:
+        removed:
+    present:
+        packages:
+            MainPackage:
+                lines: 200
+                classes:
+                    MainClass:
+                        lines: 150
+                        type: full
+                        methods:
+                            sin:
+                                lines: 25
+                            cos:
+                                lines: 5
+                            tan:
+                                lines: 5
+                            asin:
+                                lines: 5
+                            acos:
+                                lines: 5
+                            atan:
+                                lines: 5
+                        dependencies:
+                            OtherClass:
+                                type: inheritance
+                                package: MainPackage
+                                strength: 5
+                    OtherClass:
+                        lines: 20
+                        type: abstract
+                        methods:
+                            foo:
+                                lines: 10
+                            bar:
+                                lines: 5
+                        dependencies:
+                            
+                dependencies:
+                    
+            Package2:
+                lines: 30
+                classes:
+                    QClass:
+                        lines: 20
+                        type: abstract
+                        methods:
+                            xfun:
+                                lines: 10
+                            yfun:
+                                lines: 5
+                        dependencies:
+                            
+                dependencies:
+                    
 commit_2:
     author: Oddish
     modified:
@@ -112,7 +171,7 @@ commit_2:
                                 strength: 2
                     OtherClass:
                         lines: 20
-                        type: abstract
+                        type: interface
                         methods:
                             foo:
                                 lines: 10

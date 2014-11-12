@@ -38,10 +38,12 @@ def gen_celestial_map( cel_indexed_name, commits, max_version )
         if(commit.nil?)
             map[:states].push({radius: 0, 
                 present: false, 
+                colour: nil,
                 ships: []})
         else
             map[:states].push({radius: commit["radius"],
                 present: true,
+                colour: (commit["type"].nil?) ? nil : COLOURS[commit["type"]],
                 ships: ship_array_gen(commit["dependencies"], max_version["dependencies"])})
         end
     end
@@ -59,20 +61,23 @@ def gen_celestial_history( cel_indexed_name, commits, max_version )
         start: new State({
                 radius: #{history.first[:radius]},
                 visible: #{history.first[:present]},
+                colour: #{(history.first[:colour].nil?)? false : history.first[:colour]},
                 ships: #{history.first[:ships]}
             }),
         end: new State({
                 radius: #{history.last[:radius]},
                 visible: #{history.last[:present]},
+                colour: #{(history.last[:colour].nil?)? false : history.last[:colour]},
                 ships: #{history.last[:ships]}
             }),
         states: [\n"
-    history[1..-2].each do |state|
+    history[1..-2].each_with_index do |state, idx|
         text += "           new State({
                 radius: #{state[:radius]},
                 visible: #{state[:present]},
+                colour: #{(state[:colour].nil?)? false : state[:colour]},
                 ships: #{state[:ships]}
-            })#{(state == history[1..-2].last)? "" : ","}\n"
+            })#{(idx == (history[1..-2].length - 1))? "" : ","}\n"
     end
     text += "    ]})
 });\n"

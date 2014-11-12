@@ -31,7 +31,9 @@ end
 ARGV.each do |filename|
     # for each file name provided, load the yml and generate the html
     data = YAML.load_file(filename)
-    commit_keys = data.keys.sort{|x| x.match(/[0-9]+/).to_s.to_i}
+    commit_keys = data.keys.sort{|x, y| 
+        x.match(/\d+/).to_s.to_i <=> y.match(/\d+/).to_s.to_i
+    }
     output = html_start(filename)
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
     total_dist = {x: 0, y: 0, z:0}

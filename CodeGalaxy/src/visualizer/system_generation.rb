@@ -1,8 +1,16 @@
+#########################################
+# Hash object to hold colour references #
+#########################################
+COLOURS = Hash.new("0xffffff")
+COLOURS["full"] = "0x00ff00"
+COLOURS["abstract"] = "0x4444ff"
+COLOURS["interface"] = "0xff8844"
+
 ##################################
 # Helper method to generate planets
 ##################################
 def gen_planet(class_map)
-    class_map["colour"] = (class_map["type"] == "full")? "0x00ff00" : ((class_map["type"] == "abstract") ? "0x4444ff" : "0xffff00")
+    class_map["colour"] = COLOURS[class_map["type"]]
     text = "//#{class_map["package"]} class: #{class_map["name"]}
 #{class_map["indexed_name"]}.setValues({
     geometry: new THREE.SphereGeometry(#{class_map["radius"]}, 10, 10),

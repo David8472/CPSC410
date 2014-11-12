@@ -41,6 +41,7 @@ var State = function(parameters) {
     this.radius = 0;
     this.visible = false;
     this.position = false;
+    this.colour = false;
     this.ships = [];
     this.setValues(parameters);
 };
@@ -243,6 +244,9 @@ Celestial.prototype.updatepos = function ( time, speedx ) {
         if(the_st.radius != false) {
             var scale = the_st.radius/this.mesh.geometry.parameters.radius;
             this.mesh.scale.set(scale, scale, scale);
+        }
+        if(the_st.colour != false) {
+            this.mesh.material.setValues({color: the_st.colour});
         }
         if(the_st.visible == true) {
             this.mesh.visible = true;
