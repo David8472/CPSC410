@@ -3,6 +3,7 @@ package analyzer.gitcommitcomponent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -99,6 +100,7 @@ public class CommitAnalyzer{
 		} catch (GitAPIException e) {
 			e.printStackTrace();
 		}
+		Collections.reverse(commitAnalyzerInfo);
 		return commitAnalyzerInfo;
 	}
 	
