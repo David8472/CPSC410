@@ -23,7 +23,7 @@ public class DependencyAnalyzer {
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 	private static boolean XmlParserInProgress = true;
 	private static String compilerCommand;
-	private static Vector<String> fileAddresses = new Vector<String>();
+	private static Vector<String> fileAddresses;
 	private static String sourceCodePath;
 	private static int classycleExitValue;
 	private static int compilerExitValue;
@@ -41,6 +41,10 @@ public class DependencyAnalyzer {
 	 */
 	public DependencyAnalyzer(String pathStr){
 		sourceCodePath = pathStr;
+		classycleExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
+		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous value)
 	}
 
 	/**
@@ -305,7 +309,7 @@ public class DependencyAnalyzer {
 						// --- 2. Parse the strings into pieces (store in a vector) --- //
 
 						singleFileVector = new Vector<String>();
-						for (String retval: pathStr.split("\\\\")){
+						for (String retval: pathStr.split("/")){
 							//System.out.println(" " + retval);
 							singleFileVector.add(retval);
 						}
@@ -346,7 +350,7 @@ public class DependencyAnalyzer {
 			}
 			else{
 				stringBuilder.append(pathVector.elementAt(i));
-				stringBuilder.append("\\\\");
+				stringBuilder.append("/");
 			}
 		}
 		String finalString = stringBuilder.toString();
@@ -377,7 +381,5 @@ public class DependencyAnalyzer {
 		//System.out.println("We've built: " + finalString);
 		return finalString;
 	}
-
-
 
 }
