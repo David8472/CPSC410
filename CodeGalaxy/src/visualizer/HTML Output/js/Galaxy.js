@@ -25,6 +25,16 @@ History.prototype.getState = function(time) {
     }
 };
 
+History.prototype.getNextState = function(time) {
+    if(time <= 0) {
+        return this.start;
+    } else if(time > (this.states.length)*TIME_INTERVAL) {
+        return this.end;
+    } else {
+        return this.states[parseInt(time/TIME_INTERVAL)];
+    }
+};
+
 History.prototype.setValues = function(values) {
     for ( var key in values) {
         var nValue = values[key];
@@ -107,19 +117,37 @@ var s_up = new THREE.Vector3(0,1,0);
 
 Ship.prototype.updatepos = function(time, speedx) {
     if(this.origin == false) {
-        this.origin = this.spr.clone();
+        this.origin = this.spr;
     }
     if(this.target != false) {
         if((time > this.eta && this.loop == false) || this.eta <= 0) {
-            if(this.dis_at_end == true)
+            if(this.dis_at_end == true) {
                 this.spr.visible = false;
-            else {
-                if(this.orbit == false) {
-                    this.spr.position.x = this.target.mesh.position.x;
-                    this.spr.position.y = this.target.mesh.position.y;
+            } else {
+                if(this.his != false) {
+                    var the_state = this.his.getNextState(time);
+                    if(the_state.destination != this.target) {
+                        this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                        this.start = this.spr.position.clone();
+                        this.target = the_state.destination;
+                        this.destination = this.target.projectedpos(this.eta);
+                    } else {
+                        if(this.orbit == false) {
+                            this.spr.position.x = this.target.mesh.position.x;
+                            this.spr.position.y = this.target.mesh.position.y;
+                        } else {
+                            this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
+                            this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
+                        }
+                    }
                 } else {
-                    this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
-                    this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
+                    if(this.orbit == false) {
+                        this.spr.position.x = this.target.mesh.position.x;
+                        this.spr.position.y = this.target.mesh.position.y;
+                    } else {
+                        this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
+                        this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
+                    }
                 }
             }
         } else {
@@ -136,8 +164,14 @@ Ship.prototype.updatepos = function(time, speedx) {
                     this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;
                 }
             } 
-            this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*temp_t;
-            this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*temp_t;
+            if(this.loop == true) {
+                this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*temp_t;
+                this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*temp_t;
+            } else {
+                //debug((this.destination.x - this.start.x)/TIME_INTERVAL);
+                this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/TIME_INTERVAL*(time % TIME_INTERVAL);
+                this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/TIME_INTERVAL*(time % TIME_INTERVAL);
+            }
         }
     }
 };

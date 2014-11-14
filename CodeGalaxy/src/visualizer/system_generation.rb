@@ -69,7 +69,7 @@ end
 def gen_route(dep_map)
     text = "// Dependency Route: #{dep_map["class_indexed_name"]} -> #{dep_map["dclass_indexed_name"]}\n"
     temp = 0
-    eta = 75
+    eta = 100
     while(temp < dep_map["strength"])
         text += "var #{dep_map["indexed_name"]}_#{temp} = new Ship({
         material: new THREE.SpriteMaterial({map: trade_texture, color: 0xffffff, fog: true}),
