@@ -151,6 +151,16 @@ public class XmlParser extends DefaultHandler {
 
 			// If type is usesExternal, then ignore it.
 			break;
+
+		case "package":
+			System.out.println(" *** Encountered a package with name: " + attributes.getValue("name"));
+			System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
+			break;
+
+		case "packageRef":
+			System.out.println(" *** Encountered a packageRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));		
+			break;
+
 		}
 	}
 
@@ -181,6 +191,10 @@ public class XmlParser extends DefaultHandler {
 			// Save the object in a vector
 			classVector.add(classInfo);
 
+			break;
+
+		case "package":
+			System.out.println(" ** Encountered end of package");
 			break;
 		}
 

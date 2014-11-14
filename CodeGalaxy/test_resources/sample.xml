@@ -29,11 +29,18 @@
   <packageCycles>
   </packageCycles>
   <packages>
-    <package name="fruit.exotic" sources="samplebytecode"  size="1" usedBy="0" usesInternal="0" usesExternal="1" layer="0" cycle="">
+    <package name="fruit.exotic" sources="samplebytecode"  size="1" usedBy="2" usesInternal="1" usesExternal="1" layer="0" cycle="">
       <packageRef name="java.lang" type="usesExternal"/>
+	  <packageRef name="fruit.edible" type="usedBy"/>
+	  <packageRef name="fruit.comefrom.far.away" type="usedBy"/>
+	  <packageRef name="fruit.sunlight" type="usesInternal"/>
     </package>
-    <package name="fruit.local" sources="samplebytecode"  size="2" usedBy="0" usesInternal="0" usesExternal="1" layer="0" cycle="">
+    <package name="fruit.local" sources="samplebytecode"  size="2" usedBy="1" usesInternal="3" usesExternal="1" layer="0" cycle="">
       <packageRef name="java.lang" type="usesExternal"/>
+	  <packageRef name="fruit.comefrom.local" type="usedBy"/>
+	  <packageRef name="fruit.sunlight" type="usesInternal"/>
+	  <packageRef name="fruit.air" type="usesInternal"/>
+	  <packageRef name="fruit.water" type="usesInternal"/>
     </package>
   </packages>
 </classycle>
