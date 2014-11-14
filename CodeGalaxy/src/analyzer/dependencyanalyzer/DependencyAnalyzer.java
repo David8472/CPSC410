@@ -1,6 +1,12 @@
 package analyzer.dependencyanalyzer;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Vector;
 
 /**
@@ -16,25 +22,61 @@ public class DependencyAnalyzer {
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 	private static boolean XmlParserInProgress = true;
+	private static String compilerCommand;
+	private static Vector<String> fileAddresses;
+	private static String sourceCodePath;
+	private static int classycleExitValue;
+	private static int compilerExitValue;
 
 	/**
 	 * Default constructor.
 	 */
 	public DependencyAnalyzer() {
+		classycleExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
+		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
 	}
-	
+
 	/**
-	 * Constructs a DependencyAnalyzer to perform analysis on the given command;
+	 * Constructs a DependencyAnalyzer to perform analysis on the given path.
+	 * @param pathStr A string that contains the path to the source code
+	 * relative to the current directory.
 	 */
-	public DependencyAnalyzer(String stringCommand){
-		command = stringCommand;
+	public DependencyAnalyzer(String pathStr){
+		sourceCodePath = pathStr;
+		classycleExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
+		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
 	}
 
 	/**
 	 * Entry point of the Dependency Analyzer tool.
-	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
+	 * Runs the Java compiler and the Classycle tool in the command line,
+	 *  and calls XML Parser afterwards.
 	 */
 	public void runClassycle(){
+
+		if(sourceCodePath != "" && sourceCodePath != null){
+			Path dir = Paths.get(sourceCodePath);
+			try {
+				listJavaFiles(dir);
+			} catch (IOException e) { // Note: NoSuchFileException is caught by IOException.
+				System.out.println("Invalid path to the source code. Please try again.");
+				System.out.println(e);
+				return;
+			}
+		}
+		else{
+			System.out.println("Path cannot be null or empty. Please try again.");
+			return;
+		}
+
+		// Build a string that will be passed to the process running the compiler.
+		compilerCommand = buildCommandString(fileAddresses);
+		System.out.println("Compiler Command: " + compilerCommand);
+
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
 		try {
@@ -46,24 +88,53 @@ public class DependencyAnalyzer {
 			// <directory> is the address of the directory containing class files to be analysed.
 			// --------------------------------------------------------------------------------//
 
-			proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=tryinghard.xml classycle\\samplepayment");
-			exitValue = proc.waitFor();
-			System.out.println("Process exitValue: " + exitValue);
+			// -------------- Javac compiler options --------------------------------------------------//
+			//-d <directory> sets the destination directory for compiled class files.
+			// Note that this directory has to be created before calling the compiler, since
+			// compiler does not create it.
+			// --------------------------------------------------------------------------------//
 
-			// Gatekeeper
-			if(XmlParserInProgress){
-				parser = new MockXmlParser();
-				parser = new MockXmlParser();
-				parser.analyzeXmlClassInfo();
-				parser.analyzeXmlPackageInfo();
-				classesDepInfo = parser.getClassesXmlSummary();
-				packagesDepInfo = parser.getPackagesXmlSummary();	
-				printClassSummary();
-				printPackageSummary();
+			if(compilerCommand != null){
+
+				// ------- Run the Javac compiler ----------//
+				proc = rt.exec(compilerCommand);
+				compilerExitValue = proc.waitFor();
+				System.out.println("Process exit value: " + compilerExitValue);
+
+				if(compilerExitValue == 0){ // process exited successfully
+
+					// ------- Run the Classycle tool ----------//
+					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
+					classycleExitValue = proc.waitFor();
+					System.out.println("Classycle Process exit value: " + classycleExitValue);
+
+					if(classycleExitValue == 0){ // process exited successfully
+						// Gatekeeper
+						if(XmlParserInProgress){
+							parser = new MockXmlParser();
+							parser = new MockXmlParser();
+							parser.analyzeXmlClassInfo();
+							parser.analyzeXmlPackageInfo();
+							classesDepInfo = parser.getClassesXmlSummary();
+							packagesDepInfo = parser.getPackagesXmlSummary();	
+							//printClassSummary();
+							//printPackageSummary();
+						}
+						else{
+							XmlParser realParser = new XmlParser();
+							System.out.println("Using a real XML Parser...");
+						}
+					}
+					else{
+						System.out.println("Problem: Classycle did not exit correctly. Please try again.");
+					}
+				}
+				else{
+					System.out.println("Problem: Compiler did not exit correctly. Please try again.");
+				}
 			}
 			else{
-				XmlParser realParser = new XmlParser();
-				System.out.println("Using a real XML Parser...");
+				System.out.println("Problem: Compiler string was not built right. Please try again.");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -76,13 +147,13 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * For testing.
 	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
-	 * Requires a command to be set in the command field before calling this method.
+	 * @param command A string that contains the command for Classycle.
 	 */
-	public void runClassycleWithCommand(){
+	public void runClassycleWithCommand(String command){
 		Runtime rt = Runtime.getRuntime();
 		Process proc;
 		try {
@@ -128,6 +199,7 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Returns the status of the command execution.
@@ -135,6 +207,22 @@ public class DependencyAnalyzer {
 	 */
 	public int getExitStatus(){
 		return exitValue;
+	}
+
+	/**
+	 * Returns the status of the Classycle execution.
+	 * @Return Classycle exit status.
+	 */
+	public int getClassycleExitStatus(){
+		return classycleExitValue;
+	}
+
+	/**
+	 * Returns the status of compiler execution.
+	 * @return Compiler exit status.
+	 */
+	public int getCompilerExitStatus(){
+		return compilerExitValue;
 	}
 
 	/**
@@ -150,7 +238,7 @@ public class DependencyAnalyzer {
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
 	}
-	
+
 	/**
 	 * Prints out the summary of all class dependencies.
 	 */
@@ -200,5 +288,106 @@ public class DependencyAnalyzer {
 			System.out.println("DONE");
 		}
 	}
-	
+
+	/**
+	 * Finds and lists Java files in a given directory.
+	 * References: http://stackoverflow.com/questions/1844688/read-all-files-in-a-folder
+	 * http://docs.oracle.com/javase/tutorial/essential/io/dirs.html#listdir
+	 * @param dir A directory where Java files are located.
+	 */
+	private static void listJavaFiles(Path dir) throws IOException{
+
+		Vector<String> singleFileVector;
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+			for (Path file: stream) {
+				//System.out.println("Path object: " + file.getFileName());
+				//System.out.println("Path object parent: " + file.getParent());
+
+				File myFile = file.toFile();
+				//System.out.println("Abs path: " + myFile.getAbsolutePath());
+
+				if(myFile.isFile()){
+					if(myFile.getName().endsWith(".java")){
+
+						//System.out.println(" " + myFile.getName());
+						//System.out.println("Path object parent: " + file.getParent());
+
+						// --- 1. Extract String representations ---//
+						String fileNameStr = myFile.getName();
+						String pathStr = file.getParent().toString();
+						System.out.println(" File: " + fileNameStr + " at path: " + pathStr);
+
+						// --- 2. Parse the strings into pieces (store in a vector) --- //
+
+						singleFileVector = new Vector<String>();
+						for (String retval: pathStr.split("/")){
+							//System.out.println(" " + retval);
+							singleFileVector.add(retval);
+						}
+						singleFileVector.add(fileNameStr);
+
+						// --- 3. Use these pieces to build the command string --- //
+						String newAddress = buildFileAddressString(singleFileVector);
+
+						// --- 4. Record this new address in a cumulative vector of all files' addresses. ---//
+						if(newAddress != null){
+							fileAddresses.add(newAddress);
+						}
+					}
+				}
+				else{
+					System.out.println("Directory: " + myFile.getName());
+					listJavaFiles(myFile.toPath());
+				}
+			}		
+		}
+	}
+
+
+	/**
+	 * Builds a formatted string representation of a file address.
+	 * @param pathVector A vector that contains pieces of an address of a single file.
+	 */
+	private static String buildFileAddressString(Vector<String> pathVector){
+
+		StringBuilder stringBuilder = new StringBuilder();
+		for(int i = 0; i < pathVector.size(); i++){
+			if(i == pathVector.size()-1){
+				stringBuilder.append(pathVector.elementAt(i));
+			}
+			else{
+				stringBuilder.append(pathVector.elementAt(i));
+				stringBuilder.append("/");
+			}
+		}
+		String finalString = stringBuilder.toString();
+		//System.out.println("We've built: " + finalString);
+		return finalString;
+	}
+
+	/**
+	 * Builds a formatted string representation of a compiler command.
+	 * @param addresses A vector that contains addresses of all Java files.
+	 */
+	private static String buildCommandString(Vector<String> addresses){
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("javac -d samplebytecode ");
+
+		for(int i = 0; i < addresses.size(); i++){
+			if(i == addresses.size()-1){
+				stringBuilder.append(addresses.elementAt(i));
+			}
+			else{
+				stringBuilder.append(addresses.elementAt(i));
+				stringBuilder.append(" ");
+			}
+		}
+
+		String finalString = stringBuilder.toString();
+		//System.out.println("We've built: " + finalString);
+		return finalString;
+	}
+
 }
