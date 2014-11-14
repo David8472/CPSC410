@@ -3,6 +3,7 @@ package analyzer.gitcommitcomponent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -22,7 +23,7 @@ public class CommitAnalyzer{
 	public CommitAnalyzer(String repoDirectory){//The Constructor
 		this.repoDirectory=repoDirectory;		
 	}
-	
+	//http://stackoverflow.com/questions/19941597/jgit-use-treewalk-to-list-files-and-folders
 	public ArrayList<CommitAnalyzerInfo> analyzeCommits(){//This will analyze the commits of the Repository
 		File directory = new File(repoDirectory);
 	    RepositoryBuilder builder = new RepositoryBuilder();
@@ -38,7 +39,8 @@ public class CommitAnalyzer{
 			    
 			    while(logs.iterator().hasNext()) {
 			    	CommitAnalyzerInfo tempCommitAnalyzerInfo = new CommitAnalyzerInfo(repoDirectory);
-				    ArrayList<String> tempStringArray = new ArrayList<String>();
+				    ArrayList<String> tempFileNames = new ArrayList<String>();
+				    ArrayList<String> tempFilePaths = new ArrayList<String>();
 			        revCommit = logs.iterator().next();
 			        RevTree tree = revCommit.getTree();
 			        TreeWalk treeWalk = new TreeWalk(repository);
@@ -55,37 +57,43 @@ public class CommitAnalyzer{
 			        numberOfAllCommits++;
 			        while (treeWalk.next()) {
 			        	if(treeWalk.getNameString().contains(".java")){//Will only bother with Java files
-			        		tempStringArray.add(new String(treeWalk.getNameString()));
-			        		
+			        		tempFilePaths.add(new String(treeWalk.getPathString()));
+			        		tempFileNames.add(new String(obtainFileName(treeWalk.getPathString())));
+			        		//System.out.println(parsePathName(treeWalk.getPathString()));
+			        		//System.out.println(tempStringArray.toString());
 			        	}
 			        }
 			        
 			        
-			        if(tempStringArray.size() > 0){
-			        	tempCommitAnalyzerInfo.setAllJavaFiles(new ArrayList<String>(tempStringArray));
-			        	tempStringArray.clear();
+			        if(tempFileNames.size() > 0){
+			        	tempCommitAnalyzerInfo.setFilePaths(new ArrayList<String>(tempFilePaths));
+			        	tempFilePaths.clear();
+						
+			        	tempCommitAnalyzerInfo.setAllJavaFiles(new ArrayList<String>(tempFileNames));
+			        	tempFileNames.clear();
 			        	
 			        	tempCommitAnalyzerInfo.setAuthorName(revCommit.getAuthorIdent().getName());
 			        	tempCommitAnalyzerInfo.setCommitID(revCommit.getId().getName());
 			        	
 			        	//Adds all files in current commit, removes the files in previous commit, ends up with list of files added
-			        	tempStringArray.addAll(tempCommitAnalyzerInfo.getAllJavaFiles());
-			        	tempStringArray.removeAll(commitAnalyzerInfo.get(numberOfJavaCommits).getAllJavaFiles());
-			        	tempCommitAnalyzerInfo.setFilesAdded(new ArrayList<String>(tempStringArray));
-			        	tempStringArray.clear();
+			        	tempFileNames.addAll(tempCommitAnalyzerInfo.getAllJavaFiles());
+			        	tempFileNames.removeAll(commitAnalyzerInfo.get(numberOfJavaCommits).getAllJavaFiles());
+			        	tempCommitAnalyzerInfo.setFilesAdded(new ArrayList<String>(tempFileNames));
+			        	tempFileNames.clear();
 			        	
 			        	//Adds all files of previous commit, removes files in current commit, ends up with list of files deleted
-			        	tempStringArray.addAll(commitAnalyzerInfo.get(numberOfJavaCommits).getAllJavaFiles());
-			        	tempStringArray.removeAll(tempCommitAnalyzerInfo.getAllJavaFiles());
-			        	tempCommitAnalyzerInfo.setFilesDeleted(new ArrayList<String>(tempStringArray));
-			        	tempStringArray.clear();
+			        	tempFileNames.addAll(commitAnalyzerInfo.get(numberOfJavaCommits).getAllJavaFiles());
+			        	tempFileNames.removeAll(tempCommitAnalyzerInfo.getAllJavaFiles());
+			        	tempCommitAnalyzerInfo.setFilesDeleted(new ArrayList<String>(tempFileNames));
+			        	tempFileNames.clear();
 			        	
 			        	numberOfJavaCommits++;
 			        	tempCommitAnalyzerInfo.setCommitNumber(numberOfJavaCommits);
+			        	
 			        	commitAnalyzerInfo.add(new CommitAnalyzerInfo(tempCommitAnalyzerInfo));
 			        }
 			        tempCommitAnalyzerInfo.clear();
-			        tempStringArray.clear();
+			        tempFileNames.clear();
 			        treeWalk.reset();
 			    }
 		    }
@@ -99,6 +107,7 @@ public class CommitAnalyzer{
 		} catch (GitAPIException e) {
 			e.printStackTrace();
 		}
+		Collections.reverse(commitAnalyzerInfo);
 		return commitAnalyzerInfo;
 	}
 	
@@ -108,5 +117,33 @@ public class CommitAnalyzer{
 	
 	public int getNumberOfAllCommits() {
 		return numberOfAllCommits;
+	}
+	
+	public String getRepoDirectory(){
+		return repoDirectory;
+	}
+
+	private String obtainFileName(String filePath){
+		StringBuilder sb = new StringBuilder();
+		int i = 1;
+		boolean firstSlash = false;
+		char temp;
+		while(i < filePath.length()){
+			temp = filePath.charAt(filePath.length()-i);
+			
+			if(temp == '/' && firstSlash == false){
+				sb.append('.');
+				firstSlash = true;
+			}
+			else if(temp == '/'){
+				break;
+			}
+			else{
+				sb.append(temp);
+			}
+			i++;
+		}
+		sb.reverse();
+		return sb.toString();
 	}
 }
