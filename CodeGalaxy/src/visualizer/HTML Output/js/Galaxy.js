@@ -78,6 +78,14 @@ var Ship = function(parameters) {
 
 };
 
+Ship.prototype.initializeAuthor = function(z) {
+    this.target = this.his.start.destination;
+    this.spr.position.x = this.target.mesh.position.x;
+    this.spr.position.y = this.target.mesh.position.y;
+    this.spr.position.z = z;
+    this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+}
+
 Ship.prototype.setValues = function(values) {
     for ( var key in values) {
         var nValue = values[key];
@@ -87,7 +95,7 @@ Ship.prototype.setValues = function(values) {
                 this[key] = nValue;
                 this.spr.material = nValue;
             } else if(key == 'eta' || key == 'offset') {
-                this[key] = nValue * Math.PI;
+                this[key] = nValue * speed_base;
             } else {
                 this[key] = nValue;
             }
@@ -107,11 +115,11 @@ Ship.prototype.updatepos = function(time, speedx) {
                 this.spr.visible = false;
             else {
                 if(this.orbit == false) {
-                    this.spr.position.x = this.target.position.x;
-                    this.spr.position.y = this.target.position.y;
+                    this.spr.position.x = this.target.mesh.position.x;
+                    this.spr.position.y = this.target.mesh.position.y;
                 } else {
-                    this.spr.position.x = this.target.position.x + this.orbit.Math.cos(time);
-                    this.spr.position.y = this.target.position.y + this.orbit.Math.sin(time);
+                    this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
+                    this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
                 }
             }
         } else {

@@ -1,9 +1,26 @@
 commit_10:
     author: Oddish
     modified:
-        changed:
-        added:
-        removed:
+        MainPackage.MainClass:
+            lines_added: 150
+        MainPackage.MainClass.rsin:
+            lines_added: 5
+        MainPackage.MainClass.rtan:
+            lines_added: 5
+        MainPackage.MainClass.rasin:
+            lines_added: 5
+        MainPackage.MainClass.racos:
+            lines_added: 5
+        MainPackage.MainClass.ratan:
+            lines_added: 5
+        MainPackage.MainClass.rcos:
+            lines_added: 10
+        Package2.PClass:
+            lines_added: 30
+        Package2.PClass.afun:
+            lines_added: 15
+        Package2.PClass.bfun:
+            lines_added: 5
     present:
         packages:
             MainPackage:
@@ -89,9 +106,26 @@ commit_10:
 commit_3:
     author: Oddish
     modified:
-        changed:
-        added:
-        removed:
+        MainPackage.MainClass:
+            lines_added: 105
+        MainPackage.MainClass.sin:
+            lines_added: 20
+        MainPackage.MainClass.tan:
+            lines_added: 5
+        MainPackage.MainClass.asin:
+            lines_added: 5
+        MainPackage.MainClass.acos:
+            lines_added: 5
+        MainPackage.MainClass.atan:
+            lines_added: 5
+        MainPackage.MainClass.cos:
+            lines_removed: 10
+        Package2.QClass:
+            lines_added: 20
+        Package2.QClass.xfun:
+            lines_added: 10
+        Package2.QClass.yfun:
+            lines_added: 5
     present:
         packages:
             MainPackage:
@@ -148,9 +182,16 @@ commit_3:
 commit_2:
     author: Oddish
     modified:
-        changed:
-        added:
-        removed:
+        MainPackage.MainClass:
+            lines_added: 5
+        MainPackage.MainClass.cos:
+            lines_removed: 10
+        MainPackage.OtherClass:
+            lines_added: 20
+        MainPackage.OtherClass.foo:
+            lines_added: 10
+        MainPackage.OtherClass.bar:
+            lines_added: 5
     present:
         packages:
             MainPackage:
@@ -183,10 +224,12 @@ commit_2:
 commit_1:
     author: Oddish
     modified:
-        MainPackage:
-            lines_added: 70
+        MainPackage.MainClass.sin:
+            lines_added: 5
         MainPackage.MainClass:
             lines_added: 40
+        MainPackage.MainClass.cos:
+            lines_added: 5
     present:
         packages:
             MainPackage:

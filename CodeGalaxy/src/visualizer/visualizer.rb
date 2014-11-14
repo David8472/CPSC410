@@ -37,7 +37,7 @@ ARGV.each do |filename|
     }
     output = html_start(filename)
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
-    total_dist = {x: 0, y: 0, z:0}
+    total_dist = {x: 0, y: 0, z: 0}
     #################################################################
     # Generate the combined history to gather ALL generated objects #
     #################################################################
@@ -58,6 +58,7 @@ ARGV.each do |filename|
         # planetary orbit
         p_map["radius"] = Math.log10(p_map["lines"])
         planet_dist = p_map["radius"] + 0.5
+        total_dist[:z] = (total_dist[:z] < p_map["radius"]) ? p_map["radius"] : total_dist[:z]
         p_map["indexed_name"] = "#{p_name}_#{package_idx}"
         p_map["name"] = p_name
         # Generate the star text
@@ -175,10 +176,45 @@ ARGV.each do |filename|
     # Generate Author Ships #
     #########################
     authors = {}
-    data.each_value do |commit|
-        if(authors[commit["author"]].nil?)
-            authors[commit["author"]] = {author: commit["author"], commits: []}
+    commit_keys.each do |commit_key|
+        if(authors[data[commit_key]["author"]].nil?)
+            authors[data[commit_key]["author"]] = {author: data[commit_key]["author"], commits: [], max_ships: 0}
         end
+        temp = []
+        data[commit_key]["modified"].each do |key, value|
+            path = key.split(".")
+            map = nil
+            case(path.length)
+            when 1
+                map = combined_present[path[0]]
+            when 2
+                begin
+                    map = combined_present[path[0]]["classes"][path[1]]
+                rescue
+                    puts "Nil encountered when traversing hash. Path given: #{path}"
+                    map = combined_present[path[0]]["classes"][path[1]]
+                end
+            when 3
+                begin
+                    map = combined_present[path[0]]["classes"][path[1]]["methods"][path[2]]
+                rescue
+                    puts "Nil encountered when traversing hash. Path given: #{path}"
+                    map = combined_present[path[0]]["classes"][path[1]]["methods"][path[2]]
+                end
+            end
+            temp.push({indexed_name: map["indexed_name"], magnitude: value.values.inject(:+)
+            })
+        end
+        authors[data[commit_key]["author"]][:max_ships] = (authors[data[commit_key]["author"]][:max_ships] < temp.length) ? temp.length : authors[data[commit_key]["author"]][:max_ships]
+        authors[data[commit_key]["author"]][:commits].push(temp.sort{|x, y| -(x[:magnitude] <=> y[:magnitude])})
+        authors.keys.each do |author_key|
+            unless(author_key == data[commit_key]["author"])
+                authors[author_key][:commits].push({})
+            end
+        end
+    end
+    authors.each_value do |map|
+        output += author_ship_gen(map, total_dist)
     end
     output += html_end(total_dist)
     # Generate HTML file

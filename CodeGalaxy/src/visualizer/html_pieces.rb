@@ -33,23 +33,24 @@ var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
 var trade_texture = THREE.ImageUtils.loadTexture('textures/trade_ship.png');
 var author_texture = THREE.ImageUtils.loadTexture('textures/author_ufo.png');
 var probe_texture = THREE.ImageUtils.loadTexture('textures/probe_ufo.png');
-var celestials = [];\n\n
+var celestials = [];
+var authors = [];\n\n
 
 var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 cameraControls.maxDistance = 1500;
-cameraControls.minDistance = 10;\n\n"
+cameraControls.minDistance = 10;
+
+var t = 0;
+var speed_val = 0;
+var speed_base = Math.PI/360;
+TIME_INTERVAL *= speed_base;\n\n"
 end
 
 ####################################
 # Last component of the html output
 ####################################
 def html_end(max_dist)
-    return "var t = 0;
-var speed_val = 0;
-var speed_base = Math.PI/360;
-TIME_INTERVAL *= speed_base;
-
-var p_button = document.getElementById(\"ppbutton\");
+    return "var p_button = document.getElementById(\"ppbutton\");
 var s_slider = document.getElementById(\"speedslider\");
 var s_text = document.getElementById(\"speedtext\");
 s_text.value = \"Paused\";
@@ -86,6 +87,9 @@ var render = function () {
     requestAnimationFrame(render); 
     for(index = 0; index < celestials.length; index++) {
         celestials[index].updatepos(t, speed_val);
+    }
+    for(index = 0; index < authors.length; index++) {
+        authors[index].updatepos(t, speed_val);
     }
     renderer.render(scene, camera); 
     t += speed_val * speed_base;
