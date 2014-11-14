@@ -183,9 +183,10 @@ commit_2:
 commit_1:
     author: Oddish
     modified:
-        changed:
-        added:
-        removed:
+        MainPackage:
+            lines_added: 70
+        MainPackage.MainClass:
+            lines_added: 40
     present:
         packages:
             MainPackage:

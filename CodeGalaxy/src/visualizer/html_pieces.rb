@@ -31,6 +31,8 @@ document.body.appendChild(renderer.domElement);
 var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
 var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
 var trade_texture = THREE.ImageUtils.loadTexture('textures/trade_ship.png');
+var author_texture = THREE.ImageUtils.loadTexture('textures/author_ufo.png');
+var probe_texture = THREE.ImageUtils.loadTexture('textures/probe_ufo.png');
 var celestials = [];\n\n
 
 var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);

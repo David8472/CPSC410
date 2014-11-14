@@ -35,14 +35,15 @@ History.prototype.setValues = function(values) {
 
 /**
 * State definition
-* Encapsulation of a single state, may include position, radius, and visible trade ships
+* Encapsulation of a single state, may include destination, radius, and visible trade ships
 */
 var State = function(parameters) {
     this.radius = 0;
     this.visible = false;
-    this.position = false;
+    this.destination = false;
     this.colour = false;
     this.ships = [];
+    this.probes = [];
     this.setValues(parameters);
 };
 
@@ -69,6 +70,9 @@ var Ship = function(parameters) {
     this.material = new THREE.SpriteMaterial( { color: 0xffffff, fog: true} );
     this.spr = new THREE.Sprite(this.material);
     this.loop = false;
+    this.dis_at_end = false;
+    this.orbit = false;
+    this.his = false;
     
     this.setValues(parameters);
 
@@ -99,15 +103,26 @@ Ship.prototype.updatepos = function(time, speedx) {
     }
     if(this.target != false) {
         if((time > this.eta && this.loop == false) || this.eta <= 0) {
-            this.spr.position = this.target.position;
+            if(this.dis_at_end == true)
+                this.spr.visible = false;
+            else {
+                if(this.orbit == false) {
+                    this.spr.position.x = this.target.position.x;
+                    this.spr.position.y = this.target.position.y;
+                } else {
+                    this.spr.position.x = this.target.position.x + this.orbit.Math.cos(time);
+                    this.spr.position.y = this.target.position.y + this.orbit.Math.sin(time);
+                }
+            }
         } else {
+            this.spr.visible = true;
             var temp_t = time + this.offset;
             if(this.loop == true)
                 temp_t = temp_t % this.eta;
             if(temp_t < 0.01 * speedx) {
                 this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
-                var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, this.destination.z - this.start.z)).normalize();
+                var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, 0)).normalize();
                 this.spr.material.rotation = Math.acos(s_up.dot(y));
                 if(this.start.x <= this.destination.x) {
                     this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;

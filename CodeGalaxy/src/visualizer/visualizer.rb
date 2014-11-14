@@ -2,6 +2,7 @@ require 'yaml'
 require_relative "html_pieces"
 require_relative "system_generation"
 require_relative "history_generation"
+require_relative "author_generation"
 
 ######################
 # Helper function to merge hash objects together to retain the most information rather than overwrite
@@ -129,9 +130,9 @@ ARGV.each do |filename|
             end
         end
     end
-    ########################################
-    # Generate History Hash for each class #
-    ########################################
+    #########################################
+    # Generate History Hash for each object #
+    #########################################
     combined_present.each do |p_name, p_map|
         # Top Level History (Packages)
         p_history = []
@@ -168,6 +169,15 @@ ARGV.each do |filename|
                 end
                 output += gen_celestial_history(m_map["indexed_name"], m_history, m_map)
             end
+        end
+    end
+    #########################
+    # Generate Author Ships #
+    #########################
+    authors = {}
+    data.each_value do |commit|
+        if(authors[commit["author"]].nil?)
+            authors[commit["author"]] = {author: commit["author"], commits: []}
         end
     end
     output += html_end(total_dist)
