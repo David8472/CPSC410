@@ -1,5 +1,6 @@
 package analyzer.dependencyanalyzer;
 
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +27,10 @@ public class XmlParser extends DefaultHandler {
 
 	private Vector<String> tempAfferentClassVector; // temporarily contains names of afferent classes
 	private Vector<String> tempEfferentClassVector; // temporarily contains names of efferent classes
+	private Vector<String> tempAfferentPkgVector; // temporarily contains names of afferent packages
+	private Vector<String> tempEfferentPkgVector; // temporarily contains names of efferent packages
 	ClassDependencyInfo classInfo = null;
+	PackageDependencyInfo packageInfo = null;
 
 	/**
 	 * Default constructor.
@@ -67,25 +71,6 @@ public class XmlParser extends DefaultHandler {
 
 	}
 
-
-	/**
-	 * Status: in progress.
-	 * Analyzes the xml file to gather info on class dependencies.
-	 * Adds info on each class to the classVector.
-	 */
-	public void analyzeXmlClassInfo(){
-
-	}
-
-	/**
-	 * Status: in progress.
-	 * Analyzes the xml file to gather info on package dependencies.
-	 * Adds info on each package to the packageVector.
-	 */
-	public void analyzeXmlPackageInfo(){
-
-	}
-
 	// --------------- Event handlers --------------------------------//
 
 	/**
@@ -103,6 +88,14 @@ public class XmlParser extends DefaultHandler {
 	 */
 	public void endDocument(){
 		System.out.println("End document");
+
+		// Print out info from all created objects
+		System.out.println(" ");
+		System.out.println(" SUMMARY OF PACKAGE DEPENDENCIES");
+		for(int i = 0; i < packageVector.size(); i++){
+			System.out.println(packageVector.get(i).getPackageName());
+		}
+		System.out.println(" END");
 	}
 
 	/**
@@ -110,15 +103,15 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public void startElement (String uri, String name, String qName, Attributes attributes){
-		if ("".equals (uri))
-			System.out.println("Start element: " + qName);
-		else
-			System.out.println("Start element: {" + uri + "}" + name);
+		//if ("".equals (uri))
+		//System.out.println("Start element: " + qName);
+		//else
+		//System.out.println("Start element: {" + uri + "}" + name);
 
 		switch(qName){
 		case "class":
-			System.out.println(" *** Encountered a class with name: " + attributes.getValue("name"));
-			System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
+			//System.out.println(" *** Encountered a class with name: " + attributes.getValue("name"));
+			//System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
 
 			// Create a new object
 			int usedBy = Integer.parseInt(attributes.getValue("usedBy"));
@@ -132,7 +125,7 @@ public class XmlParser extends DefaultHandler {
 			break;
 
 		case "classRef":
-			System.out.println(" *** Encountered a classRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));
+			//System.out.println(" *** Encountered a classRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));
 
 			String refName = attributes.getValue("name");
 			String refType = attributes.getValue("type");
@@ -155,10 +148,36 @@ public class XmlParser extends DefaultHandler {
 		case "package":
 			System.out.println(" *** Encountered a package with name: " + attributes.getValue("name"));
 			System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
+
+			// Create a new PackageDependencyInfo object
+			int usedByP = Integer.parseInt(attributes.getValue("usedBy"));
+			int usesP = Integer.parseInt(attributes.getValue("usesInternal"));
+			packageInfo = new PackageDependencyInfo(usedByP, usesP);
+			packageInfo.setPackageName(attributes.getValue("name"));
+			// Reset temporary vectors
+			tempAfferentPkgVector = new Vector<String>();
+			tempEfferentPkgVector = new Vector<String>();
 			break;
 
 		case "packageRef":
 			System.out.println(" *** Encountered a packageRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));		
+
+			String refPkgName = attributes.getValue("name");
+			String refPkgType = attributes.getValue("type");
+
+			// If type is usedBy, then add to Afferent.
+			int comparisonPkg = refPkgType.compareTo("usedBy");
+			if(comparisonPkg == 0) { // strings are equal
+				tempAfferentPkgVector.add(refPkgName);
+			}
+
+			// If type is usesInternal, then add to Efferent.
+			int comparisonPkgUses = refPkgType.compareTo("usesInternal");
+			if(comparisonPkgUses == 0) { // strings are equal
+				tempEfferentPkgVector.add(refPkgName);
+			}
+
+			// If type is usesExternal, then ignore it.
 			break;
 
 		}
@@ -169,14 +188,14 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void endElement (String uri, String name, String qName){
-		if ("".equals (uri))
-			System.out.println("End element: " + qName);
-		else
-			System.out.println("End element:   {" + uri + "}" + name);
+		//if ("".equals (uri))
+		//System.out.println("End element: " + qName);
+		//else
+		//System.out.println("End element:   {" + uri + "}" + name);
 
 		switch(qName){
 		case "class":
-			System.out.println(" *** Encountered the end of class element.");
+			//System.out.println(" *** Encountered the end of class element.");
 
 			// Populate an object with afferent classes
 			for(int i=0; i < tempAfferentClassVector.size(); i++){
@@ -194,7 +213,37 @@ public class XmlParser extends DefaultHandler {
 			break;
 
 		case "package":
-			System.out.println(" ** Encountered end of package");
+			System.out.println(" *** Encountered end of package");
+
+			// Populate an object with afferent package dependencies
+			for(int i = 0; i < tempAfferentPkgVector.size(); i++){
+				packageInfo.addAfferentPackage(tempAfferentPkgVector.get(i));
+			}
+
+			// Populate an object with efferent package dependencies
+			for(int i = 0; i < tempEfferentPkgVector.size(); i++){
+				packageInfo.addEfferentPackage(tempEfferentPkgVector.get(i));
+			}
+
+			// Save the object in a vector
+			packageVector.add(packageInfo);
+
+			// ---- Log ----//
+
+			System.out.println(" * Package name: " + packageInfo.getPackageName());
+
+			System.out.println(" * Afferent Vector");
+			for(int i=0; i < packageInfo.getAfferentVectorSize(); i++){	
+				System.out.println(packageInfo.getAfferentVectorElemAt(i));
+			}
+			System.out.println(" ");
+
+			System.out.println(" * Efferent Vector");
+			for(int i=0; i < packageInfo.getEfferentVectorSize(); i++){
+				System.out.println(packageInfo.getEfferentVectorElemAt(i));
+			}
+			System.out.println(" ");
+
 			break;
 		}
 

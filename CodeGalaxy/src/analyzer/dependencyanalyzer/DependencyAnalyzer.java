@@ -21,7 +21,7 @@ public class DependencyAnalyzer {
 	private static MockXmlParser parser;
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
-	private static boolean XmlParserInProgress = true;
+	private static boolean XmlParserInProgress = false;
 	private static String compilerCommand;
 	private static Vector<String> fileAddresses;
 	private static String sourceCodePath;
@@ -111,6 +111,7 @@ public class DependencyAnalyzer {
 					if(classycleExitValue == 0){ // process exited successfully
 						// Gatekeeper
 						if(XmlParserInProgress){
+							System.out.println("Using a mock XML Parser...");
 							parser = new MockXmlParser();
 							parser = new MockXmlParser();
 							parser.analyzeXmlClassInfo();
@@ -121,8 +122,9 @@ public class DependencyAnalyzer {
 							//printPackageSummary();
 						}
 						else{
-							XmlParser realParser = new XmlParser();
 							System.out.println("Using a real XML Parser...");
+							XmlParser realParser = new XmlParser();
+							realParser.startXmlParser();
 						}
 					}
 					else{
