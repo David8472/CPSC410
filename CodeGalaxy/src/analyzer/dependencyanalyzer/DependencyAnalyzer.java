@@ -32,6 +32,10 @@ public class DependencyAnalyzer {
 	 * Default constructor.
 	 */
 	public DependencyAnalyzer() {
+		classycleExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
+		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
+		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
 	}
 
 	/**
@@ -44,18 +48,25 @@ public class DependencyAnalyzer {
 		classycleExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
-		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous value)
+		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
 	}
 
 	/**
 	 * Entry point of the Dependency Analyzer tool.
-	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
+	 * Runs the Java compiler and the Classycle tool in the command line,
+	 *  and calls XML Parser afterwards.
 	 */
-	public static void runClassycle(){
+	public void runClassycle(){
 
 		if(sourceCodePath != "" && sourceCodePath != null){
 			Path dir = Paths.get(sourceCodePath);
-			listJavaFiles(dir);
+			try {
+				listJavaFiles(dir);
+			} catch (IOException e) { // Note: NoSuchFileException is caught by IOException.
+				System.out.println("Invalid path to the source code. Please try again.");
+				System.out.println(e);
+				return;
+			}
 		}
 		else{
 			System.out.println("Path cannot be null or empty. Please try again.");
@@ -88,14 +99,14 @@ public class DependencyAnalyzer {
 				// ------- Run the Javac compiler ----------//
 				proc = rt.exec(compilerCommand);
 				compilerExitValue = proc.waitFor();
-				System.out.println("Process exitValue: " + compilerExitValue);
+				System.out.println("Process exit value: " + compilerExitValue);
 
 				if(compilerExitValue == 0){ // process exited successfully
 
 					// ------- Run the Classycle tool ----------//
 					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
 					classycleExitValue = proc.waitFor();
-					System.out.println("Classycle Process exitValue: " + classycleExitValue);
+					System.out.println("Classycle Process exit value: " + classycleExitValue);
 
 					if(classycleExitValue == 0){ // process exited successfully
 						// Gatekeeper
@@ -106,8 +117,8 @@ public class DependencyAnalyzer {
 							parser.analyzeXmlPackageInfo();
 							classesDepInfo = parser.getClassesXmlSummary();
 							packagesDepInfo = parser.getPackagesXmlSummary();	
-							printClassSummary();
-							printPackageSummary();
+							//printClassSummary();
+							//printPackageSummary();
 						}
 						else{
 							XmlParser realParser = new XmlParser();
@@ -188,6 +199,7 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Returns the status of the command execution.
@@ -283,7 +295,7 @@ public class DependencyAnalyzer {
 	 * http://docs.oracle.com/javase/tutorial/essential/io/dirs.html#listdir
 	 * @param dir A directory where Java files are located.
 	 */
-	private static void listJavaFiles(Path dir){
+	private static void listJavaFiles(Path dir) throws IOException{
 
 		Vector<String> singleFileVector;
 
@@ -323,16 +335,12 @@ public class DependencyAnalyzer {
 							fileAddresses.add(newAddress);
 						}
 					}
-					//System.out.println("Ends with java: " + myFile.getName().endsWith(".java"));
 				}
 				else{
 					System.out.println("Directory: " + myFile.getName());
 					listJavaFiles(myFile.toPath());
 				}
 			}		
-		} catch (IOException | DirectoryIteratorException x) {
-			// IOException can be thrown by newDirectoryStream.
-			System.err.println(x);
 		}
 	}
 
