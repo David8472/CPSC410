@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='reportXMLtoHTML.xsl'?>
+<classycle title='samplebytecode' date='2014-11-13'>
+  <cycles>
+  </cycles>
+  <classes numberOfExternalClasses="2">
+    <class name="fruit.exotic.Banana" sources="samplebytecode" type="class" innerClass="false" size="270" usedBy="1" usesInternal="2" usesExternal="2" layer="0" cycle="">
+      <classRef name="fruit.edible.sweet" type="usedBy"/>
+	  <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+	  <classRef name="plants.roots.grow" type="usesInternal"/>
+	  <classRef name="plants.leaves.evaporate" type="usesInternal"/>
+    </class>
+    <class name="fruit.local.Cherry" sources="samplebytecode" type="class" innerClass="false" size="269" usedBy="0" usesInternal="3" usesExternal="2" layer="0" cycle="">
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+	  <classRef name="plants.roots.grow" type="usesInternal"/>
+	  <classRef name="plants.leaves.evaporate" type="usesInternal"/>
+	  <classRef name="plants.leaves.grow" type="usesInternal"/>
+    </class>
+    <class name="fruit.local.Cranberry" sources="samplebytecode" type="class" innerClass="false" size="275" usedBy="2" usesInternal="1" usesExternal="2" layer="0" cycle="">
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+	  <classRef name="plants.roots.feed" type="usesInternal"/>
+	  <classRef name="fruit.edible.sweet" type="usedBy"/>
+	  <classRef name="fruit.edible.sour" type="usedBy"/>
+    </class>
+  </classes>
+  <packageCycles>
+  </packageCycles>
+  <packages>
+    <package name="fruit.exotic" sources="samplebytecode"  size="1" usedBy="0" usesInternal="0" usesExternal="1" layer="0" cycle="">
+      <packageRef name="java.lang" type="usesExternal"/>
+    </package>
+    <package name="fruit.local" sources="samplebytecode"  size="2" usedBy="0" usesInternal="0" usesExternal="1" layer="0" cycle="">
+      <packageRef name="java.lang" type="usesExternal"/>
+    </package>
+  </packages>
+</classycle>
