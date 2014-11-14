@@ -24,8 +24,8 @@ public class XmlParser extends DefaultHandler {
 	private Vector<ClassDependencyInfo> classVector = new Vector<ClassDependencyInfo>();	// vector of Class Dependency objects
 	private Vector<PackageDependencyInfo> packageVector = new Vector<PackageDependencyInfo>(); // vector of Package Dependency objects
 
-	private Vector<String> tempAfferentVector; // contains names of afferent classes (temporarily)
-	private Vector<String> tempEfferentVector; // contains names of efferent classes (temporarily)
+	private Vector<String> tempAfferentClassVector; // temporarily contains names of afferent classes
+	private Vector<String> tempEfferentClassVector; // temporarily contains names of efferent classes
 	ClassDependencyInfo classInfo = null;
 
 	/**
@@ -35,6 +35,10 @@ public class XmlParser extends DefaultHandler {
 		super();
 	}
 
+	/**
+	 * Entry point of the XML Parser.
+	 * Sets up and runs the parser given the XML file name.
+	 */
 	public void startXmlParser(){
 
 		XMLReader xr;
@@ -84,15 +88,27 @@ public class XmlParser extends DefaultHandler {
 
 	// --------------- Event handlers --------------------------------//
 
+	/**
+	 * Handles the beginning of a document.
+	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
+	 */
 	public void startDocument(){
 		System.out.println("Start document");
 	}
 
 
+	/**
+	 * Handles the end of a document.
+	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+	 */
 	public void endDocument(){
 		System.out.println("End document");
 	}
 
+	/**
+	 * Event handler for when the start of an element is encountered.
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement (String uri, String name, String qName, Attributes attributes){
 		if ("".equals (uri))
 			System.out.println("Start element: " + qName);
@@ -110,8 +126,8 @@ public class XmlParser extends DefaultHandler {
 			classInfo = new ClassDependencyInfo(usedBy, uses);
 			classInfo.setClassName(attributes.getValue("name"));
 			// Reset temporary vectors
-			tempAfferentVector = new Vector<String>();
-			tempEfferentVector = new Vector<String>();
+			tempAfferentClassVector = new Vector<String>();
+			tempEfferentClassVector = new Vector<String>();
 
 			break;
 
@@ -124,13 +140,13 @@ public class XmlParser extends DefaultHandler {
 			// If type is usedBy, then it's an Afferent class.
 			int comparison = refType.compareTo("usedBy");
 			if(comparison == 0) { // strings are equal
-				tempAfferentVector.add(refName);
+				tempAfferentClassVector.add(refName);
 			}
 
 			// If type is usesInternal, then it's an Efferent class.
 			int comparisonUses = refType.compareTo("usesInternal");
 			if(comparisonUses == 0) { // strings are equal
-				tempEfferentVector.add(refName);
+				tempEfferentClassVector.add(refName);
 			}
 
 			// If type is usesExternal, then ignore it.
@@ -138,6 +154,10 @@ public class XmlParser extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * Event handler for when the end of an element is encountered.
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement (String uri, String name, String qName){
 		if ("".equals (uri))
 			System.out.println("End element: " + qName);
@@ -149,13 +169,13 @@ public class XmlParser extends DefaultHandler {
 			System.out.println(" *** Encountered the end of class element.");
 
 			// Populate an object with afferent classes
-			for(int i=0; i < tempAfferentVector.size(); i++){
-				classInfo.addAfferentClass(tempAfferentVector.get(i));
+			for(int i=0; i < tempAfferentClassVector.size(); i++){
+				classInfo.addAfferentClass(tempAfferentClassVector.get(i));
 			}
 
 			// Populate an object with efferent classes
-			for(int i=0; i < tempEfferentVector.size(); i++){
-				classInfo.addEfferentClass(tempEfferentVector.get(i));
+			for(int i=0; i < tempEfferentClassVector.size(); i++){
+				classInfo.addEfferentClass(tempEfferentClassVector.get(i));
 			}
 
 			// Save the object in a vector
@@ -166,6 +186,10 @@ public class XmlParser extends DefaultHandler {
 
 	}
 
+	/**
+	 * Event handler for when the parser encounters text data.
+	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	 */
 	public void characters (char ch[], int start, int length){
 	}
 
