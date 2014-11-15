@@ -44,11 +44,11 @@ public class XmlParser extends DefaultHandler {
 	 * Sets up and runs the parser given the XML file name.
 	 * @param filePath A path to the xml file.
 	 */
-	public void startXmlParser(String filePath){
+	public void startXmlParser(String filePath) throws XmlParserException {
 
 		if(filePath == "" || filePath == null){
 			System.err.println("File path to the xml file cannot be null or empty. Please, try again.");
-			return;
+			throw new XmlParserException("XML file cannot be null or empty");
 		}
 
 		XMLReader xr;
@@ -57,25 +57,25 @@ public class XmlParser extends DefaultHandler {
 			XmlParser handler = new XmlParser();
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
-
+			
 			// Parse the given XML file.
 			FileReader r;
 			try {
-				//r = new FileReader("test_resources/sample.xml");
 				r = new FileReader(filePath);
 				xr.parse(new InputSource(r));
-
 			} catch (FileNotFoundException e) {
 				System.err.println("File not found. Please, provide a valid file name for XML Parser.");
 				System.err.println(e);
+				throw new XmlParserException("XML Parser exception: File not found");
 			}
 			catch (IOException e) {
 				System.err.println(e);
+				throw new XmlParserException("XML Parser exception: IO exception");
 			}
 		} catch (SAXException e) {
 			System.err.println(e);
+			throw new XmlParserException("XML Parser exception: SAX exception");
 		}
-
 	}
 
 	// --------------- Event handlers --------------------------------//

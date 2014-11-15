@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Vector;
 
+import org.xml.sax.SAXException;
+
 /**
  * Dependency reporter based on the Classycle tool.
  * Reference: http://classycle.sourceforge.net/measures.html
@@ -69,7 +71,7 @@ public class DependencyAnalyzer {
 			}
 		}
 		else{
-			System.err.println("Path cannot be null or empty. Please try again.");
+			System.err.println("Path cannot be null or empty. Please, enter a correct path.");
 			return;
 		}
 
@@ -149,6 +151,9 @@ public class DependencyAnalyzer {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (XmlParserException e) {
+			System.err.println("XML Parser did not run successfully. Please, try again.");
+			System.err.println(e);
 		}
 	}
 
