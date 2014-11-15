@@ -107,6 +107,10 @@ public class CommitAnalyzer{
 		} catch (GitAPIException e) {
 			e.printStackTrace();
 		}
+		
+		for(int i = 0; i < commitAnalyzerInfo.size(); i++){
+			commitAnalyzerInfo.get(i).setCommitNumber(i);
+		}
 		Collections.reverse(commitAnalyzerInfo);
 		return commitAnalyzerInfo;
 	}
