@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 public class XmlParserTest{
 
+	DependencyAnalyzer depAnalyzerTool;
 
 	/**
 	 * Tests if the parser performed correctly given a valid file.
@@ -19,10 +20,11 @@ public class XmlParserTest{
 	@Test
 	public void validFileTest(){
 		//given
-		XmlParser parser = new XmlParser();
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
 		//when
 		try {
-			parser.startXmlParser("test_resources/sample.xml");
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
 		} catch (XmlParserException e) {
 			e.printStackTrace();
 			fail("Unexpected XML Parser exception was thrown." );
@@ -36,11 +38,12 @@ public class XmlParserTest{
 	 */
 	@Test
 	public void emptyFileTest(){
-		//given 
-		XmlParser parser = new XmlParser();
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
 		//when
 		try {
-			parser.startXmlParser("");
+			parser.startXmlParser("", depAnalyzerTool);
 			fail("XML Parser failed to throw an exception." );
 		} catch (XmlParserException e) {
 			System.out.println(e);
@@ -54,11 +57,12 @@ public class XmlParserTest{
 	 */
 	@Test
 	public void nullFileTest(){
-		//given 
-		XmlParser parser = new XmlParser();
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
 		//when
 		try {
-			parser.startXmlParser(null);
+			parser.startXmlParser(null, depAnalyzerTool);
 			fail("XML Parser failed to throw an exception." );
 		} catch (XmlParserException e) {
 			System.out.println(e);
