@@ -106,7 +106,7 @@ public class DependencyAnalyzer {
 				if(compilerExitValue == 0){ // process exited successfully
 
 					// ------- Run the Classycle tool ----------//
-					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=toolreport.xml samplebytecode");
+					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=samplereport.xml samplebytecode");
 					classycleExitValue = proc.waitFor();
 					System.out.println("Classycle Process exit value: " + classycleExitValue);
 
@@ -126,9 +126,19 @@ public class DependencyAnalyzer {
 						else{
 							System.out.println("Using a real XML Parser...");
 							XmlParser realParser = new XmlParser();
-							String someStr = new String();
-							realParser.startXmlParser(someStr);
-							//realParser.startXmlParser("test_resources/sample.xml");
+							realParser.startXmlParser("test_resources/sample.xml");
+							//realParser.startXmlParser("samplereport.xml");
+							
+							classesDepInfo = realParser.getClassesXmlSummary();
+							packagesDepInfo = realParser.getPackagesXmlSummary();
+							
+							System.out.println(" ");
+							System.out.println("**********");
+							printClassSummary();
+							System.out.println(" ");
+							printPackageSummary();
+							System.out.println("**********");
+							System.out.println(" ");
 						}
 					}
 					else{

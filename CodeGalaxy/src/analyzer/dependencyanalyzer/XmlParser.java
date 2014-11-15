@@ -85,30 +85,15 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
 	 */
 	public void startDocument(){
-		System.out.println("Start of document");
+		//System.out.println("Start of document");
 	}
-
 
 	/**
 	 * Handles the end of a document.
 	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
 	 */
 	public void endDocument(){
-		System.out.println("End of document");
-		
-		// ----- Logging -----//
-		// Print out info from all created objects
-		System.out.println(" ");
-		System.out.println("SUMMARY OF CLASS DEPENDENCIES");
-		for(int i = 0; i < classVector.size(); i++){
-		System.out.println(classVector.get(i).getClassName());
-		}
-
-		System.out.println("SUMMARY OF PACKAGE DEPENDENCIES");
-		for(int i = 0; i < packageVector.size(); i++){
-			System.out.println(packageVector.get(i).getPackageName());
-		}
-		System.out.println(" ");
+		//System.out.println("End of document");
 	}
 
 	/**
@@ -218,6 +203,22 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
 	 */
 	public void characters (char ch[], int start, int length){
+	}
+	
+	/**
+	 * Returns a vector of ClassDependencyInfo objects.
+	 * Each object contains info on the given class dependencies.
+	 */
+	public Vector<ClassDependencyInfo> getClassesXmlSummary(){
+		return classVector;
+	}
+
+	/**
+	 * Returns a vector of PackageDependencyInfo objects.
+	 * Each object contains info on the given package dependencies.
+	 */
+	public Vector<PackageDependencyInfo> getPackagesXmlSummary(){
+		return packageVector;
 	}
 
 }
