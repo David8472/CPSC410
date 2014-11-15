@@ -32,11 +32,14 @@ public class XmlParser extends DefaultHandler {
 	ClassDependencyInfo classInfo = null;
 	PackageDependencyInfo packageInfo = null;
 
+	DependencyAnalyzer localDA; // used to reference the caller object, DependencyAnalyzer.
+
 	/**
 	 * Default constructor.
 	 */
-	public XmlParser() {
+	public XmlParser(DependencyAnalyzer da) {
 		super();
+		localDA = da;
 	}
 
 	/**
@@ -44,7 +47,7 @@ public class XmlParser extends DefaultHandler {
 	 * Sets up and runs the parser given the XML file name.
 	 * @param filePath A path to the xml file.
 	 */
-	public void startXmlParser(String filePath) throws XmlParserException {
+	public void startXmlParser(String filePath, DependencyAnalyzer da) throws XmlParserException {
 
 		if(filePath == "" || filePath == null){
 			System.err.println("File path to the xml file cannot be null or empty. Please, try again.");
@@ -54,13 +57,16 @@ public class XmlParser extends DefaultHandler {
 		XMLReader xr;
 		try {
 			xr = XMLReaderFactory.createXMLReader();
-			XmlParser handler = new XmlParser();
+			XmlParser handler = new XmlParser(da);
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
 			
 			// Parse the given XML file.
 			FileReader r;
 			try {
+				System.out.println("Original DA says: " + da.getDAMessage());
+				System.out.println("Local DA says: " + localDA.getDAMessage());
+
 				r = new FileReader(filePath);
 				xr.parse(new InputSource(r));
 			} catch (FileNotFoundException e) {
@@ -93,7 +99,41 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
 	 */
 	public void endDocument(){
-		//System.out.println("End of document");
+		System.out.println("End of document");
+		
+		System.out.println("");
+		System.out.println("LOCAL DA");
+		localDA.setAllClassesDependencies(classVector);
+		localDA.setAllPackagesDependencies(packageVector);
+		localDA.printClassSummary();
+		localDA.printPackageSummary();
+		System.out.println("END LOCAL DA");
+		System.out.println("");
+		System.out.println("");
+		
+		/*
+		System.out.println(" ");
+		if(classVector.size() == 0){
+			System.out.println("No information on class dependencies was found.");
+		}
+		else{
+			for(int i = 0; i < classVector.size(); i++){
+				System.out.println("*** Class # " + i + " named "+ classVector.get(i).getClassName());
+				System.out.println("This class is used by " + classVector.get(i).getAfferentNum() + " classes.");
+				System.out.println("This class uses " + classVector.get(i).getEfferentNum() + " classes");
+
+				for(int j = 0; j < classVector.get(i).getAfferentVectorSize(); j++){
+					System.out.println("Used by " + classVector.get(i).getAfferentVectorElemAt(j));
+				}
+				for(int k = 0; k < classVector.get(i).getEfferentVectorSize(); k++){
+					System.out.println("Uses " + classVector.get(i).getEfferentVectorElemAt(k));
+				}
+			}
+			System.out.println("DONE");
+		}
+		System.out.println("");
+		
+		*/
 	}
 
 	/**

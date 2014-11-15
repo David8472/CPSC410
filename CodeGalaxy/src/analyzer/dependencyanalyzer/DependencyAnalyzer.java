@@ -29,7 +29,9 @@ public class DependencyAnalyzer {
 	private static String sourceCodePath;
 	private static int classycleExitValue;
 	private static int compilerExitValue;
-
+	
+	private String daMessage = "Hola you so Helper";
+	
 	/**
 	 * Default constructor.
 	 */
@@ -51,6 +53,10 @@ public class DependencyAnalyzer {
 		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
 		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
+	}
+	
+	public String getDAMessage(){
+		return daMessage;
 	}
 
 	/**
@@ -125,19 +131,16 @@ public class DependencyAnalyzer {
 						}
 						else{
 							System.out.println("Using a real XML Parser...");
-							XmlParser realParser = new XmlParser();
-							realParser.startXmlParser("test_resources/sample.xml");
+							XmlParser realParser = new XmlParser(this);
+							realParser.startXmlParser("test_resources/sample.xml", this);
 							//realParser.startXmlParser("samplereport.xml");
 							
-							classesDepInfo = realParser.getClassesXmlSummary();
-							packagesDepInfo = realParser.getPackagesXmlSummary();
-							
 							System.out.println(" ");
-							System.out.println("**********");
+							System.out.println("***** ORIGINAL DA *****");
 							printClassSummary();
 							System.out.println(" ");
 							printPackageSummary();
-							System.out.println("**********");
+							System.out.println("***** END ORIGINAL DA *****");
 							System.out.println(" ");
 						}
 					}
@@ -200,7 +203,7 @@ public class DependencyAnalyzer {
 					printPackageSummary();
 				}
 				else{
-					XmlParser realParser = new XmlParser();
+					//XmlParser realParser = new XmlParser();
 					System.out.println("Using a real XML Parser...");
 				}
 			}
@@ -257,11 +260,25 @@ public class DependencyAnalyzer {
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
 	}
+	
+	/**
+	 * Returns a vector with dependencies info of all classes.
+	 */
+	public void setAllClassesDependencies(Vector<ClassDependencyInfo> v){
+		classesDepInfo = v;
+	}
+
+	/**
+	 * Returns a vector with dependencies info of all packages.
+	 */
+	public void setAllPackagesDependencies(Vector<PackageDependencyInfo> v){
+		packagesDepInfo = v;
+	}
 
 	/**
 	 * Prints out the summary of all class dependencies.
 	 */
-	public static void printClassSummary(){
+	public void printClassSummary(){
 
 		if(classesDepInfo.size() == 0){
 			System.out.println("No information on class dependencies was found.");
@@ -286,7 +303,7 @@ public class DependencyAnalyzer {
 	/**
 	 * Prints out the summary of all package dependencies.
 	 */
-	public static void printPackageSummary(){
+	public void printPackageSummary(){
 
 		if(packagesDepInfo.size() == 0){
 			System.out.println("No information on package dependencies was found.");
