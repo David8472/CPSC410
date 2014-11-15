@@ -10,9 +10,61 @@ import static org.junit.Assert.*;
 
 public class XmlParserTest{
 
-	// Test given a valid file path
-	// Test given an empty file path
-	// Test given a null file path
+
+	/**
+	 * Tests if the parser performed correctly given a valid file.
+	 * Input: a valid file path.
+	 * Expected Output: No exceptions thrown.
+	 */
+	@Test
+	public void validFileTest(){
+		//given
+		XmlParser parser = new XmlParser();
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml");
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
+
+	/**
+	 * Tests if the parser performed correctly given an invalid file.
+	 * Input: an invalid empty file path.
+	 * Expected Output: XmlParserException thrown.
+	 */
+	@Test
+	public void emptyFileTest(){
+		//given 
+		XmlParser parser = new XmlParser();
+		//when
+		try {
+			parser.startXmlParser("");
+			fail("XML Parser failed to throw an exception." );
+		} catch (XmlParserException e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Tests if the parser performed correctly given an invalid file.
+	 * Input: an invalid null file path.
+	 * Expected Output: XmlParserException thrown.
+	 */
+	@Test
+	public void nullFileTest(){
+		//given 
+		XmlParser parser = new XmlParser();
+		//when
+		try {
+			parser.startXmlParser(null);
+			fail("XML Parser failed to throw an exception." );
+		} catch (XmlParserException e) {
+			System.out.println(e);
+		}
+	}
+
 	
 	// Packages: Test if size of afferent vector = field value
 
