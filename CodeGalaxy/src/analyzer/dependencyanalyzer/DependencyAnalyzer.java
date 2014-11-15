@@ -63,13 +63,13 @@ public class DependencyAnalyzer {
 			try {
 				listJavaFiles(dir);
 			} catch (IOException e) { // Note: NoSuchFileException is caught by IOException.
-				System.out.println("Invalid path to the source code. Please try again.");
+				System.err.println("Invalid path. Please, provide a valid path for the compiler input.");
 				System.out.println(e);
 				return;
 			}
 		}
 		else{
-			System.out.println("Path cannot be null or empty. Please try again.");
+			System.err.println("Path cannot be null or empty. Please try again.");
 			return;
 		}
 
@@ -124,7 +124,9 @@ public class DependencyAnalyzer {
 						else{
 							System.out.println("Using a real XML Parser...");
 							XmlParser realParser = new XmlParser();
-							realParser.startXmlParser();
+							String someStr = new String();
+							realParser.startXmlParser(someStr);
+							//realParser.startXmlParser("test_resources/sample.xml");
 						}
 					}
 					else{

@@ -42,8 +42,14 @@ public class XmlParser extends DefaultHandler {
 	/**
 	 * Entry point of the XML Parser.
 	 * Sets up and runs the parser given the XML file name.
+	 * @param filePath A path to the xml file.
 	 */
-	public void startXmlParser(){
+	public void startXmlParser(String filePath){
+
+		if(filePath == "" || filePath == null){
+			System.err.println("File path to the xml file cannot be null or empty. Please, try again.");
+			return;
+		}
 
 		XMLReader xr;
 		try {
@@ -55,11 +61,12 @@ public class XmlParser extends DefaultHandler {
 			// Parse the given XML file.
 			FileReader r;
 			try {
-				r = new FileReader("test_resources/sample.xml");
+				//r = new FileReader("test_resources/sample.xml");
+				r = new FileReader(filePath);
 				xr.parse(new InputSource(r));
 
 			} catch (FileNotFoundException e) {
-				System.out.println("File not found. Please, indicate a valid file name.");
+				System.err.println("File not found. Please, provide a valid file name for XML Parser.");
 				System.err.println(e);
 			}
 			catch (IOException e) {
@@ -78,7 +85,7 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
 	 */
 	public void startDocument(){
-		System.out.println("Start document");
+		System.out.println("Start of document");
 	}
 
 
@@ -87,7 +94,21 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
 	 */
 	public void endDocument(){
-		System.out.println("End document");
+		System.out.println("End of document");
+		
+		// ----- Logging -----//
+		// Print out info from all created objects
+		System.out.println(" ");
+		System.out.println("SUMMARY OF CLASS DEPENDENCIES");
+		for(int i = 0; i < classVector.size(); i++){
+		System.out.println(classVector.get(i).getClassName());
+		}
+
+		System.out.println("SUMMARY OF PACKAGE DEPENDENCIES");
+		for(int i = 0; i < packageVector.size(); i++){
+			System.out.println(packageVector.get(i).getPackageName());
+		}
+		System.out.println(" ");
 	}
 
 	/**
@@ -95,7 +116,7 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	public void startElement (String uri, String name, String qName, Attributes attributes){
-		
+
 		switch(qName){
 		case "class":
 			// Create a new object
@@ -140,13 +161,13 @@ public class XmlParser extends DefaultHandler {
 		case "packageRef":
 			String refPkgName = attributes.getValue("name");
 			String refPkgType = attributes.getValue("type");
-			
+
 			// If type is usedBy, then add to Afferent.
 			int comparisonPkg = refPkgType.compareTo("usedBy");
 			if(comparisonPkg == 0) { // strings are equal
 				tempAfferentPkgVector.add(refPkgName);
 			}
-			
+
 			// If type is usesInternal, then add to Efferent.
 			int comparisonPkgUses = refPkgType.compareTo("usesInternal");
 			if(comparisonPkgUses == 0) { // strings are equal
