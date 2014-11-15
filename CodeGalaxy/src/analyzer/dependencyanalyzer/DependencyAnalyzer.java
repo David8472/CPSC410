@@ -30,7 +30,7 @@ public class DependencyAnalyzer {
 	private static int classycleExitValue;
 	private static int compilerExitValue;
 	
-	private String daMessage = "Hola you so Helper";
+	private String daMessage = "Hola you so Helper"; // helper string for development
 	
 	/**
 	 * Default constructor.
@@ -55,9 +55,6 @@ public class DependencyAnalyzer {
 		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
 	}
 	
-	public String getDAMessage(){
-		return daMessage;
-	}
 
 	/**
 	 * Entry point of the Dependency Analyzer tool.
@@ -126,14 +123,13 @@ public class DependencyAnalyzer {
 							parser.analyzeXmlPackageInfo();
 							classesDepInfo = parser.getClassesXmlSummary();
 							packagesDepInfo = parser.getPackagesXmlSummary();	
-							//printClassSummary();
-							//printPackageSummary();
+							printClassSummary();
+							printPackageSummary();
 						}
 						else{
 							System.out.println("Using a real XML Parser...");
 							XmlParser realParser = new XmlParser(this);
-							realParser.startXmlParser("test_resources/sample.xml", this);
-							//realParser.startXmlParser("samplereport.xml");
+							realParser.startXmlParser("samplereport.xml", this);
 							
 							System.out.println(" ");
 							System.out.println("***** ORIGINAL DA *****");
@@ -424,6 +420,13 @@ public class DependencyAnalyzer {
 		String finalString = stringBuilder.toString();
 		//System.out.println("We've built: " + finalString);
 		return finalString;
+	}
+	
+	/**
+	 * Helper method for development.
+	 */
+	public String getDAMessage(){
+		return daMessage;
 	}
 
 }

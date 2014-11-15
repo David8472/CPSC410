@@ -11,6 +11,8 @@ import static org.junit.Assert.*;
 public class XmlParserTest{
 
 	DependencyAnalyzer depAnalyzerTool;
+	private final static int CLASSES_NUMBER = 3;
+	private final static int PACKAGES_NUMBER = 2;
 
 	/**
 	 * Tests if the parser performed correctly given a valid file.
@@ -69,7 +71,7 @@ public class XmlParserTest{
 		}
 	}
 
-	
+
 	// Packages: Test if size of afferent vector = field value
 
 	// Packages: Test if size of efferent vector = field value
@@ -78,8 +80,54 @@ public class XmlParserTest{
 
 	// Classes: Test if size of efferent vector = field value
 
-	// Test size of classVector (must be the same as total # of classes)
+	/**
+	 * Tests the total number of analyzed classes,
+	 * 		where each class is represented as an element in the vector.
+	 * 		Hence, the vector size should be equal to the number of classes.
+	 * Input: 3 classes.
+	 * Expected Output: size of the vector = 3.
+	 */
+	@Test
+	public void totalNumberOfClassesTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().size() );
+			if(depAnalyzerTool.getAllClassesDependencies().size() != CLASSES_NUMBER){
+				fail("Total number of analyzed classes did not match.");
+			}
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
 
-	// Test size of packageVector (must be the same as total # of packages)
+	/**
+	 * Tests the total number of analyzed packages,
+	 * 		where each package is represented as an element in the vector.
+	 * 		Hence, the vector size should be equal to the number of packages.
+	 * Input: 2 packages.
+	 * Expected Output: size of the vector = 2.
+	 */
+	@Test
+	public void totalNumberOfPackagesTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().size() );
+			if(depAnalyzerTool.getAllPackagesDependencies().size() != PACKAGES_NUMBER){
+				fail("Total number of analyzed packages did not match.");
+			}
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
 
 }
