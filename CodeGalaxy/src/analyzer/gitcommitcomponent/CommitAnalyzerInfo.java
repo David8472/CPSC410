@@ -5,10 +5,11 @@ import java.util.ArrayList;
 //This is the data on a single commit
 public class CommitAnalyzerInfo {
 	private String repoDirectory;
-	private int commitNumber;//Commit Number is the order of the commit, Ex.) Initial commit is 0, Only Java commits counted
+	private int commitNumber;//Commit Number is the order of the commit, Ex.) Initial commit is 0, Only commits with java edits counted except initial
 	private ArrayList<String> filesAdded = new ArrayList<String>();
 	private ArrayList<String> allJavaFiles = new ArrayList<String>();
 	private ArrayList<String> filesDeleted = new ArrayList<String>();
+	private ArrayList<String> filePaths = new ArrayList<String>();
 
 	private String authorName;
 	private String commitID;
@@ -84,6 +85,14 @@ public class CommitAnalyzerInfo {
 		filesAdded.clear();
 		allJavaFiles.clear();
 		filesDeleted.clear();
+	}
+
+	public ArrayList<String> getFilePaths() {
+		return filePaths;
+	}
+
+	protected void setFilePaths(ArrayList<String> filePaths) {
+		this.filePaths.addAll(filePaths);
 	}
 	
 }
