@@ -12,12 +12,6 @@ public class MockXmlParser{
 	private Vector<ClassDependencyInfo> classVector = new Vector<ClassDependencyInfo>();	// vector of mockClass objects
 	private Vector<PackageDependencyInfo> packageVector = new Vector<PackageDependencyInfo>(); // vector of mockPackage objects
 
-	// Steps:
-	// Create the DOM from a given XML file.
-	// Parse the DOM and fill in dependency objects.
-	// Stick objects together in a vector
-	//		that can be later passed to the Data Aggregator.
-
 	/**
 	 * Status: Mock.
 	 * Analyzes the xml file to gather info on class dependencies.
