@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Analyzes and gets static code metrics for an entire code base
@@ -34,7 +35,9 @@ public class MiscStaticAnalyzer {
      * @param codebasePath - The path to the codebase
      * @return - List of PackageInfo objects, each object containing the following metrics above for each package
      */
-    public static ArrayList<PackageInfo> getMiscStaticMetrics(String codebasePath) {
+    public static CodebaseStats getMiscStaticMetrics(String codebasePath) {
+
+        CodebaseStats codebaseStats = new CodebaseStats();
 
         // Get all Java source files from codebase
         Collection<File> sourceFiles = getSourceFiles(codebasePath);
@@ -73,11 +76,17 @@ public class MiscStaticAnalyzer {
                 // Get class(es) information from the class analyzer
                 ArrayList<ClassInfo> classInfos = analyzer.getClassInfo();
 
+                HashMap<String, Integer> classToLOCMap = new HashMap<String, Integer>();
+
                 // Iterate through all classes (they may be nested classes) for a source file
                 for(ClassInfo classInfo : classInfos) {
                     // Add class information to respective PackageInfo object
                     packageInfo.addClass(classInfo);
+                    classToLOCMap.put(classInfo.getPackageName() + "." + classInfo.getClassName(), classInfo.getLinesOfCode());
                 }
+
+                codebaseStats.setClassToLOCMap(classToLOCMap);
+                codebaseStats.setPackagesInfo(packages);
 
             } catch(IOException e) {
                 e.printStackTrace();
@@ -87,7 +96,8 @@ public class MiscStaticAnalyzer {
         }
 
         // Return list of packages with all static code analysis metrics for the code base
-        return packages;
+        return codebaseStats;
     }
+
 
 }
