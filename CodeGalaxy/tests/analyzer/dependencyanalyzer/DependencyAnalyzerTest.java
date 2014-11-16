@@ -23,7 +23,7 @@ public class DependencyAnalyzerTest{
 	@Test
 	public void successfulPathTest(){
 		//given
-		analyzer = new DependencyAnalyzer("test_resources/fruit");
+		analyzer = new DependencyAnalyzer("test_resources/samplesource");
 		//when
 		analyzer.runClassycle();
 		//then

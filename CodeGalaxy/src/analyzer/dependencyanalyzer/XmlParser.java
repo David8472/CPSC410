@@ -31,14 +31,19 @@ public class XmlParser extends DefaultHandler {
 	private Vector<String> tempEfferentPkgVector; // temporarily contains names of efferent packages
 	ClassDependencyInfo classInfo = null;
 	PackageDependencyInfo packageInfo = null;
-	DependencyAnalyzer localDA; // used to reference the caller object, DependencyAnalyzer.
+	DependencyAnalyzer dependencyAnalyzer; // used to reference the caller object, DependencyAnalyzer.
+	private boolean encounteredCyclesTag = false;
+	private boolean encounteredPackageCyclesTag = false;
+	
 
 	/**
 	 * Default constructor.
 	 */
 	public XmlParser(DependencyAnalyzer da) {
 		super();
-		localDA = da;
+		dependencyAnalyzer = da;
+		encounteredCyclesTag = false;
+		encounteredPackageCyclesTag = false;
 	}
 
 	/**
@@ -63,9 +68,6 @@ public class XmlParser extends DefaultHandler {
 			// Parse the given XML file.
 			FileReader r;
 			try {
-				System.out.println("Original DA says: " + da.getDAMessage());
-				System.out.println("Local DA says: " + localDA.getDAMessage());
-
 				r = new FileReader(filePath);
 				xr.parse(new InputSource(r));
 			} catch (FileNotFoundException e) {
@@ -90,7 +92,7 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
 	 */
 	public void startDocument(){
-		//System.out.println("Start of document");
+		//System.out.println(" Start of document");
 	}
 
 	/**
@@ -98,41 +100,9 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
 	 */
 	public void endDocument(){
-		System.out.println("End of document");
-		
-		System.out.println("");
-		System.out.println("LOCAL DA");
-		localDA.setAllClassesDependencies(classVector);
-		localDA.setAllPackagesDependencies(packageVector);
-		localDA.printClassSummary();
-		localDA.printPackageSummary();
-		System.out.println("END LOCAL DA");
-		System.out.println("");
-		System.out.println("");
-		
-		/*
-		System.out.println(" ");
-		if(classVector.size() == 0){
-			System.out.println("No information on class dependencies was found.");
-		}
-		else{
-			for(int i = 0; i < classVector.size(); i++){
-				System.out.println("*** Class # " + i + " named "+ classVector.get(i).getClassName());
-				System.out.println("This class is used by " + classVector.get(i).getAfferentNum() + " classes.");
-				System.out.println("This class uses " + classVector.get(i).getEfferentNum() + " classes");
-
-				for(int j = 0; j < classVector.get(i).getAfferentVectorSize(); j++){
-					System.out.println("Used by " + classVector.get(i).getAfferentVectorElemAt(j));
-				}
-				for(int k = 0; k < classVector.get(i).getEfferentVectorSize(); k++){
-					System.out.println("Uses " + classVector.get(i).getEfferentVectorElemAt(k));
-				}
-			}
-			System.out.println("DONE");
-		}
-		System.out.println("");
-		
-		*/
+		//System.out.println(" End of document");
+		dependencyAnalyzer.setAllClassesDependencies(classVector);
+		dependencyAnalyzer.setAllPackagesDependencies(packageVector);
 	}
 
 	/**
@@ -142,7 +112,30 @@ public class XmlParser extends DefaultHandler {
 	public void startElement (String uri, String name, String qName, Attributes attributes){
 
 		switch(qName){
+		
+		case "cycles":
+			//System.out.println(" *** Encountered cycles tag");
+			encounteredCyclesTag = true;
+			break;
+			
+		case "packageCycles":
+			//System.out.println(" *** Encountered packageCycles tag");
+			encounteredPackageCyclesTag = true;
+			break;
+		
 		case "class":
+			
+			if(encounteredCyclesTag){
+				encounteredCyclesTag = false; // turn it off to read info from classRef
+				//System.out.println(" *** Cycles tag is on");
+			}
+			else{
+				//System.out.println(" *** Cycles tag is off");
+			}
+			
+			//System.out.println(" *** Encountered a class with name: " + attributes.getValue("name"));
+			//System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
+			
 			// Create a new object
 			int usedBy = Integer.parseInt(attributes.getValue("usedBy"));
 			int uses = Integer.parseInt(attributes.getValue("usesInternal"));
@@ -154,6 +147,19 @@ public class XmlParser extends DefaultHandler {
 			break;
 
 		case "classRef":
+			
+			if(encounteredCyclesTag){
+				//System.out.println(" *** Cycles tag is on");
+				break;
+			}
+			else{
+				//System.out.println(" *** Cycles tag is off");
+			}
+			
+			
+			//System.out.println(" *** Encountered a classRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));
+
+			
 			String refName = attributes.getValue("name");
 			String refType = attributes.getValue("type");
 
@@ -172,6 +178,15 @@ public class XmlParser extends DefaultHandler {
 			break;
 
 		case "package":
+			
+			if(encounteredPackageCyclesTag){
+				//System.out.println(" *** Package cycles tag is on");
+				encounteredPackageCyclesTag = false; // turn it off to read info from packageRef;
+			}
+			else{
+				//System.out.println(" *** Package cycles tag is off");
+			}
+			
 			// Create a new PackageDependencyInfo object
 			int usedByP = Integer.parseInt(attributes.getValue("usedBy"));
 			int usesP = Integer.parseInt(attributes.getValue("usesInternal"));
@@ -183,6 +198,15 @@ public class XmlParser extends DefaultHandler {
 			break;
 
 		case "packageRef":
+			
+			if(encounteredPackageCyclesTag){
+				//System.out.println(" *** ref: Package cycles tag is on");
+				break;
+			}
+			else{
+				//System.out.println(" *** ref: Package cycles tag is off");
+			}
+			
 			String refPkgName = attributes.getValue("name");
 			String refPkgType = attributes.getValue("type");
 
@@ -242,22 +266,6 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
 	 */
 	public void characters (char ch[], int start, int length){
-	}
-	
-	/**
-	 * Returns a vector of ClassDependencyInfo objects.
-	 * Each object contains info on the given class dependencies.
-	 */
-	public Vector<ClassDependencyInfo> getClassesXmlSummary(){
-		return classVector;
-	}
-
-	/**
-	 * Returns a vector of PackageDependencyInfo objects.
-	 * Each object contains info on the given package dependencies.
-	 */
-	public Vector<PackageDependencyInfo> getPackagesXmlSummary(){
-		return packageVector;
 	}
 
 }

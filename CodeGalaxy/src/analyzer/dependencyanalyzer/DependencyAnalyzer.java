@@ -139,15 +139,15 @@ public class DependencyAnalyzer {
 						}
 					}
 					else{
-						System.out.println("Problem: Classycle did not exit correctly. Please try again.");
+						System.out.println("Problem: Classycle did not exit correctly. Please, try again.");
 					}
 				}
 				else{
-					System.out.println("Problem: Compiler did not exit correctly. Please try again.");
+					System.out.println("Problem: Compiler did not exit correctly. Please, try again.");
 				}
 			}
 			else{
-				System.out.println("Problem: Compiler string was not built right. Please try again.");
+				System.out.println("Problem: Compiler string was not built right. Please, try again.");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -181,7 +181,7 @@ public class DependencyAnalyzer {
 			if(command!= null){
 				proc = rt.exec(command);
 				exitValue = proc.waitFor();
-				System.out.println("Process exitValue: " + exitValue);
+				System.out.println("Process exit value: " + exitValue);
 
 				// Gatekeeper
 				if(XmlTestParserInProgress){
@@ -341,7 +341,7 @@ public class DependencyAnalyzer {
 						// --- 1. Extract String representations ---//
 						String fileNameStr = myFile.getName();
 						String pathStr = file.getParent().toString();
-						System.out.println(" File: " + fileNameStr + " at path: " + pathStr);
+						//System.out.println(" File: " + fileNameStr + " at path: " + pathStr);
 
 						// --- 2. Parse the strings into pieces (store in a vector) --- //
 
@@ -362,7 +362,7 @@ public class DependencyAnalyzer {
 					}
 				}
 				else{
-					System.out.println("Directory: " + myFile.getName());
+					//System.out.println("Directory: " + myFile.getName());
 					listJavaFiles(myFile.toPath());
 				}
 			}		
