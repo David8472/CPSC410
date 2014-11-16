@@ -20,9 +20,9 @@ public class MockXmlParserTest{
 	public void testClassUsedByVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test3.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+		analyzer = new DependencyAnalyzer();
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -43,9 +43,9 @@ public class MockXmlParserTest{
 	public void testClassUsesInternalVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test4.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+		analyzer = new DependencyAnalyzer();
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -66,9 +66,9 @@ public class MockXmlParserTest{
 	public void testPackageUsedByVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test5.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+		analyzer = new DependencyAnalyzer();
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}
@@ -89,9 +89,9 @@ public class MockXmlParserTest{
 	public void testPackageUsesInternalVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test6.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+		analyzer = new DependencyAnalyzer();
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
 			fail();
 		}

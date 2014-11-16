@@ -1,6 +1,7 @@
 package analyzer.dependencyanalyzer;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,56 +14,111 @@ public class DependencyAnalyzerTest{
 	private DependencyAnalyzer analyzer;
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
-	 * 		given the correct command string.
-	 * 0 = successful exit, non-zero = error.
+	 * Tests if the component compiles and analyzes the code correctly
+	 * 		given a valid path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: valid path string.
+	 * Expected output: Compiler and Classycle run successfully.
 	 */
 	@Test
-	public void succesfulExitValueTest(){
-		// given
-		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test1.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+	public void successfulPathTest(){
+		//given
+		analyzer = new DependencyAnalyzer("test_resources/fruit");
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycle();
 		//then
-		if(analyzer.getExitStatus() != 0){
+		if(analyzer.getCompilerExitStatus() !=0 || analyzer.getClassycleExitStatus() != 0){
 			fail();
 		}
-		assertEquals(analyzer.getExitStatus(), 0);
+		assertEquals(analyzer.getClassycleExitStatus(), 0);
+		assertEquals(analyzer.getCompilerExitStatus(), 0);
 	}
 
 	/**
-	 * Tests if the command executed in a separate process exited correctly
-	 * 			given the incorrect command string.
+	 * Tests if the component compiles and analyzes the code correctly
+	 * 		given an invalid path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: invalid path string.
+	 * Expected output: Invalid path raises an exception.
+	 * 					Compiler and Classycle are not able to run successfully.
 	 */
 	@Test
-	public void failExitValueTest(){
-		// given
-		String commandStr = "java -jar classycle\\classyce.jar -xmlFile=test2.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer(commandStr);
+	public void noSuchFileExceptionTest(){
+		//given
+		analyzer = new DependencyAnalyzer("test_resources/somefolder");
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycle();
 		//then
-		if(analyzer.getExitStatus() == 0){
+		if(analyzer.getCompilerExitStatus() == 0 || analyzer.getClassycleExitStatus() == 0){
 			fail();
 		}
-		assertEquals(analyzer.getExitStatus(), 1);
+		assertNotEquals(analyzer.getCompilerExitStatus(), 0);
+		assertNotEquals(analyzer.getClassycleExitStatus(), 0);
 	}
 
 	/**
-	 * Tests the analyzer given the null command string;
+	 * Tests if the component compiles and analyzes the code correctly
+	 * 		given a null path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: null path string.
+	 * Expected output: Null path terminates the component in a graceful way.
+	 * 					Compiler and Classycle are not able to run successfully.
 	 */
 	@Test
-	public void nullCommandTest(){
-		// given
-		String commandStr = null;
-		analyzer = new DependencyAnalyzer(commandStr);
+	public void nullPathTest(){
+		//given
+		analyzer = new DependencyAnalyzer(null);
 		//when
-		analyzer.runClassycleWithCommand();
+		analyzer.runClassycle();
 		//then
-		if(analyzer.getExitStatus() == 0){
+		if(analyzer.getCompilerExitStatus() == 0 || analyzer.getClassycleExitStatus() == 0){
 			fail();
 		}
-		assertEquals(analyzer.getExitStatus(), -1);
+		assertNotEquals(analyzer.getCompilerExitStatus(), 0);
+		assertNotEquals(analyzer.getClassycleExitStatus(), 0);
 	}
+
+	/**
+	 * Tests if the component compiles and analyzes the code correctly
+	 * 		given an empty path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: empty path string.
+	 * Expected output: Empty path terminates the component in a graceful way.
+	 * 					Compiler and Classycle are not able to run successfully.
+	 */
+	@Test
+	public void emptyPathTest(){
+		//given
+		analyzer = new DependencyAnalyzer("");
+		//when
+		analyzer.runClassycle();
+		//then
+		if(analyzer.getCompilerExitStatus() == 0 || analyzer.getClassycleExitStatus() == 0){
+			fail();
+		}
+		assertNotEquals(analyzer.getCompilerExitStatus(), 0);
+		assertNotEquals(analyzer.getClassycleExitStatus(), 0);
+	}
+
+	/**
+	 * Tests if the compiler fails given an incorrect path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: path that contains multiple code bases.
+	 * Expected output: Incorrect path terminates the component in a graceful way.
+	 * 					Compiler is not able to run successfully.
+	 */
+	@Test
+	public void compilerFailTest(){
+		//given
+		analyzer = new DependencyAnalyzer("test_resources");
+		//when
+		analyzer.runClassycle();
+		//then
+		if(analyzer.getCompilerExitStatus() == 0){
+			fail();
+		}
+		assertNotEquals(analyzer.getCompilerExitStatus(), 0);
+		assertNotEquals(analyzer.getClassycleExitStatus(), 0);
+	}
+
 }
