@@ -26,7 +26,11 @@ public class GlobalController {
     	
     	for(int i = 0; i<commitAnalyzerInfo.size() ; i++){
     		commitCheckout.checkout(commitAnalyzerInfo.get(i).getCommitID());
+    		//TODO
+    		//Miscellaneous Analysis
+    		//Dependency Analysis
     	}
+    	commitCheckout.resetHeadToMaster();
     }
 
 }
