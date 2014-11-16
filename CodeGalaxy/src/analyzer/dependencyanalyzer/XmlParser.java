@@ -100,7 +100,6 @@ public class XmlParser extends DefaultHandler {
 	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
 	 */
 	public void endDocument(){
-		//System.out.println(" End of document");
 		dependencyAnalyzer.setAllClassesDependencies(classVector);
 		dependencyAnalyzer.setAllPackagesDependencies(packageVector);
 	}

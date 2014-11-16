@@ -102,7 +102,7 @@ public class DependencyAnalyzer {
 				// ------- Run the Javac compiler ----------//
 				proc = rt.exec(compilerCommand);
 				compilerExitValue = proc.waitFor();
-				System.out.println("Process exit value: " + compilerExitValue);
+				System.out.println("Compiler process exit value: " + compilerExitValue);
 
 				if(compilerExitValue == 0){ // process exited successfully
 
@@ -128,14 +128,6 @@ public class DependencyAnalyzer {
 							System.out.println("Using a real XML Parser...");
 							XmlParser realParser = new XmlParser(this);
 							realParser.startXmlParser("samplereport.xml", this);
-							
-							System.out.println(" ");
-							System.out.println("***** ORIGINAL DA *****");
-							printClassSummary();
-							System.out.println(" ");
-							printPackageSummary();
-							System.out.println("***** END ORIGINAL DA *****");
-							System.out.println(" ");
 						}
 					}
 					else{
