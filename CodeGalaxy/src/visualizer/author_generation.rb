@@ -1,7 +1,7 @@
 ###########################################################
 # Helper method to generate author ship
 ###########################################################
-def author_ship_gen(author_hash, max_dist) 
+def author_ship_gen(author_hash, max_dist, probe_list) 
     text = "// Author ship for #{author_hash[:author]}
 var #{author_hash[:author].gsub(" ", "_")} = new Ship({
     material: new THREE.SpriteMaterial({map: author_texture, color: 0xffffff, fog: true}),
@@ -41,5 +41,23 @@ authors[authors.length] = #{author_hash[:author].gsub(" ", "_")};
 scene.add(#{author_hash[:author].gsub(" ", "_")}.spr);
 #{author_hash[:author].gsub(" ", "_")}.initializeAuthor(#{max_dist[:z] + 1});
 #{author_hash[:author].gsub(" ", "_")}.spr.scale.set(4,4,4);\n\n"
+    return text
+end
+
+###########################################################
+# Helper method to generate probes
+###########################################################
+def probe_ship_gen(probe_count, probe_array)
+    text = ""
+    probe_count.times.with_index do |v|
+        temp = ("a".."zz").to_a[v]
+        text += "var author_probe_#{temp} = new Ship({
+    material: new THREE.SpriteMaterial({map: probe_texture, color: 0xffffff, fog: true}),
+    dis_at_end: true
+});
+scene.add(author_probe_#{temp}.spr);
+probes[probes.length] = author_probe_#{temp};\n\n"
+        probe_array.push("author_probe_#{temp}")
+    end
     return text
 end

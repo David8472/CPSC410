@@ -176,9 +176,10 @@ ARGV.each do |filename|
     # Generate Author Ships #
     #########################
     authors = {}
+    max_probes = 0
     commit_keys.each do |commit_key|
         if(authors[data[commit_key]["author"]].nil?)
-            authors[data[commit_key]["author"]] = {author: data[commit_key]["author"], commits: [], max_ships: 0}
+            authors[data[commit_key]["author"]] = {author: data[commit_key]["author"], commits: []}
         end
         temp = []
         data[commit_key]["modified"].each do |key, value|
@@ -205,7 +206,7 @@ ARGV.each do |filename|
             temp.push({indexed_name: map["indexed_name"], magnitude: value.values.inject(:+)
             })
         end
-        authors[data[commit_key]["author"]][:max_ships] = (authors[data[commit_key]["author"]][:max_ships] < temp.length) ? temp.length : authors[data[commit_key]["author"]][:max_ships]
+        max_probes = (max_probes < temp.length) ? temp.length : max_probes
         authors[data[commit_key]["author"]][:commits].push(temp.sort{|x, y| -(x[:magnitude] <=> y[:magnitude])})
         authors.keys.each do |author_key|
             unless(author_key == data[commit_key]["author"])
@@ -213,8 +214,10 @@ ARGV.each do |filename|
             end
         end
     end
+    probes = []
+    output += probe_ship_gen(max_probes, probes)
     authors.each_value do |map|
-        output += author_ship_gen(map, total_dist)
+        output += author_ship_gen(map, total_dist, probes)
     end
     output += html_end(total_dist)
     # Generate HTML file

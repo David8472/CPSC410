@@ -10,10 +10,10 @@ def html_start (title)
 </head>
 <body>
 #{(debug)? "<div id=\"debug\"></div>" : ""}
-<input type=\"button\" id=\"ppbutton\" onClick=\"pause_or_unpause()\" value=\"Play\"></button>
+<input type=\"button\" id=\"ppbutton\" onClick=\"pause_or_unpause()\" value=\"Play\"></input>
 <input type=\"range\" id=\"speedslider\" onChange=\"update_speed()\" max=7 defaultValue=3></input>
 <input type=\"text\" disabled=\"true\" id=\"speedtext\"></input>
-<input type=\"button\" id=\"resetb\" onClick=\"restart()\" value=\"Restart\"></button>
+<input type=\"button\" id=\"resetb\" onClick=\"restart()\" value=\"Restart\"></input>
 <script src=\"js/three.min.js\"></script>
 <script src=\"js/OrbitControls.js\"></script>
 <script src=\"js/Galaxy.js\"></script>
@@ -26,7 +26,7 @@ def html_start (title)
 var scene = new THREE.Scene(); 
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000); 
 var renderer = new THREE.WebGLRenderer(); 
-renderer.setSize(window.innerWidth, window.innerHeight); 
+renderer.setSize(window.innerWidth*0.9, window.innerHeight*0.9); 
 document.body.appendChild(renderer.domElement); 
 var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
 var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');
@@ -34,7 +34,8 @@ var trade_texture = THREE.ImageUtils.loadTexture('textures/trade_ship.png');
 var author_texture = THREE.ImageUtils.loadTexture('textures/author_ufo.png');
 var probe_texture = THREE.ImageUtils.loadTexture('textures/probe_ufo.png');
 var celestials = [];
-var authors = [];\n\n
+var authors = [];
+var probes = [];\n\n
 
 var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 cameraControls.maxDistance = 1500;
@@ -90,6 +91,9 @@ var render = function () {
     }
     for(index = 0; index < authors.length; index++) {
         authors[index].updatepos(t, speed_val);
+    }
+    for(index = 0; index < probes.length; index++) {
+        probes[index].updatepos(t, speed_val);
     }
     renderer.render(scene, camera); 
     t += speed_val * speed_base;
