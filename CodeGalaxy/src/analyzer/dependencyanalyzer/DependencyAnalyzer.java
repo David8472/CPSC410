@@ -2,14 +2,12 @@ package analyzer.dependencyanalyzer;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Vector;
 
-import org.xml.sax.SAXException;
 
 /**
  * Dependency reporter based on the Classycle tool.
@@ -18,12 +16,12 @@ import org.xml.sax.SAXException;
  */
 public class DependencyAnalyzer {
 
-	private static String command;
 	private static int exitValue;
 	private static MockXmlParser parser;
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 	private static boolean XmlParserInProgress = false;
+	private static boolean XmlTestParserInProgress = true;
 	private static String compilerCommand;
 	private static Vector<String> fileAddresses;
 	private static String sourceCodePath;
@@ -152,13 +150,11 @@ public class DependencyAnalyzer {
 				System.out.println("Problem: Compiler string was not built right. Please try again.");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch(IllegalThreadStateException e){
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XmlParserException e) {
 			System.err.println("XML Parser did not run successfully. Please, try again.");
@@ -188,7 +184,7 @@ public class DependencyAnalyzer {
 				System.out.println("Process exitValue: " + exitValue);
 
 				// Gatekeeper
-				if(XmlParserInProgress){
+				if(XmlTestParserInProgress){
 					parser = new MockXmlParser();
 					parser = new MockXmlParser();
 					parser.analyzeXmlClassInfo();
@@ -199,7 +195,6 @@ public class DependencyAnalyzer {
 					printPackageSummary();
 				}
 				else{
-					//XmlParser realParser = new XmlParser();
 					System.out.println("Using a real XML Parser...");
 				}
 			}
@@ -207,13 +202,11 @@ public class DependencyAnalyzer {
 				exitValue = -1;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch(IllegalThreadStateException e){
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
