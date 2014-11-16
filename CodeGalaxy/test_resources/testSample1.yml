@@ -1,0 +1,192 @@
+commit_0:
+    author: MrPopo
+    modified:
+        people.Person:
+            lines_added: 20
+        people.Superhero:
+            lines_added: 20
+        shape.Triangle:
+            lines_added: 20
+        shape.Shape:
+            lines_added: 100
+    removed: shape.Polygon
+    present:
+        packages:
+            shape:
+                lines: 120
+                packageDependencies:
+                    PackagesDependedOn: 
+                    PackagesThatDependOnThisPackage: 
+                classes:
+                    Triangle:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:
+                            uses:
+                            usedBy:
+                                Superhero:
+                                    package: people
+                    Shape:
+                        lines: 100
+                        type: Interface
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                            method2:
+                                lines: 10
+                                accessorType: private
+                            method3:
+                                lines: 10
+                                accessorType: public
+                            method4:
+                                lines: 10
+                                accessorType: protected
+                            method5:
+                                lines: 10
+                                accessorType: private
+                            method6:
+                                lines: 10
+                                accessorType: public
+                            method7:
+                                lines: 10
+                                accessorType: protected
+                            method8:
+                                lines: 10
+                                accessorType: private
+                            method9:
+                                lines: 10
+                                accessorType: public
+                        dependencies:
+                            uses:
+                            usedBy:
+                                Person:
+                                    package: people
+            people:
+                lines: 40
+                packageDependencies:
+                    PackagesDependedOn: shape
+                    PackagesThatDependOnThisPackage: shape
+                classes:
+                    Person:
+                        lines: 20
+                        type: Abstract
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:
+                            uses:
+                                Shape:
+                                    package: shape
+                            usedBy:
+                    Superhero:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:
+                            uses:
+                                Triangle:
+                                    package: shape
+                            usedBy:
+commit_1:
+    author: Heisenberg
+    modified:
+    removed: 
+    present:
+        packages:
+            shape:
+                lines: 120
+                packageDependencies:
+                classes:
+                    Triangle:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:
+                    Shape:
+                        lines: 100
+                        type: Interface
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                            method2:
+                                lines: 10
+                                accessorType: private
+                            method3:
+                                lines: 10
+                                accessorType: public
+                            method4:
+                                lines: 10
+                                accessorType: protected
+                            method5:
+                                lines: 10
+                                accessorType: private
+                            method6:
+                                lines: 10
+                                accessorType: public
+                            method7:
+                                lines: 10
+                                accessorType: protected
+                            method8:
+                                lines: 10
+                                accessorType: private
+                            method9:
+                                lines: 10
+                                accessorType: public
+                        dependencies:
+            people:
+                lines: 40
+                packageDependencies:
+                classes:
+                    Person:
+                        lines: 20
+                        type: Abstract
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:
+                    Superhero:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            method0:
+                                lines: 10
+                                accessorType: public
+                            method1:
+                                lines: 10
+                                accessorType: protected
+                        dependencies:

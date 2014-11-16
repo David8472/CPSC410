@@ -3,10 +3,12 @@ package analyzer.dataaggregator;
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
 import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
+import analyzer.miscstaticanalyzer.ClassInfo;
 import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -18,158 +20,189 @@ public class MockSampleData {
     private Vector<PackageDependencyInfo> packageDependencyInfos;
     private Vector<ClassDependencyInfo> classDependencyInfos;
     private CommitAnalyzerInfo commitMetaInfo;
+    private HashMap<String, Integer> classesChangedWithLOCChanges;
+    private ArrayList<String> removedClasses;
 
     protected MockSampleData() {
-        setSampleData1();
+        setSampleCommitData();
     }
 
 
     // DEFAULT
-    protected void setSampleData1() {
+    protected void setSampleCommitData() {
 
-        //******* COMMIT ANALYZER INFO ***************
-        String[] addedFilenames = {"package0.Class0.java", "package0.Class1.java", "package1.Class0.java", "package1.Class1.java"};
-        String[] deletedFilenames = {"deletedpackage.DeletedClass0.java", "deletedpackage.DeletedClass1.java", "deletedpackage.DeletedClass2.java", "deletedpackage.DeletedClass3.java"};
+        /* Commit author and number */
+        commitMetaInfo = MockDataCreator.createMockCommitAnalyzerInfo(0, "MrPopo");
 
-        ArrayList<String> addedFiles = new ArrayList<String>(Arrays.asList(addedFilenames));
-        ArrayList<String> deletedFiles = new ArrayList<String>(Arrays.asList(deletedFilenames));
+        /* Shape package information */
+        ArrayList<ClassInfo> classesInShapePkg = new ArrayList<ClassInfo>();
+        ClassInfo triangleClass = MockDataCreator.createMockClassInfo("Triangle", "shape", "Concrete", 2);
+        classesInShapePkg.add(triangleClass);
+        ClassInfo squareClass = MockDataCreator.createMockClassInfo("Shape", "shape", "Interface", 0);
+        classesInShapePkg.add(squareClass);
+        PackageInfo shapePkg = MockDataCreator.createMockPackageInfoWithListOfClasses("shape", classesInShapePkg);
 
-        commitMetaInfo = MockDataCreator.createMockCommitAnalyzerInfo(0, "MrPopo", addedFiles, deletedFiles);
-        //******* END OF COMMIT ANALYZER INFO ***************
+        /* People package information */
+        ArrayList<ClassInfo> classesInPeoplePkg = new ArrayList<ClassInfo>();
+        ClassInfo personClass = MockDataCreator.createMockClassInfo("Person", "people", "Abstract", 2);
+        classesInPeoplePkg.add(personClass);
+        ClassInfo superheroClass = MockDataCreator.createMockClassInfo("Superhero", "people", "Concrete", 2);
+        classesInPeoplePkg.add(superheroClass);
+        PackageInfo peoplePkg = MockDataCreator.createMockPackageInfoWithListOfClasses("people", classesInPeoplePkg);
 
+        packages = new ArrayList<PackageInfo>();
+        packages.add(shapePkg);
+        packages.add(peoplePkg);
 
-        //******* PACKAGE INFO ******************
-        packages = MockDataCreator.createMockListOfPackageInfo(2, 2, 5);
-        //******* END OF PACKAGE INFO ******************
+        /* Changed Classes */
+        classesChangedWithLOCChanges = new HashMap<String, Integer>();
+        for(ClassInfo classInfo : classesInShapePkg) {
+            String className = classInfo.getPackageName() + "." + classInfo.getClassName();
+            classesChangedWithLOCChanges.put(className, classInfo.getLinesOfCode());
+        }
+        for(ClassInfo classInfo : classesInPeoplePkg) {
+            String className = classInfo.getPackageName() + "." + classInfo.getClassName();
+            classesChangedWithLOCChanges.put(className, classInfo.getLinesOfCode());
+        }
 
+        /* Removed Classes */
+        removedClasses = new ArrayList<String>();
+        removedClasses.add("shape.Polygon");
 
-        //******* PACKAGE DEPENDENCY INFO *************
-        Vector<String> usesForPkg0 = new Vector<String>();
-        usesForPkg0.add("package1");
-        Vector<String> usedByForPkg0 = new Vector<String>();
-        usedByForPkg0.add("package1");
+        /* Package Dependency Info */
+        Vector<String> usesForShapePkg = new Vector<String>();
+        Vector<String> usedByForShapePkg = new Vector<String>();
+        usedByForShapePkg.add("people");
 
-        Vector<String> usesForPkg1 = new Vector<String>();
-        usesForPkg1.add("package0");
-        Vector<String> usedByForPkg1 = new Vector<String>();
-        usedByForPkg1.add("package0");
+        Vector<String> usesForPeoplePkg = new Vector<String>();
+        usesForPeoplePkg.add("shape");
+        Vector<String> usedByForPeoplePkg = new Vector<String>();
 
-        PackageDependencyInfo pkgDependencyInfo0 = MockDataCreator.createMockPackageDependencyInfo("package0",
-                usesForPkg0, usedByForPkg0);
-        PackageDependencyInfo pkgDependencyInfo1 = MockDataCreator.createMockPackageDependencyInfo("package1",
-                usesForPkg1, usedByForPkg1);
-
-        packageDependencyInfos = new Vector<PackageDependencyInfo>();
-        packageDependencyInfos.add(pkgDependencyInfo0);
-        packageDependencyInfos.add(pkgDependencyInfo1);
-        //********* END OF PACKAGE DEPENDENCY INFO ***************
-
-        //******* CLASS DEPENDENCY INFO ***********
-        Vector<String> usesForClass0Pkg0 = new Vector<String>();
-        usesForClass0Pkg0.add("package0.Class1");
-        usesForClass0Pkg0.add("package1.Class1");
-        Vector<String> usedByForClass0Pkg0 = new Vector<String>();
-        ClassDependencyInfo class0Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg0, usedByForClass0Pkg0);
-
-        Vector<String> usesForClass1Pkg0 = new Vector<String>();
-        usesForClass1Pkg0.add("package1.Class0");
-        Vector<String> usedByForClass1Pkg0 = new Vector<String>();
-        usedByForClass1Pkg0.add("package0.Class0");
-        ClassDependencyInfo class1Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg0, usedByForClass1Pkg0);
-
-        Vector<String> usesForClass0Pkg1 = new Vector<String>();
-        usesForClass0Pkg1.add("package1.Class1");
-        Vector<String> usedByForClass0Pkg1 = new Vector<String>();
-        usedByForClass0Pkg1.add("package0.Class1");
-        ClassDependencyInfo class0Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg1, usedByForClass0Pkg1);
-
-        Vector<String> usesForClass1Pkg1 = new Vector<String>();
-        Vector<String> usedByForClass1Pkg1 = new Vector<String>();
-        usedByForClass1Pkg1.add("package1.Class0");
-        usedByForClass1Pkg1.add("package0.Class0");
-        ClassDependencyInfo class1Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg1, usedByForClass1Pkg1);
-
-        classDependencyInfos = new Vector<ClassDependencyInfo>();
-        classDependencyInfos.add(class0Pkg0DependencyInfo);
-        classDependencyInfos.add(class1Pkg0DependencyInfo);
-        classDependencyInfos.add(class0Pkg1DependencyInfo);
-        classDependencyInfos.add(class1Pkg1DependencyInfo);
-        //******* END OF CLASS DEPENDENCY INFO ***********
-    }
-
-    // SAMPLE DATA 2
-    protected void setSampleData1a() {
-
-        //******* COMMIT ANALYZER INFO ***************
-        String[] addedFilenames = {"package0.Class0.java", "package0.Class1.java", "package1.Class0.java", "package1.Class1.java"};
-        String[] deletedFilenames = {"deletedpackage.DeletedClass0.java", "deletedpackage.DeletedClass1.java", "deletedpackage.DeletedClass2.java", "deletedpackage.DeletedClass3.java"};
-
-        ArrayList<String> addedFiles = new ArrayList<String>(Arrays.asList(addedFilenames));
-        ArrayList<String> deletedFiles = new ArrayList<String>(Arrays.asList(deletedFilenames));
-
-        commitMetaInfo = MockDataCreator.createMockCommitAnalyzerInfo(1, "WalterWhite", addedFiles, deletedFiles);
-        //******* END OF COMMIT ANALYZER INFO ***************
-
-
-        //******* PACKAGE INFO ******************
-        packages = MockDataCreator.createMockListOfPackageInfo(2, 2, 5);
-        //******* END OF PACKAGE INFO ******************
-
-
-        //******* PACKAGE DEPENDENCY INFO *************
-        Vector<String> usesForPkg0 = new Vector<String>();
-        usesForPkg0.add("package1");
-        Vector<String> usedByForPkg0 = new Vector<String>();
-        usedByForPkg0.add("package1");
-
-        Vector<String> usesForPkg1 = new Vector<String>();
-        usesForPkg1.add("package0");
-        Vector<String> usedByForPkg1 = new Vector<String>();
-        usedByForPkg1.add("package0");
-
-        PackageDependencyInfo pkgDependencyInfo0 = MockDataCreator.createMockPackageDependencyInfo("package0",
-                usesForPkg0, usedByForPkg0);
-        PackageDependencyInfo pkgDependencyInfo1 = MockDataCreator.createMockPackageDependencyInfo("package1",
-                usesForPkg1, usedByForPkg1);
+        PackageDependencyInfo pkgDependencyInfo0 = MockDataCreator.createMockPackageDependencyInfo("shape",
+                usesForShapePkg, usedByForShapePkg);
+        PackageDependencyInfo pkgDependencyInfo1 = MockDataCreator.createMockPackageDependencyInfo("people",
+                usesForPeoplePkg, usedByForPeoplePkg);
 
         packageDependencyInfos = new Vector<PackageDependencyInfo>();
         packageDependencyInfos.add(pkgDependencyInfo0);
         packageDependencyInfos.add(pkgDependencyInfo1);
-        //********* END OF PACKAGE DEPENDENCY INFO ***************
 
-        //******* CLASS DEPENDENCY INFO ***********
-        Vector<String> usesForClass0Pkg0 = new Vector<String>();
-        usesForClass0Pkg0.add("package0.Class1");
-        usesForClass0Pkg0.add("package1.Class1");
-        Vector<String> usedByForClass0Pkg0 = new Vector<String>();
-        ClassDependencyInfo class0Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg0, usedByForClass0Pkg0);
 
-        Vector<String> usesForClass1Pkg0 = new Vector<String>();
-        usesForClass1Pkg0.add("package1.Class0");
-        Vector<String> usedByForClass1Pkg0 = new Vector<String>();
-        usedByForClass1Pkg0.add("package0.Class0");
-        ClassDependencyInfo class1Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg0, usedByForClass1Pkg0);
+        /* Class Dependency Info */
+        Vector<String> usesForTriangleClass = new Vector<String>();
+        Vector<String> usedByForTriangleClass = new Vector<String>();
+        usedByForTriangleClass.add("people.Superhero");
+        ClassDependencyInfo triangleClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("shape.Triangle",
+                usesForTriangleClass, usedByForTriangleClass);
 
-        Vector<String> usesForClass0Pkg1 = new Vector<String>();
-        usesForClass0Pkg1.add("package1.Class1");
-        Vector<String> usedByForClass0Pkg1 = new Vector<String>();
-        usedByForClass0Pkg1.add("package0.Class1");
-        ClassDependencyInfo class0Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg1, usedByForClass0Pkg1);
+        Vector<String> usesForShapeClass = new Vector<String>();
+        Vector<String> usedByForShapeClass = new Vector<String>();
+        usedByForShapeClass.add("people.Person");
+        ClassDependencyInfo shapeClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("shape.Shape",
+                usesForShapeClass, usedByForShapeClass);
 
-        Vector<String> usesForClass1Pkg1 = new Vector<String>();
-        Vector<String> usedByForClass1Pkg1 = new Vector<String>();
-        usedByForClass1Pkg1.add("package1.Class0");
-        usedByForClass1Pkg1.add("package0.Class0");
-        ClassDependencyInfo class1Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg1, usedByForClass1Pkg1);
+        Vector<String> usesForPersonClass = new Vector<String>();
+        usesForPersonClass.add("shape.Shape");
+        Vector<String> usedByForPersonClass = new Vector<String>();
+        ClassDependencyInfo personClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("people.Person",
+                usesForPersonClass, usedByForPersonClass);
+
+        Vector<String> usesForSuperheroClass = new Vector<String>();
+        usesForSuperheroClass.add("shape.Triangle");
+        Vector<String> usedByForSuperheroClass = new Vector<String>();
+        ClassDependencyInfo superHeroClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("people.Superhero",
+                usesForSuperheroClass, usedByForSuperheroClass);
 
         classDependencyInfos = new Vector<ClassDependencyInfo>();
-        classDependencyInfos.add(class0Pkg0DependencyInfo);
-        classDependencyInfos.add(class1Pkg0DependencyInfo);
-        classDependencyInfos.add(class0Pkg1DependencyInfo);
-        classDependencyInfos.add(class1Pkg1DependencyInfo);
-        //******* END OF CLASS DEPENDENCY INFO ***********
+        classDependencyInfos.add(triangleClassDependencyInfo);
+        classDependencyInfos.add(shapeClassDependencyInfo);
+        classDependencyInfos.add(personClassDependencyInfo);
+        classDependencyInfos.add(superHeroClassDependencyInfo);
     }
 
+
+    protected void setSampleCommitData2() {
+
+        /* Commit author and number */
+        commitMetaInfo = MockDataCreator.createMockCommitAnalyzerInfo(1, "Heisenberg");
+
+        /* Shape package information */
+        ArrayList<ClassInfo> classesInShapePkg = new ArrayList<ClassInfo>();
+        ClassInfo triangleClass = MockDataCreator.createMockClassInfo("Triangle", "shape", "Concrete", 2);
+        classesInShapePkg.add(triangleClass);
+        ClassInfo squareClass = MockDataCreator.createMockClassInfo("Shape", "shape", "Interface", 0);
+        classesInShapePkg.add(squareClass);
+        PackageInfo shapePkg = MockDataCreator.createMockPackageInfoWithListOfClasses("shape", classesInShapePkg);
+
+        /* People package information */
+        ArrayList<ClassInfo> classesInPeoplePkg = new ArrayList<ClassInfo>();
+        ClassInfo personClass = MockDataCreator.createMockClassInfo("Person", "people", "Abstract", 2);
+        classesInPeoplePkg.add(personClass);
+        ClassInfo superheroClass = MockDataCreator.createMockClassInfo("Superhero", "people", "Concrete", 2);
+        classesInPeoplePkg.add(superheroClass);
+        PackageInfo peoplePkg = MockDataCreator.createMockPackageInfoWithListOfClasses("people", classesInPeoplePkg);
+
+        packages = new ArrayList<PackageInfo>();
+        packages.add(shapePkg);
+        packages.add(peoplePkg);
+
+        /* Changed Classes */
+        classesChangedWithLOCChanges = new HashMap<String, Integer>();
+
+        /* Removed Classes */
+        removedClasses = new ArrayList<String>();
+
+        /* Package Dependency Info */
+        Vector<String> usesForShapePkg = new Vector<String>();
+        Vector<String> usedByForShapePkg = new Vector<String>();
+        usedByForShapePkg.add("people");
+
+        Vector<String> usesForPeoplePkg = new Vector<String>();
+        usesForPeoplePkg.add("shape");
+        Vector<String> usedByForPeoplePkg = new Vector<String>();
+
+        PackageDependencyInfo pkgDependencyInfo0 = MockDataCreator.createMockPackageDependencyInfo("package0",
+                usesForShapePkg, usedByForShapePkg);
+        PackageDependencyInfo pkgDependencyInfo1 = MockDataCreator.createMockPackageDependencyInfo("package1",
+                usesForPeoplePkg, usedByForPeoplePkg);
+
+        packageDependencyInfos = new Vector<PackageDependencyInfo>();
+        packageDependencyInfos.add(pkgDependencyInfo0);
+        packageDependencyInfos.add(pkgDependencyInfo1);
+
+
+        /* Class Dependency Info */
+        Vector<String> usesForTriangleClass = new Vector<String>();
+        Vector<String> usedByForTriangleClass = new Vector<String>();
+        usedByForTriangleClass.add("people.Superhero");
+        ClassDependencyInfo triangleClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0",
+                usesForTriangleClass, usedByForTriangleClass);
+
+        Vector<String> usesForShapeClass = new Vector<String>();
+        Vector<String> usedByForShapeClass = new Vector<String>();
+        usedByForShapeClass.add("people.Person");
+        ClassDependencyInfo shapeClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1",
+                usesForShapeClass, usedByForShapeClass);
+
+        Vector<String> usesForPersonClass = new Vector<String>();
+        usesForPersonClass.add("shape.Shape");
+        Vector<String> usedByForPersonClass = new Vector<String>();
+        ClassDependencyInfo personClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0",
+                usesForPersonClass, usedByForPersonClass);
+
+        Vector<String> usesForSuperheroClass = new Vector<String>();
+        usesForSuperheroClass.add("shape.Triangle");
+        Vector<String> usedByForSuperheroClass = new Vector<String>();
+        ClassDependencyInfo superHeroClassDependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1",
+                usesForSuperheroClass, usedByForSuperheroClass);
+
+        classDependencyInfos = new Vector<ClassDependencyInfo>();
+        classDependencyInfos.add(triangleClassDependencyInfo);
+        classDependencyInfos.add(shapeClassDependencyInfo);
+        classDependencyInfos.add(personClassDependencyInfo);
+        classDependencyInfos.add(superHeroClassDependencyInfo);
+
+    }
 
 
     public ArrayList<PackageInfo> getPackages() {
@@ -186,5 +219,13 @@ public class MockSampleData {
 
     public CommitAnalyzerInfo getCommitMetaInfo() {
         return commitMetaInfo;
+    }
+
+    public HashMap<String, Integer> getClassesChangedWithLOCChanges() {
+        return classesChangedWithLOCChanges;
+    }
+
+    public ArrayList<String> getRemovedClasses() {
+        return removedClasses;
     }
 }

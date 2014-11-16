@@ -7,6 +7,7 @@ import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
 import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -23,7 +24,7 @@ public class DataAggregatorTest {
 
     private static void testSample1Data() {
 
-        DataAggregator dataAggregator = new DataAggregator("testSample1.yml");
+        DataAggregator dataAggregator = new DataAggregator("test_resources/testSample1.yml");
 
         // 1st commit
         MockSampleData sampleData1 = new MockSampleData();
@@ -31,15 +32,21 @@ public class DataAggregatorTest {
         Vector<PackageDependencyInfo> packageDependencyInfoVector = sampleData1.getPackageDependencyInfos();
         Vector<ClassDependencyInfo> classDependencyInfoVector = sampleData1.getClassDependencyInfos();
         CommitAnalyzerInfo commitMetaData = sampleData1.getCommitMetaInfo();
-        dataAggregator.writeCommitDataToYAMLFile(commitMetaData, packageInfos, packageDependencyInfoVector, classDependencyInfoVector);
+        HashMap<String, Integer> changedClasses = sampleData1.getClassesChangedWithLOCChanges();
+        ArrayList<String> removedClasses = sampleData1.getRemovedClasses();
+
+        dataAggregator.writeCommitDataToYAMLFile(commitMetaData, packageInfos, changedClasses, removedClasses, packageDependencyInfoVector, classDependencyInfoVector);
 
         // 2nd commit
-        sampleData1.setSampleData1a();
+        sampleData1.setSampleCommitData2();
         packageInfos = sampleData1.getPackages();
         packageDependencyInfoVector = sampleData1.getPackageDependencyInfos();
         classDependencyInfoVector = sampleData1.getClassDependencyInfos();
         commitMetaData = sampleData1.getCommitMetaInfo();
-        dataAggregator.writeCommitDataToYAMLFile(commitMetaData, packageInfos, packageDependencyInfoVector, classDependencyInfoVector);
+        changedClasses = sampleData1.getClassesChangedWithLOCChanges();
+        removedClasses = sampleData1.getRemovedClasses();
+
+        dataAggregator.writeCommitDataToYAMLFile(commitMetaData, packageInfos, changedClasses, removedClasses, packageDependencyInfoVector, classDependencyInfoVector);
     }
 
 
