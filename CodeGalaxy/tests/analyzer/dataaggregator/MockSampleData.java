@@ -28,8 +28,8 @@ public class MockSampleData {
     protected void setSampleData1() {
 
         //******* COMMIT ANALYZER INFO ***************
-        String[] addedFilenames = {"Class0", "Class1", "Class0", "Class1"};
-        String[] deletedFilenames = {"DeletedClass0", "DeletedClass1", "DeletedClass2", "DeletedClass3"};
+        String[] addedFilenames = {"package0.Class0.java", "package0.Class1.java", "package1.Class0.java", "package1.Class1.java"};
+        String[] deletedFilenames = {"deletedpackage.DeletedClass0.java", "deletedpackage.DeletedClass1.java", "deletedpackage.DeletedClass2.java", "deletedpackage.DeletedClass3.java"};
 
         ArrayList<String> addedFiles = new ArrayList<String>(Arrays.asList(addedFilenames));
         ArrayList<String> deletedFiles = new ArrayList<String>(Arrays.asList(deletedFilenames));
@@ -66,26 +66,27 @@ public class MockSampleData {
 
         //******* CLASS DEPENDENCY INFO ***********
         Vector<String> usesForClass0Pkg0 = new Vector<String>();
-        usesForClass0Pkg0.add("Class1");
+        usesForClass0Pkg0.add("package0.Class1");
+        usesForClass0Pkg0.add("package1.Class1");
         Vector<String> usedByForClass0Pkg0 = new Vector<String>();
-        usedByForClass0Pkg0.add("Class0");
         ClassDependencyInfo class0Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg0, usedByForClass0Pkg0);
 
         Vector<String> usesForClass1Pkg0 = new Vector<String>();
-        usesForClass1Pkg0.add("Class1");
+        usesForClass1Pkg0.add("package1.Class0");
         Vector<String> usedByForClass1Pkg0 = new Vector<String>();
+        usedByForClass1Pkg0.add("package0.Class0");
         ClassDependencyInfo class1Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg0, usedByForClass1Pkg0);
 
         Vector<String> usesForClass0Pkg1 = new Vector<String>();
-        usesForClass0Pkg1.add("Class0");
+        usesForClass0Pkg1.add("package1.Class1");
         Vector<String> usedByForClass0Pkg1 = new Vector<String>();
-        usedByForClass0Pkg1.add("Class0");
+        usedByForClass0Pkg1.add("package0.Class1");
         ClassDependencyInfo class0Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg1, usedByForClass0Pkg1);
 
         Vector<String> usesForClass1Pkg1 = new Vector<String>();
         Vector<String> usedByForClass1Pkg1 = new Vector<String>();
-        usedByForClass1Pkg1.add("Class0");
-        usedByForClass1Pkg1.add("Class1");
+        usedByForClass1Pkg1.add("package1.Class0");
+        usedByForClass1Pkg1.add("package0.Class0");
         ClassDependencyInfo class1Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg1, usedByForClass1Pkg1);
 
         classDependencyInfos = new Vector<ClassDependencyInfo>();
@@ -100,8 +101,8 @@ public class MockSampleData {
     protected void setSampleData1a() {
 
         //******* COMMIT ANALYZER INFO ***************
-        String[] addedFilenames = {"Class0", "Class1", "Class0", "Class1"};
-        String[] deletedFilenames = {"DeletedClass0", "DeletedClass1", "DeletedClass2", "DeletedClass3"};
+        String[] addedFilenames = {"package0.Class0.java", "package0.Class1.java", "package1.Class0.java", "package1.Class1.java"};
+        String[] deletedFilenames = {"deletedpackage.DeletedClass0.java", "deletedpackage.DeletedClass1.java", "deletedpackage.DeletedClass2.java", "deletedpackage.DeletedClass3.java"};
 
         ArrayList<String> addedFiles = new ArrayList<String>(Arrays.asList(addedFilenames));
         ArrayList<String> deletedFiles = new ArrayList<String>(Arrays.asList(deletedFilenames));
@@ -138,26 +139,27 @@ public class MockSampleData {
 
         //******* CLASS DEPENDENCY INFO ***********
         Vector<String> usesForClass0Pkg0 = new Vector<String>();
-        usesForClass0Pkg0.add("Class1");
+        usesForClass0Pkg0.add("package0.Class1");
+        usesForClass0Pkg0.add("package1.Class1");
         Vector<String> usedByForClass0Pkg0 = new Vector<String>();
-        usedByForClass0Pkg0.add("Class0");
         ClassDependencyInfo class0Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg0, usedByForClass0Pkg0);
 
         Vector<String> usesForClass1Pkg0 = new Vector<String>();
-        usesForClass1Pkg0.add("Class1");
+        usesForClass1Pkg0.add("package1.Class0");
         Vector<String> usedByForClass1Pkg0 = new Vector<String>();
+        usedByForClass1Pkg0.add("package0.Class0");
         ClassDependencyInfo class1Pkg0DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg0, usedByForClass1Pkg0);
 
         Vector<String> usesForClass0Pkg1 = new Vector<String>();
-        usesForClass0Pkg1.add("Class0");
+        usesForClass0Pkg1.add("package1.Class1");
         Vector<String> usedByForClass0Pkg1 = new Vector<String>();
-        usedByForClass0Pkg1.add("Class0");
+        usedByForClass0Pkg1.add("package0.Class1");
         ClassDependencyInfo class0Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class0", usesForClass0Pkg1, usedByForClass0Pkg1);
 
         Vector<String> usesForClass1Pkg1 = new Vector<String>();
         Vector<String> usedByForClass1Pkg1 = new Vector<String>();
-        usedByForClass1Pkg1.add("Class0");
-        usedByForClass1Pkg1.add("Class1");
+        usedByForClass1Pkg1.add("package1.Class0");
+        usedByForClass1Pkg1.add("package0.Class0");
         ClassDependencyInfo class1Pkg1DependencyInfo = MockDataCreator.createMockClassDependencyInfo("Class1", usesForClass1Pkg1, usedByForClass1Pkg1);
 
         classDependencyInfos = new Vector<ClassDependencyInfo>();
