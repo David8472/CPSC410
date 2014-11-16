@@ -11,9 +11,22 @@ import static org.junit.Assert.*;
 public class XmlParserTest{
 
 	DependencyAnalyzer depAnalyzerTool;
-	private final static int CLASSES_NUMBER = 3;
-	private final static int PACKAGES_NUMBER = 2;
+	private final static int CLASSES_TOTAL_NUMBER = 3;
+	private final static int PACKAGES_TOTAL_NUMBER = 2;
+	private final static int AFFERENT_PACKAGES_NUMBER = 2;
+	private final static int EFFERENT_PACKAGES_NUMBER = 3;
+	private final static int AFFERENT_CLASSES_NUMBER = 2;
+	private final static int EFFERENT_CLASSES_NUMBER = 3;
+	private final static int TEST1_INDEX = 0;
+	private final static int TEST2_INDEX = 1;
+	private final static int TEST3_INDEX = 2;
+	private final static int TEST4_INDEX = 1;
+	private final static String SAMPLE_PACKAGE_NAME1 = "fruit.exotic";
+	private final static String SAMPLE_PACKAGE_NAME2 = "fruit.local";
+	private final static String SAMPLE_CLASS_NAME1 = "fruit.local.Cranberry";
+	private final static String SAMPLE_CLASS_NAME2 = "fruit.local.Cherry";
 
+	
 	/**
 	 * Tests if the parser performed correctly given a valid file.
 	 * Input: a valid file path.
@@ -73,12 +86,73 @@ public class XmlParserTest{
 
 
 	// Packages: Test if size of afferent vector = field value
+	@Test
+	public void afferentPkgNumberTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(AFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST1_INDEX).getAfferentVectorSize());
+			assertEquals(SAMPLE_PACKAGE_NAME1, depAnalyzerTool.getAllPackagesDependencies().get(TEST1_INDEX).getPackageName());
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
+
 
 	// Packages: Test if size of efferent vector = field value
+	@Test
+	public void efferentPkgNumberTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(EFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST2_INDEX).getEfferentVectorSize());
+			assertEquals(SAMPLE_PACKAGE_NAME2, depAnalyzerTool.getAllPackagesDependencies().get(TEST2_INDEX).getPackageName());
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
 
 	// Classes: Test if size of afferent vector = field value
+	@Test
+	public void afferentClassesNumberTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(AFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST3_INDEX).getAfferentVectorSize());
+			assertEquals(SAMPLE_CLASS_NAME1, depAnalyzerTool.getAllClassesDependencies().get(TEST3_INDEX).getClassName());
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
 
 	// Classes: Test if size of efferent vector = field value
+	@Test
+	public void efferentClassesNumberTest(){
+		//given
+		depAnalyzerTool = new DependencyAnalyzer();
+		XmlParser parser = new XmlParser(depAnalyzerTool);
+		//when
+		try {
+			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
+			assertEquals(EFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST4_INDEX).getEfferentVectorSize());
+			assertEquals(SAMPLE_CLASS_NAME2, depAnalyzerTool.getAllClassesDependencies().get(TEST4_INDEX).getClassName());
+		} catch (XmlParserException e) {
+			e.printStackTrace();
+			fail("Unexpected XML Parser exception was thrown." );
+		}
+	}
 
 	/**
 	 * Tests the total number of analyzed classes,
@@ -95,8 +169,8 @@ public class XmlParserTest{
 		//when
 		try {
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
-			assertEquals(CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().size() );
-			if(depAnalyzerTool.getAllClassesDependencies().size() != CLASSES_NUMBER){
+			assertEquals(CLASSES_TOTAL_NUMBER, depAnalyzerTool.getAllClassesDependencies().size() );
+			if(depAnalyzerTool.getAllClassesDependencies().size() != CLASSES_TOTAL_NUMBER){
 				fail("Total number of analyzed classes did not match.");
 			}
 		} catch (XmlParserException e) {
@@ -120,8 +194,8 @@ public class XmlParserTest{
 		//when
 		try {
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
-			assertEquals(PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().size() );
-			if(depAnalyzerTool.getAllPackagesDependencies().size() != PACKAGES_NUMBER){
+			assertEquals(PACKAGES_TOTAL_NUMBER, depAnalyzerTool.getAllPackagesDependencies().size() );
+			if(depAnalyzerTool.getAllPackagesDependencies().size() != PACKAGES_TOTAL_NUMBER){
 				fail("Total number of analyzed packages did not match.");
 			}
 		} catch (XmlParserException e) {
