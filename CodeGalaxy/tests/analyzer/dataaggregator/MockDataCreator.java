@@ -28,15 +28,11 @@ public class MockDataCreator {
 
     /**
      * Creates a mock CommitAnalyzerInfo object
-     * @param commitNo         - The commit number
-     * @param author           - Author name
-     * @param addedFilenames   - List of added filenames
-     * @param deletedFilenames - List of deleted filenames
+     * @param commitNo - The commit number
+     * @param author   - Author name
      * @return
      */
-    protected static CommitAnalyzerInfo createMockCommitAnalyzerInfo(int commitNo, String author,
-                                                                     ArrayList<String> addedFilenames,
-                                                                     ArrayList<String> deletedFilenames) {
+    protected static CommitAnalyzerInfo createMockCommitAnalyzerInfo(int commitNo, String author) {
 
         CommitAnalyzerInfo commitInfo = new CommitAnalyzerInfo("fakeRepo");
         Class<?> c = commitInfo.getClass();
@@ -49,14 +45,6 @@ public class MockDataCreator {
             Field authorName = c.getDeclaredField("authorName");
             authorName.setAccessible(true);
             authorName.set(commitInfo, author);
-
-            Field addedFiles = c.getDeclaredField("filesAdded");
-            addedFiles.setAccessible(true);
-            addedFiles.set(commitInfo, addedFilenames);
-
-            Field deletedFiles = c.getDeclaredField("filesDeleted");
-            deletedFiles.setAccessible(true);
-            deletedFiles.set(commitInfo, deletedFilenames);
 
         } catch(NoSuchFieldException e) {
             e.printStackTrace();
@@ -188,6 +176,37 @@ public class MockDataCreator {
 
 
     /**
+     * Creates a mock PackageInfo object with the list of ClassInfo objects passed in as arguments.
+     * @param packageName - Name of package
+     * @param classInfos  - List of ClassInfo objects to add to the PackageInfo object.
+     * @return
+     */
+    protected static PackageInfo createMockPackageInfoWithListOfClasses(String packageName,
+                                                                        ArrayList<ClassInfo> classInfos) {
+
+        PackageInfo packageInfo = new PackageInfo(packageName);
+        Class<?> c = packageInfo.getClass();
+
+        try {
+            Method addClass = c.getDeclaredMethod("addClass", ClassInfo.class);
+            addClass.setAccessible(true);
+            for(ClassInfo classInfo : classInfos) {
+                addClass.invoke(packageInfo, classInfo);
+            }
+        } catch(NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch(InvocationTargetException e) {
+            e.printStackTrace();
+        } catch(IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
+        return packageInfo;
+    }
+
+
+    /**
      * Creates a mock PackageInfo object
      * @param packageName             - The package name
      * @param numberOfClassesToAdd    - The number of classes to add per package. Must be > 0 and <= MAX_CLASSES_PER_PACKAGE, or will be set to MAX_CLASSES_PER_PACKAGE.
@@ -196,7 +215,6 @@ public class MockDataCreator {
      */
     protected static PackageInfo createMockPackageInfo(String packageName, int numberOfClassesToAdd,
                                                        int numberOfMethodsPerClass) {
-
 
         PackageInfo packageInfo = new PackageInfo(packageName);
         Class<?> c = packageInfo.getClass();

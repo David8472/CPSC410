@@ -9,6 +9,7 @@ import analyzer.miscstaticanalyzer.PackageInfo;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class DataAggregator {
@@ -47,6 +48,8 @@ public class DataAggregator {
      * Writes commit(s) data to a YAML file
      */
     public void writeCommitDataToYAMLFile(CommitAnalyzerInfo commitMetaData, ArrayList<PackageInfo> packagesInfo,
+                                          HashMap<String, Integer> classesChangedWithLOCchanges,
+                                          ArrayList<String> classesRemoved,
                                           Vector<PackageDependencyInfo> packageDependencies,
                                           Vector<ClassDependencyInfo> classDependencies) {
         try {
@@ -54,13 +57,20 @@ public class DataAggregator {
             // Create new PrintWriter to write to output YAML file
             writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFilePath, true)));
 
-            // Writes commit metadata - commit ID, author, files changed / added / removed
+            // Writes commit metadata - commit ID, author
             if(commitMetaData != null) {
-                writeCommitMetaData(commitMetaData);
+                writeCommitNumAndAuthor(commitMetaData);
             } else {
                 writeNullCommitMetaData();
             }
 
+            // Writes all the changed classes with their LOC changes to output YAML file
+            writesModifiedClasses(classesChangedWithLOCchanges);
+
+            // Writes all the removed classes to output YAML file
+            writesRemovedClasses(classesRemoved);
+
+            /* Writes present classes and packages key */
             writePresentFilesKey();
             writePackagesKey();
 
@@ -98,7 +108,7 @@ public class DataAggregator {
                     /* Iterate through all classes for a package and write out info to output file */
                     for(ClassInfo classInfo : pkg.getListOfClasses()) {
 
-                        String className = classInfo.getClassName();
+                        String className = classInfo.getPackageName() + "." + classInfo.getClassName();
 
                         // Write the class info to output file
                         writeClassInfo(classInfo);
@@ -133,67 +143,61 @@ public class DataAggregator {
 
 
     /**
-     * Writes commit metadata to output YAML file
-     * @param commitMetaData - CommitAnalyzerInfo object that holds commitID, author, list of files
-     *                       changed / removed / added for a single commit
+     * Writes commit metadata (Commit number and author) to output YAML file
+     * @param commitMetaData - CommitAnalyzerInfo object that holds commitID, author
      */
-    private void writeCommitMetaData(CommitAnalyzerInfo commitMetaData) {
+    private void writeCommitNumAndAuthor(CommitAnalyzerInfo commitMetaData) {
         // Writes commit ID
         writer.println("commit_" + commitMetaData.getCommitNumber() + ":");
 
-            /* Writes author */
+        /* Writes author */
         String commitAuthor = "";
         if(commitMetaData.getAuthorName() != null) {
             commitAuthor = commitMetaData.getAuthorName();
         }
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("author: " + commitAuthor);
+    }
 
+
+    /**
+     * Writes modified classes with the respective line changes to output YAML file
+     * @param modifiedClassesWithLOCchanges - A Hash Map with class names to lines of code changes mappings. Class names must be in package.class format.
+     */
+    private void writesModifiedClasses(HashMap<String, Integer> modifiedClassesWithLOCchanges) {
+
+        /* Writes modified key name to output YAML file */
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("modified:");
 
-            /* Writes changed files (each file separated by '|') */
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("changed: ");
-        // TO DO - files changed not implemented yet in Commit Analyzer
-        //        ArrayList<String> filesChanged = commitMetaData.getFilesChanged();
-        //        for(int i = 0; i < filesChanged.size(); i++) {
-        //            writer.print(filesChanged.get(i));
-        //            if(i < filesChanged.size() - 1) {
-        //                writer.print("|");
-        //            } else {
-        //                writer.print("\n");
-        //            }
-        //        }
+        /* Writes all modified classes including added classes to output YAML file */
+        for(HashMap.Entry<String, Integer> cursor : modifiedClassesWithLOCchanges.entrySet()) {
+            writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
+            String className = cursor.getKey();
+            writer.println(className + ":");
 
-        /* Writes added files (each file separated by '|') */
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.print("added: ");
-        ArrayList<String> filesAdded = commitMetaData.getFilesAdded();
-        if(filesAdded != null) {
-            for(int i = 0; i < filesAdded.size(); i++) {
-                writer.print(filesAdded.get(i));
-                if(i < filesAdded.size() - 1) {
-                    writer.print("|");
-                }
-            }
+            writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 2);
+            int linesOfCode = cursor.getValue();
+            writer.println("lines_added: " + linesOfCode);
         }
-        writer.println();
 
-        /* Writes removed files (each file separated by '|') */
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
+    }
+
+
+    /**
+     * Writes all the classes removed during the current commit compared to the previous commit to output YAML file
+     * @param classesRemoved - Names of classes removed in current commit. Must be in package.class format.
+     */
+    private void writesRemovedClasses(ArrayList<String> classesRemoved) {
+        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.print("removed: ");
-        ArrayList<String> filesRemoved = commitMetaData.getFilesDeleted();
-        if(filesRemoved != null) {
-            for(int i = 0; i < filesRemoved.size(); i++) {
-                writer.print(filesRemoved.get(i));
-                if(i < filesRemoved.size() - 1) {
-                    writer.print("|");
-                }
+        for(int i = 0; i < classesRemoved.size(); i++) {
+            writer.print(classesRemoved.get(i));
+            if(i < classesRemoved.size() - 1) {
+                writer.print("|");
             }
         }
         writer.println();
-
     }
 
 
@@ -206,11 +210,7 @@ public class DataAggregator {
         writer.println("author:");
         writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("modified:");
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("changed:");
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
-        writer.println("added:");
-        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
+        writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL);
         writer.println("removed:");
     }
 
@@ -388,10 +388,9 @@ public class DataAggregator {
             writer.print(pkgDependencies.get(i));
             if(i < pkgDependencies.size() - 1) {
                 writer.print("|");
-            } else {
-                writer.print("\n");
             }
         }
+        writer.println();
 
         /* Writes all packages that depend on this package */
         writeSpacesCorrespondingToNestedLevel(PKG_INFO_NEST_LEVEL + 1);
@@ -401,10 +400,9 @@ public class DataAggregator {
             writer.print(pkgsThatDependOnThisPkg.get(i));
             if(i < pkgsThatDependOnThisPkg.size() - 1) {
                 writer.print("|");
-            } else {
-                writer.print("\n");
             }
         }
+        writer.println();
     }
 
 
