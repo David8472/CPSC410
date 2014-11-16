@@ -85,7 +85,12 @@ public class XmlParserTest{
 	}
 
 
-	// Packages: Test if size of afferent vector = field value
+	/**
+	 * Tests the number of afferent packages relative to a given package,
+	 * 		which corresponds to the size of a corresponding vector.
+	 * Input: the fruit.exotic package that has 2 afferent packages.
+	 * Expected output: XML Parser successfully retrieves 2 afferent packages.
+	 */
 	@Test
 	public void afferentPkgNumberTest(){
 		//given
@@ -96,6 +101,7 @@ public class XmlParserTest{
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
 			assertEquals(AFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST1_INDEX).getAfferentVectorSize());
 			assertEquals(SAMPLE_PACKAGE_NAME1, depAnalyzerTool.getAllPackagesDependencies().get(TEST1_INDEX).getPackageName());
+			assertEquals(AFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST1_INDEX).getAfferentNum());
 		} catch (XmlParserException e) {
 			e.printStackTrace();
 			fail("Unexpected XML Parser exception was thrown." );
@@ -103,7 +109,12 @@ public class XmlParserTest{
 	}
 
 
-	// Packages: Test if size of efferent vector = field value
+	/**
+	 * Tests the number of efferent packages relative to a given package,
+	 * 		which corresponds to the size of a corresponding vector.
+	 * Input: the fruit.local package that has 3 efferent packages.
+	 * Expected output: XML Parser successfully retrieves 3 efferent packages.
+	 */
 	@Test
 	public void efferentPkgNumberTest(){
 		//given
@@ -114,13 +125,19 @@ public class XmlParserTest{
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
 			assertEquals(EFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST2_INDEX).getEfferentVectorSize());
 			assertEquals(SAMPLE_PACKAGE_NAME2, depAnalyzerTool.getAllPackagesDependencies().get(TEST2_INDEX).getPackageName());
+			assertEquals(EFFERENT_PACKAGES_NUMBER, depAnalyzerTool.getAllPackagesDependencies().get(TEST2_INDEX).getEfferentNum());
 		} catch (XmlParserException e) {
 			e.printStackTrace();
 			fail("Unexpected XML Parser exception was thrown." );
 		}
 	}
 
-	// Classes: Test if size of afferent vector = field value
+	/**
+	 * Tests the number of afferent classes relative to a given class,
+	 * 		which corresponds to the size of a corresponding vector.
+	 * Input: the fruit.local.Cranberry class that has 2 afferent classes.
+	 * Expected output: XML Parser successfully retrieves 2 afferent classes.
+	 */
 	@Test
 	public void afferentClassesNumberTest(){
 		//given
@@ -131,13 +148,19 @@ public class XmlParserTest{
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
 			assertEquals(AFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST3_INDEX).getAfferentVectorSize());
 			assertEquals(SAMPLE_CLASS_NAME1, depAnalyzerTool.getAllClassesDependencies().get(TEST3_INDEX).getClassName());
+			assertEquals(AFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST3_INDEX).getAfferentNum());
 		} catch (XmlParserException e) {
 			e.printStackTrace();
 			fail("Unexpected XML Parser exception was thrown." );
 		}
 	}
 
-	// Classes: Test if size of efferent vector = field value
+	/**
+	 * Tests the number of efferent classes relative to a given class,
+	 * 		which corresponds to the size of a corresponding vector.
+	 * Input: the fruit.local.Cherry class that has 3 efferent classes.
+	 * Expected output: XML Parser successfully retrieves 3 efferent classes.
+	 */
 	@Test
 	public void efferentClassesNumberTest(){
 		//given
@@ -148,6 +171,7 @@ public class XmlParserTest{
 			parser.startXmlParser("test_resources/sample.xml", depAnalyzerTool);
 			assertEquals(EFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST4_INDEX).getEfferentVectorSize());
 			assertEquals(SAMPLE_CLASS_NAME2, depAnalyzerTool.getAllClassesDependencies().get(TEST4_INDEX).getClassName());
+			assertEquals(EFFERENT_CLASSES_NUMBER, depAnalyzerTool.getAllClassesDependencies().get(TEST4_INDEX).getEfferentNum());
 		} catch (XmlParserException e) {
 			e.printStackTrace();
 			fail("Unexpected XML Parser exception was thrown." );
