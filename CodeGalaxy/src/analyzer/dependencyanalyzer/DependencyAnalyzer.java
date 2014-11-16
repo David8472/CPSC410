@@ -121,8 +121,8 @@ public class DependencyAnalyzer {
 							parser.analyzeXmlPackageInfo();
 							classesDepInfo = parser.getClassesXmlSummary();
 							packagesDepInfo = parser.getPackagesXmlSummary();	
-							printClassSummary();
-							printPackageSummary();
+							//printClassSummary();
+							//printPackageSummary();
 						}
 						else{
 							System.out.println("Using a real XML Parser...");
@@ -173,7 +173,7 @@ public class DependencyAnalyzer {
 			if(command!= null){
 				proc = rt.exec(command);
 				exitValue = proc.waitFor();
-				System.out.println("Process exit value: " + exitValue);
+				System.out.println("For mock xml parser, Classycle process exit value: " + exitValue);
 
 				// Gatekeeper
 				if(XmlTestParserInProgress){
@@ -183,8 +183,8 @@ public class DependencyAnalyzer {
 					parser.analyzeXmlPackageInfo();
 					classesDepInfo = parser.getClassesXmlSummary();
 					packagesDepInfo = parser.getPackagesXmlSummary();
-					printClassSummary();
-					printPackageSummary();
+					//printClassSummary();
+					//printPackageSummary();
 				}
 				else{
 					System.out.println("Using a real XML Parser...");

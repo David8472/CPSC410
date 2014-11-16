@@ -113,12 +113,10 @@ public class XmlParser extends DefaultHandler {
 		switch(qName){
 		
 		case "cycles":
-			//System.out.println(" *** Encountered cycles tag");
 			encounteredCyclesTag = true;
 			break;
 			
 		case "packageCycles":
-			//System.out.println(" *** Encountered packageCycles tag");
 			encounteredPackageCyclesTag = true;
 			break;
 		
@@ -126,14 +124,7 @@ public class XmlParser extends DefaultHandler {
 			
 			if(encounteredCyclesTag){
 				encounteredCyclesTag = false; // turn it off to read info from classRef
-				//System.out.println(" *** Cycles tag is on");
 			}
-			else{
-				//System.out.println(" *** Cycles tag is off");
-			}
-			
-			//System.out.println(" *** Encountered a class with name: " + attributes.getValue("name"));
-			//System.out.println("     usedby: " + attributes.getValue("usedBy") + " uses: " + attributes.getValue("usesInternal"));
 			
 			// Create a new object
 			int usedBy = Integer.parseInt(attributes.getValue("usedBy"));
@@ -148,16 +139,8 @@ public class XmlParser extends DefaultHandler {
 		case "classRef":
 			
 			if(encounteredCyclesTag){
-				//System.out.println(" *** Cycles tag is on");
 				break;
 			}
-			else{
-				//System.out.println(" *** Cycles tag is off");
-			}
-			
-			
-			//System.out.println(" *** Encountered a classRef with name: " + attributes.getValue("name") + " of type: " + attributes.getValue("type"));
-
 			
 			String refName = attributes.getValue("name");
 			String refType = attributes.getValue("type");
@@ -179,11 +162,7 @@ public class XmlParser extends DefaultHandler {
 		case "package":
 			
 			if(encounteredPackageCyclesTag){
-				//System.out.println(" *** Package cycles tag is on");
 				encounteredPackageCyclesTag = false; // turn it off to read info from packageRef;
-			}
-			else{
-				//System.out.println(" *** Package cycles tag is off");
 			}
 			
 			// Create a new PackageDependencyInfo object
@@ -199,11 +178,7 @@ public class XmlParser extends DefaultHandler {
 		case "packageRef":
 			
 			if(encounteredPackageCyclesTag){
-				//System.out.println(" *** ref: Package cycles tag is on");
 				break;
-			}
-			else{
-				//System.out.println(" *** ref: Package cycles tag is off");
 			}
 			
 			String refPkgName = attributes.getValue("name");
