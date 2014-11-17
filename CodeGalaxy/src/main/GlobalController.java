@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
-import analyzer.DataAggregator;
+import fuser.DataAggregator;
 import analyzer.gitcommitcomponent.*;
 import analyzer.miscstaticanalyzer.*;
 import analyzer.dependencyanalyzer.*;
