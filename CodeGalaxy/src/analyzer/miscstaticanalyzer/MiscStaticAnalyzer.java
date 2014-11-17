@@ -45,6 +45,8 @@ public class MiscStaticAnalyzer {
         // List of packages
         ArrayList<PackageInfo> packages = new ArrayList<PackageInfo>();
 
+        HashMap<String, Integer> classToLOCMap = new HashMap<String, Integer>();
+
         // Iterate through all source files
         for(File sourceFile : sourceFiles) {
             try {
@@ -76,8 +78,6 @@ public class MiscStaticAnalyzer {
                 // Get class(es) information from the class analyzer
                 ArrayList<ClassInfo> classInfos = analyzer.getClassInfo();
 
-                HashMap<String, Integer> classToLOCMap = new HashMap<String, Integer>();
-
                 // Iterate through all classes (they may be nested classes) for a source file
                 for(ClassInfo classInfo : classInfos) {
                     // Add class information to respective PackageInfo object
@@ -85,15 +85,15 @@ public class MiscStaticAnalyzer {
                     classToLOCMap.put(classInfo.getPackageName() + "." + classInfo.getClassName(), classInfo.getLinesOfCode());
                 }
 
-                codebaseStats.setClassToLOCMap(classToLOCMap);
-                codebaseStats.setPackagesInfo(packages);
-
             } catch(IOException e) {
                 e.printStackTrace();
             } catch(ParseException e) {
                 e.printStackTrace();
             }
         }
+
+        codebaseStats.setClassToLOCMap(classToLOCMap);
+        codebaseStats.setPackagesInfo(packages);
 
         // Return list of packages with all static code analysis metrics for the code base
         return codebaseStats;
