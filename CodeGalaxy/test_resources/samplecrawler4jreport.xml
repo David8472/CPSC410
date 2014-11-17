@@ -1,0 +1,835 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type='text/xsl' href='reportXMLtoHTML.xsl'?>
+<classycle title='test_resources/crawler4j-master/target/classes' date='2014-11-17'>
+  <cycles>
+    <cycle name="edu.uci.ics.crawler4j.url.UrlResolver and inner classes" size="2" longestWalk="0" girth="2" radius="1" diameter="1" bestFragmentSize="1">
+      <classes>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver" eccentricity="1" maximumFragmentSize="1"/>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver$Url" eccentricity="1" maximumFragmentSize="1"/>
+      </classes>
+      <centerClasses>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver"/>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver$Url"/>
+      </centerClasses>
+      <bestFragmenters>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver"/>
+        <classRef name="edu.uci.ics.crawler4j.url.UrlResolver$Url"/>
+      </bestFragmenters>
+    </cycle>
+    <cycle name="edu.uci.ics.crawler4j.parser.HtmlContentHandler and inner classes" size="3" longestWalk="1" girth="2" radius="1" diameter="2" bestFragmentSize="1">
+      <classes>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" eccentricity="1" maximumFragmentSize="1"/>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory" eccentricity="1" maximumFragmentSize="2"/>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$Element" eccentricity="2" maximumFragmentSize="2"/>
+      </classes>
+      <centerClasses>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler"/>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory"/>
+      </centerClasses>
+      <bestFragmenters>
+        <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler"/>
+      </bestFragmenters>
+    </cycle>
+    <cycle name="edu.uci.ics.crawler4j.frontier.Counters and inner classes" size="2" longestWalk="2" girth="2" radius="1" diameter="1" bestFragmentSize="1">
+      <classes>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters" eccentricity="1" maximumFragmentSize="1"/>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames" eccentricity="1" maximumFragmentSize="1"/>
+      </classes>
+      <centerClasses>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters"/>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames"/>
+      </centerClasses>
+      <bestFragmenters>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters"/>
+        <classRef name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames"/>
+      </bestFragmenters>
+    </cycle>
+    <cycle name="edu.uci.ics.crawler4j.fetcher.PageFetcher and inner classes" size="3" longestWalk="4" girth="2" radius="1" diameter="2" bestFragmentSize="1">
+      <classes>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" eccentricity="1" maximumFragmentSize="1"/>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" eccentricity="1" maximumFragmentSize="2"/>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$GzipDecompressingEntity" eccentricity="2" maximumFragmentSize="2"/>
+      </classes>
+      <centerClasses>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher"/>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1"/>
+      </centerClasses>
+      <bestFragmenters>
+        <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher"/>
+      </bestFragmenters>
+    </cycle>
+    <cycle name="edu.uci.ics.crawler4j.crawler.CrawlController et al." size="3" longestWalk="6" girth="2" radius="1" diameter="2" bestFragmentSize="1">
+      <classes>
+        <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" eccentricity="1" maximumFragmentSize="1"/>
+        <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" eccentricity="2" maximumFragmentSize="2"/>
+        <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" eccentricity="1" maximumFragmentSize="2"/>
+      </classes>
+      <centerClasses>
+        <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController"/>
+        <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1"/>
+      </centerClasses>
+      <bestFragmenters>
+        <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController"/>
+      </bestFragmenters>
+    </cycle>
+  </cycles>
+  <classes numberOfExternalClasses="111">
+    <class name="edu.uci.ics.crawler4j.crawler.Configurable" sources="test_resources/crawler4j-master/target/classes" type="abstract class" innerClass="false" size="587" usedBy="6" usesInternal="1" usesExternal="1" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.crawler.CrawlConfig" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="6919" usedBy="9" usesInternal="0" usesExternal="4" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.crawler.CrawlController" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="9500" usedBy="2" usesInternal="11" usesExternal="15" layer="6" cycle="edu.uci.ics.crawler4j.crawler.CrawlController et al.">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="java.util.ArrayList" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.io.File" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.EnvironmentConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usesInternal"/>
+      <classRef name="java.lang.Thread" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usesInternal"/>
+      <classRef name="java.lang.InterruptedException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.IO" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.URLCanonicalizer" type="usesInternal"/>
+      <classRef name="java.lang.Runnable" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.crawler.CrawlController$1" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="4342" usedBy="1" usesInternal="5" usesExternal="11" layer="6" cycle="edu.uci.ics.crawler4j.crawler.CrawlController et al.">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="java.lang.Thread" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usesInternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.Runnable" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usesInternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.crawler.Page" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="2589" usedBy="4" usesInternal="2" usesExternal="6" layer="2" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="org.apache.http.HttpEntity" type="usesExternal"/>
+      <classRef name="org.apache.http.Header" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="org.apache.http.util.EntityUtils" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.crawler.WebCrawler" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="8269" usedBy="2" usesInternal="13" usesExternal="13" layer="6" cycle="edu.uci.ics.crawler4j.crawler.CrawlController et al.">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usesInternal"/>
+      <classRef name="java.util.ArrayList" type="usesExternal"/>
+      <classRef name="java.lang.InterruptedException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlParseData" type="usesInternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.Runnable" type="usesExternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usesInternal"/>
+      <classRef name="java.lang.Thread" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" type="usesInternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.CustomFetchStatus" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.CustomFetchStatus" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="2045" usedBy="1" usesInternal="0" usesExternal="3" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.IdleConnectionMonitorThread" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1461" usedBy="1" usesInternal="0" usesExternal="7" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="java.lang.InterruptedException" type="usesExternal"/>
+      <classRef name="java.lang.Thread" type="usesExternal"/>
+      <classRef name="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="java.util.concurrent.TimeUnit" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="2729" usedBy="3" usesInternal="2" usesExternal="10" layer="3" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.io.EOFException" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpEntity" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="org.apache.http.util.EntityUtils" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.PageFetcher" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="10049" usedBy="6" usesInternal="8" usesExternal="38" layer="4" cycle="edu.uci.ics.crawler4j.fetcher.PageFetcher and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$GzipDecompressingEntity" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="org.apache.http.params.BasicHttpParams" type="usesExternal"/>
+      <classRef name="org.apache.http.params.HttpProtocolParamBean" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.scheme.SchemeRegistry" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.scheme.Scheme" type="usesExternal"/>
+      <classRef name="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager" type="usesExternal"/>
+      <classRef name="org.apache.http.impl.client.DefaultHttpClient" type="usesExternal"/>
+      <classRef name="org.apache.http.auth.AuthScope" type="usesExternal"/>
+      <classRef name="org.apache.http.auth.UsernamePasswordCredentials" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpHost" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.IdleConnectionMonitorThread" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" type="usesInternal"/>
+      <classRef name="org.apache.http.client.methods.HttpGet" type="usesExternal"/>
+      <classRef name="java.util.Date" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="java.lang.IllegalStateException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$GzipDecompressingEntity" type="usesInternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="org.apache.http.params.HttpParams" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="org.apache.http.Header" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpResponse" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="org.apache.http.client.HttpClient" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpVersion" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.scheme.PlainSocketFactory" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.ssl.SSLSocketFactory" type="usesExternal"/>
+      <classRef name="org.apache.http.client.CredentialsProvider" type="usesExternal"/>
+      <classRef name="java.lang.Thread" type="usesExternal"/>
+      <classRef name="org.apache.http.StatusLine" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.URLCanonicalizer" type="usesInternal"/>
+      <classRef name="java.net.URI" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpEntity" type="usesExternal"/>
+      <classRef name="java.lang.Integer" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.scheme.SchemeSocketFactory" type="usesExternal"/>
+      <classRef name="org.apache.http.conn.ClientConnectionManager" type="usesExternal"/>
+      <classRef name="org.apache.http.auth.Credentials" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpResponseInterceptor" type="usesExternal"/>
+      <classRef name="org.apache.http.client.methods.HttpUriRequest" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="2134" usedBy="1" usesInternal="3" usesExternal="10" layer="4" cycle="edu.uci.ics.crawler4j.fetcher.PageFetcher and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$GzipDecompressingEntity" type="usesInternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpResponseInterceptor" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+      <classRef name="org.apache.http.HttpResponse" type="usesExternal"/>
+      <classRef name="org.apache.http.protocol.HttpContext" type="usesExternal"/>
+      <classRef name="org.apache.http.HeaderElement" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpEntity" type="usesExternal"/>
+      <classRef name="org.apache.http.Header" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpException" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.fetcher.PageFetcher$GzipDecompressingEntity" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="1062" usedBy="2" usesInternal="1" usesExternal="6" layer="4" cycle="edu.uci.ics.crawler4j.fetcher.PageFetcher and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher$1" type="usedBy"/>
+      <classRef name="java.util.zip.GZIPInputStream" type="usesExternal"/>
+      <classRef name="org.apache.http.entity.HttpEntityWrapper" type="usesExternal"/>
+      <classRef name="org.apache.http.HttpEntity" type="usesExternal"/>
+      <classRef name="java.io.InputStream" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="java.lang.IllegalStateException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.Counters" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="4918" usedBy="2" usesInternal="4" usesExternal="18" layer="2" cycle="edu.uci.ics.crawler4j.frontier.Counters and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.util.HashMap" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseEntry" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Long" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.Database" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="java.util.Map" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.OperationStatus" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Transaction" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Cursor" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.TransactionConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.CursorConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.LockMode" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.Counters$ReservedCounterNames" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="722" usedBy="1" usesInternal="1" usesExternal="2" layer="2" cycle="edu.uci.ics.crawler4j.frontier.Counters and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.DocIDServer" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="5013" usedBy="4" usesInternal="3" usesExternal="15" layer="2" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseConfig" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseEntry" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Database" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.OperationStatus" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Transaction" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.LockMode" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.Frontier" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="6694" usedBy="3" usesInternal="7" usesExternal="12" layer="5" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController$1" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WorkQueues" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.InProcessPagesDB" type="usesInternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.InterruptedException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.util.Collection" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.InProcessPagesDB" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="3439" usedBy="1" usesInternal="3" usesExternal="17" layer="4" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseEntry" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseException" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WorkQueues" type="usesInternal"/>
+      <classRef name="org.apache.log4j.Logger" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.Cursor" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.OperationStatus" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Transaction" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.Database" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.TransactionConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.CursorConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.LockMode" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.WebURLTupleBinding" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="2211" usedBy="1" usesInternal="1" usesExternal="5" layer="2" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.frontier.WorkQueues" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="com.sleepycat.bind.tuple.TupleBinding" type="usesExternal"/>
+      <classRef name="com.sleepycat.bind.tuple.TupleInput" type="usesExternal"/>
+      <classRef name="com.sleepycat.bind.tuple.TupleOutput" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.frontier.WorkQueues" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="5781" usedBy="2" usesInternal="3" usesExternal="17" layer="3" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.InProcessPagesDB" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseConfig" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WebURLTupleBinding" type="usesInternal"/>
+      <classRef name="java.util.ArrayList" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseEntry" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.DatabaseException" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Database" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Environment" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Transaction" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.Cursor" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.OperationStatus" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="com.sleepycat.je.TransactionConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.CursorConfig" type="usesExternal"/>
+      <classRef name="com.sleepycat.je.LockMode" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.BinaryParseData" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="721" usedBy="1" usesInternal="1" usesExternal="2" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.ExtractedUrlAnchorPair" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="787" usedBy="2" usesInternal="0" usesExternal="2" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="4430" usedBy="3" usesInternal="3" usesExternal="8" layer="1" cycle="edu.uci.ics.crawler4j.parser.HtmlContentHandler and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$Element" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.util.ArrayList" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ExtractedUrlAnchorPair" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="org.xml.sax.helpers.DefaultHandler" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$Element" type="usesInternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="org.xml.sax.Attributes" type="usesExternal"/>
+      <classRef name="org.xml.sax.SAXException" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$Element" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="1635" usedBy="2" usesInternal="1" usesExternal="4" layer="1" cycle="edu.uci.ics.crawler4j.parser.HtmlContentHandler and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory" type="usedBy"/>
+      <classRef name="java.lang.Enum" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usesInternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$HtmlFactory" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="1602" usedBy="1" usesInternal="2" usesExternal="4" layer="1" cycle="edu.uci.ics.crawler4j.parser.HtmlContentHandler and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler$Element" type="usesInternal"/>
+      <classRef name="java.util.HashMap" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.util.Map" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.HtmlParseData" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1574" usedBy="2" usesInternal="2" usesExternal="3" layer="2" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.ParseData" sources="test_resources/crawler4j-master/target/classes" type="interface" innerClass="false" size="170" usedBy="6" usesInternal="0" usesExternal="2" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.BinaryParseData" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlParseData" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.TextParseData" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.Parser" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="5327" usedBy="1" usesInternal="12" usesExternal="16" layer="3" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="org.apache.tika.parser.html.HtmlParser" type="usesExternal"/>
+      <classRef name="org.apache.tika.parser.ParseContext" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.TextParseData" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="org.apache.tika.metadata.Metadata" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlContentHandler" type="usesInternal"/>
+      <classRef name="java.io.ByteArrayInputStream" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlParseData" type="usesInternal"/>
+      <classRef name="java.util.ArrayList" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ExtractedUrlAnchorPair" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.io.UnsupportedEncodingException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Configurable" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlConfig" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usesInternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="java.io.InputStream" type="usesExternal"/>
+      <classRef name="java.util.List" type="usesExternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.BinaryParseData" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.URLCanonicalizer" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="org.xml.sax.ContentHandler" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.CharSequence" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.parser.TextParseData" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="711" usedBy="1" usesInternal="1" usesExternal="2" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.ParseData" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.robotstxt.HostDirectives" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1347" usedBy="2" usesInternal="1" usesExternal="3" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtParser" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RuleSet" type="usesInternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.System" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1077" usedBy="1" usesInternal="0" usesExternal="2" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.robotstxt.RobotstxtParser" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="2425" usedBy="1" usesInternal="1" usesExternal="4" layer="2" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.util.StringTokenizer" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.HostDirectives" type="usesInternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.CharSequence" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="4943" usedBy="2" usesInternal="8" usesExternal="12" layer="5" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="java.util.HashMap" type="usesExternal"/>
+      <classRef name="java.net.URL" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.HostDirectives" type="usesInternal"/>
+      <classRef name="java.net.MalformedURLException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usesInternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usesInternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.util.Map$Entry" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig" type="usesInternal"/>
+      <classRef name="java.util.Map" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usesInternal"/>
+      <classRef name="java.lang.Throwable" type="usesExternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.util.Util" type="usesInternal"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtParser" type="usesInternal"/>
+      <classRef name="java.util.Set" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.robotstxt.RuleSet" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1640" usedBy="1" usesInternal="0" usesExternal="5" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.HostDirectives" type="usedBy"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.util.TreeSet" type="usesExternal"/>
+      <classRef name="java.util.SortedSet" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.url.TLDList" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1530" usedBy="1" usesInternal="0" usesExternal="11" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.url.WebURL" type="usedBy"/>
+      <classRef name="java.util.HashSet" type="usesExternal"/>
+      <classRef name="java.io.BufferedReader" type="usesExternal"/>
+      <classRef name="java.io.InputStreamReader" type="usesExternal"/>
+      <classRef name="java.io.IOException" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.util.Set" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+      <classRef name="java.lang.ClassLoader" type="usesExternal"/>
+      <classRef name="java.io.InputStream" type="usesExternal"/>
+      <classRef name="java.io.Reader" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.url.URLCanonicalizer" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="5592" usedBy="3" usesInternal="1" usesExternal="19" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="java.net.URL" type="usesExternal"/>
+      <classRef name="java.net.URI" type="usesExternal"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.net.MalformedURLException" type="usesExternal"/>
+      <classRef name="java.net.URISyntaxException" type="usesExternal"/>
+      <classRef name="java.util.HashMap" type="usesExternal"/>
+      <classRef name="java.util.TreeMap" type="usesExternal"/>
+      <classRef name="java.lang.StringBuffer" type="usesExternal"/>
+      <classRef name="java.util.Map$Entry" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.util.SortedMap" type="usesExternal"/>
+      <classRef name="java.util.Map" type="usesExternal"/>
+      <classRef name="java.util.Iterator" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.UrlResolver" type="usesInternal"/>
+      <classRef name="java.util.Set" type="usesExternal"/>
+      <classRef name="java.net.URLDecoder" type="usesExternal"/>
+      <classRef name="java.net.URLEncoder" type="usesExternal"/>
+      <classRef name="java.lang.CharSequence" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.url.UrlResolver" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="4566" usedBy="2" usesInternal="1" usesExternal="4" layer="0" cycle="edu.uci.ics.crawler4j.url.UrlResolver and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.url.URLCanonicalizer" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.url.UrlResolver$Url" type="usedBy"/>
+      <classRef name="java.lang.IllegalArgumentException" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.UrlResolver$Url" type="usesInternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.Character" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.url.UrlResolver$Url" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="true" size="2391" usedBy="1" usesInternal="1" usesExternal="3" layer="0" cycle="edu.uci.ics.crawler4j.url.UrlResolver and inner classes">
+      <classRef name="edu.uci.ics.crawler4j.url.UrlResolver" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.UrlResolver" type="usesInternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.url.WebURL" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="3779" usedBy="12" usesInternal="1" usesExternal="7" layer="1" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.Page" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.crawler.WebCrawler" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetchResult" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.fetcher.PageFetcher" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.Frontier" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.InProcessPagesDB" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WebURLTupleBinding" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WorkQueues" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.HtmlParseData" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.io.Serializable" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="com.sleepycat.persist.model.PrimaryKey" type="usesExternal"/>
+      <classRef name="com.sleepycat.persist.model.Entity" type="usesExternal"/>
+      <classRef name="edu.uci.ics.crawler4j.url.TLDList" type="usesInternal"/>
+      <classRef name="java.lang.Class" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.util.IO" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1906" usedBy="1" usesInternal="0" usesExternal="10" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.crawler.CrawlController" type="usedBy"/>
+      <classRef name="java.lang.StringBuilder" type="usesExternal"/>
+      <classRef name="java.io.FileOutputStream" type="usesExternal"/>
+      <classRef name="java.lang.Exception" type="usesExternal"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.io.File" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.nio.channels.FileChannel" type="usesExternal"/>
+      <classRef name="java.lang.System" type="usesExternal"/>
+      <classRef name="java.io.PrintStream" type="usesExternal"/>
+      <classRef name="java.nio.ByteBuffer" type="usesExternal"/>
+    </class>
+    <class name="edu.uci.ics.crawler4j.util.Util" sources="test_resources/crawler4j-master/target/classes" type="class" innerClass="false" size="1888" usedBy="6" usesInternal="0" usesExternal="3" layer="0" cycle="">
+      <classRef name="edu.uci.ics.crawler4j.frontier.Counters" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.DocIDServer" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.InProcessPagesDB" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.frontier.WorkQueues" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.parser.Parser" type="usedBy"/>
+      <classRef name="edu.uci.ics.crawler4j.robotstxt.RobotstxtServer" type="usedBy"/>
+      <classRef name="java.lang.Object" type="usesExternal"/>
+      <classRef name="java.lang.String" type="usesExternal"/>
+      <classRef name="java.lang.CharSequence" type="usesExternal"/>
+    </class>
+  </classes>
+  <packageCycles>
+    <packageCycle name="edu.uci.ics.crawler4j.crawler et al." size="5" longestWalk="1" girth="1" radius="1" diameter="2" bestFragmentSize="1">
+      <packages>
+        <packageRef name="edu.uci.ics.crawler4j.crawler" eccentricity="1" maximumFragmentSize="1"/>
+        <packageRef name="edu.uci.ics.crawler4j.frontier" eccentricity="2" maximumFragmentSize="4"/>
+        <packageRef name="edu.uci.ics.crawler4j.fetcher" eccentricity="2" maximumFragmentSize="4"/>
+        <packageRef name="edu.uci.ics.crawler4j.robotstxt" eccentricity="2" maximumFragmentSize="4"/>
+        <packageRef name="edu.uci.ics.crawler4j.parser" eccentricity="2" maximumFragmentSize="4"/>
+      </packages>
+      <centerPackages>
+        <packageRef name="edu.uci.ics.crawler4j.crawler"/>
+      </centerPackages>
+      <bestFragmenters>
+        <packageRef name="edu.uci.ics.crawler4j.crawler"/>
+      </bestFragmenters>
+    </packageCycle>
+  </packageCycles>
+  <packages>
+    <package name="edu.uci.ics.crawler4j.crawler" sources="test_resources/crawler4j-master/target/classes"  size="6" usedBy="5" usesInternal="7" usesExternal="7" layer="1" cycle="edu.uci.ics.crawler4j.crawler et al.">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usedBy"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usesInternal"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="java.io" type="usesExternal"/>
+      <packageRef name="com.sleepycat.je" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="org.apache.log4j" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.util" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usesInternal"/>
+      <packageRef name="org.apache.http" type="usesExternal"/>
+      <packageRef name="org.apache.http.util" type="usesExternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.fetcher" sources="test_resources/crawler4j-master/target/classes"  size="6" usedBy="3" usesInternal="3" usesExternal="20" layer="1" cycle="edu.uci.ics.crawler4j.crawler et al.">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usedBy"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="org.apache.http.impl.conn.tsccm" type="usesExternal"/>
+      <packageRef name="java.util.concurrent" type="usesExternal"/>
+      <packageRef name="java.io" type="usesExternal"/>
+      <packageRef name="org.apache.log4j" type="usesExternal"/>
+      <packageRef name="org.apache.http" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="org.apache.http.util" type="usesExternal"/>
+      <packageRef name="org.apache.http.params" type="usesExternal"/>
+      <packageRef name="org.apache.http.conn.scheme" type="usesExternal"/>
+      <packageRef name="org.apache.http.impl.client" type="usesExternal"/>
+      <packageRef name="org.apache.http.auth" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usesInternal"/>
+      <packageRef name="org.apache.http.client.methods" type="usesExternal"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="org.apache.http.client" type="usesExternal"/>
+      <packageRef name="org.apache.http.conn.ssl" type="usesExternal"/>
+      <packageRef name="java.net" type="usesExternal"/>
+      <packageRef name="org.apache.http.conn" type="usesExternal"/>
+      <packageRef name="org.apache.http.protocol" type="usesExternal"/>
+      <packageRef name="java.util.zip" type="usesExternal"/>
+      <packageRef name="org.apache.http.entity" type="usesExternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.frontier" sources="test_resources/crawler4j-master/target/classes"  size="7" usedBy="2" usesInternal="4" usesExternal="5" layer="1" cycle="edu.uci.ics.crawler4j.crawler et al.">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usedBy"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="com.sleepycat.je" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.util" type="usesInternal"/>
+      <packageRef name="org.apache.log4j" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="com.sleepycat.bind.tuple" type="usesExternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.parser" sources="test_resources/crawler4j-master/target/classes"  size="9" usedBy="2" usesInternal="4" usesExternal="8" layer="1" cycle="edu.uci.ics.crawler4j.crawler et al.">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usedBy"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usesInternal"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="org.xml.sax.helpers" type="usesExternal"/>
+      <packageRef name="org.xml.sax" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="org.apache.tika.parser.html" type="usesExternal"/>
+      <packageRef name="org.apache.tika.parser" type="usesExternal"/>
+      <packageRef name="org.apache.tika.metadata" type="usesExternal"/>
+      <packageRef name="java.io" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.util" type="usesInternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.robotstxt" sources="test_resources/crawler4j-master/target/classes"  size="5" usedBy="2" usesInternal="5" usesExternal="3" layer="1" cycle="edu.uci.ics.crawler4j.crawler et al.">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usesInternal"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="java.net" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usesInternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.util" type="usesInternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.url" sources="test_resources/crawler4j-master/target/classes"  size="5" usedBy="6" usesInternal="1" usesExternal="5" layer="0" cycle="">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.fetcher" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usedBy"/>
+      <packageRef name="java.util" type="usesExternal"/>
+      <packageRef name="java.io" type="usesExternal"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="java.net" type="usesExternal"/>
+      <packageRef name="edu.uci.ics.crawler4j.url" type="usesInternal"/>
+      <packageRef name="com.sleepycat.persist.model" type="usesExternal"/>
+    </package>
+    <package name="edu.uci.ics.crawler4j.util" sources="test_resources/crawler4j-master/target/classes"  size="2" usedBy="4" usesInternal="0" usesExternal="4" layer="0" cycle="">
+      <packageRef name="edu.uci.ics.crawler4j.crawler" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.frontier" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.parser" type="usedBy"/>
+      <packageRef name="edu.uci.ics.crawler4j.robotstxt" type="usedBy"/>
+      <packageRef name="java.lang" type="usesExternal"/>
+      <packageRef name="java.io" type="usesExternal"/>
+      <packageRef name="java.nio.channels" type="usesExternal"/>
+      <packageRef name="java.nio" type="usesExternal"/>
+    </package>
+  </packages>
+</classycle>
