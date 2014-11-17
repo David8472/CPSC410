@@ -19,12 +19,10 @@ import java.util.Vector;
  */
 public class DependencyAnalyzer {
 
-	private static int exitValue;
 	private static MockXmlParser parser;
 	private static Vector<ClassDependencyInfo> classesDepInfo = new Vector<ClassDependencyInfo>();
 	private static Vector<PackageDependencyInfo> packagesDepInfo = new Vector<PackageDependencyInfo>();
 	private static boolean XmlParserInProgress = false;
-	private static boolean XmlTestParserInProgress = true;
 	private static String compilerCommand;
 	private static Vector<String> fileAddresses;
 	private static String sourceCodePath;
@@ -164,64 +162,6 @@ public class DependencyAnalyzer {
 	}
 
 	/**
-	 * For testing.
-	 * Runs the Classycle tool in the command line and calls XML Parser afterwards.
-	 * @param command A string that contains the command for Classycle.
-	 */
-	public void runClassycleWithCommand(String command){
-		Runtime rt = Runtime.getRuntime();
-		Process proc;
-		try {
-			// -------------- Instructions for Classycle -------------------------------------//
-			// Execute: java -jar <location>\classycle.jar -xmlFile=<filename>.xml <directory>
-			// <location> is the location on your machine where classycle.jar is located.
-			// <filename> is the name of the report file that will be created by the tool.
-			//				This file will be stored in the project directory.
-			// <directory> is the address of the directory containing class files to be analysed.
-			// --------------------------------------------------------------------------------//
-			if(command!= null){
-				proc = rt.exec(command);
-				exitValue = proc.waitFor();
-				System.out.println("For mock xml parser, Classycle process exit value: " + exitValue);
-
-				// Gatekeeper
-				if(XmlTestParserInProgress){
-					parser = new MockXmlParser();
-					parser = new MockXmlParser();
-					parser.analyzeXmlClassInfo();
-					parser.analyzeXmlPackageInfo();
-					classesDepInfo = parser.getClassesXmlSummary();
-					packagesDepInfo = parser.getPackagesXmlSummary();
-					//printClassSummary();
-					//printPackageSummary();
-				}
-				else{
-					System.out.println("Using a real XML Parser...");
-				}
-			}
-			else{
-				exitValue = -1;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		catch(IllegalThreadStateException e){
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	/**
-	 * Returns the status of the command execution.
-	 * @Return Command execution status.
-	 */
-	public int getExitStatus(){
-		return exitValue;
-	}
-
-	/**
 	 * Returns the status of the Classycle execution.
 	 * @Return Classycle exit status.
 	 */
@@ -327,28 +267,18 @@ public class DependencyAnalyzer {
 
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (Path file: stream) {
-				//System.out.println("Path object: " + file.getFileName());
-				//System.out.println("Path object parent: " + file.getParent());
-
 				File myFile = file.toFile();
-				//System.out.println("Abs path: " + myFile.getAbsolutePath());
-
+				
 				if(myFile.isFile()){
 					if(myFile.getName().endsWith(".java")){
-
-						//System.out.println(" " + myFile.getName());
-						//System.out.println("Path object parent: " + file.getParent());
 
 						// --- 1. Extract String representations ---//
 						String fileNameStr = myFile.getName();
 						String pathStr = file.getParent().toString();
-						//System.out.println(" File: " + fileNameStr + " at path: " + pathStr);
-
+						
 						// --- 2. Parse the strings into pieces (store in a vector) --- //
-
 						singleFileVector = new Vector<String>();
 						for (String retval: pathStr.split("/")){
-							//System.out.println(" " + retval);
 							singleFileVector.add(retval);
 						}
 						singleFileVector.add(fileNameStr);
@@ -363,7 +293,6 @@ public class DependencyAnalyzer {
 					}
 				}
 				else{
-					//System.out.println("Directory: " + myFile.getName());
 					listJavaFiles(myFile.toPath());
 				}
 			}		
@@ -388,7 +317,6 @@ public class DependencyAnalyzer {
 			}
 		}
 		String finalString = stringBuilder.toString();
-		//System.out.println("We've built: " + finalString);
 		return finalString;
 	}
 
@@ -412,7 +340,6 @@ public class DependencyAnalyzer {
 		}
 
 		String finalString = stringBuilder.toString();
-		//System.out.println("We've built: " + finalString);
 		return finalString;
 	}
 
@@ -544,9 +471,7 @@ public class DependencyAnalyzer {
 		stringBuilder.append("java -jar classycle\\classycle.jar -xmlFile=samplereport.xml ");
 		stringBuilder.append(path);
 		stringBuilder.append("/target/classes");
-
 		String finalString = stringBuilder.toString();
-		//System.out.println("We've built classycle command: " + finalString);
 		return finalString;
 	}
 	

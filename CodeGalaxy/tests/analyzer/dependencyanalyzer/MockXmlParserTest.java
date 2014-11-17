@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class MockXmlParserTest{
 
-	private DependencyAnalyzer analyzer;
+	private DependencyAnalyzerHelper analyzer;
 	
 	/**
 	 * Check if the number of used-by classes
@@ -20,7 +20,7 @@ public class MockXmlParserTest{
 	public void testClassUsedByVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test3.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer();
+		analyzer = new DependencyAnalyzerHelper();
 		//when
 		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
@@ -43,7 +43,7 @@ public class MockXmlParserTest{
 	public void testClassUsesInternalVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test4.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer();
+		analyzer = new DependencyAnalyzerHelper();
 		//when
 		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
@@ -66,7 +66,7 @@ public class MockXmlParserTest{
 	public void testPackageUsedByVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test5.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer();
+		analyzer = new DependencyAnalyzerHelper();
 		//when
 		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
@@ -89,7 +89,7 @@ public class MockXmlParserTest{
 	public void testPackageUsesInternalVectorLength(){
 		// given
 		String commandStr = "java -jar classycle\\classycle.jar -xmlFile=test6.xml classycle\\samplepayment";
-		analyzer = new DependencyAnalyzer();
+		analyzer = new DependencyAnalyzerHelper();
 		//when
 		analyzer.runClassycleWithCommand(commandStr);
 		if(analyzer.getExitStatus() != 0){
