@@ -1,4 +1,4 @@
-package analyzer;
+package fuser;
 
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
