@@ -1,7 +1,10 @@
 package analyzer.dependencyanalyzer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,9 +30,11 @@ public class DependencyAnalyzer {
 	private static String sourceCodePath;
 	private static int classycleExitValue;
 	private static int compilerExitValue;
-	
+	private static String mavenCommand;
+	private static int mavenExitValue;
+
 	private String daMessage = "Hola you so Helper"; // helper string for development
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -38,6 +43,8 @@ public class DependencyAnalyzer {
 		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
 		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
+		mavenCommand = null; //initialize to null string (to avoid accidental use of old value)
+		mavenExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 	}
 
 	/**
@@ -51,8 +58,10 @@ public class DependencyAnalyzer {
 		compilerExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 		compilerCommand = null; //initialize to null string (to avoid accidental compilation based on previous value)
 		fileAddresses = new Vector<String>(); //reset the vector (to avoid accessing wrong files based on previous values)
+		mavenCommand = null; //initialize to null string (to avoid accidental use of old value)
+		mavenExitValue = -1; //initialize to something other than 0 (0 is reserved for successful exit)
 	}
-	
+
 
 	/**
 	 * Entry point of the Dependency Analyzer tool.
@@ -202,7 +211,7 @@ public class DependencyAnalyzer {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	/**
 	 * Returns the status of the command execution.
@@ -241,7 +250,7 @@ public class DependencyAnalyzer {
 	public Vector<PackageDependencyInfo> getAllPackagesDependencies(){
 		return packagesDepInfo;
 	}
-	
+
 	/**
 	 * Returns a vector with dependencies info of all classes.
 	 */
@@ -406,7 +415,7 @@ public class DependencyAnalyzer {
 		//System.out.println("We've built: " + finalString);
 		return finalString;
 	}
-	
+
 	/**
 	 * Helper method for development.
 	 */
@@ -414,4 +423,100 @@ public class DependencyAnalyzer {
 		return daMessage;
 	}
 
+	/**
+	 * Entry point for Maven-based projects analysis.
+	 * @param codebaseAddress A codebase directory address, where a pom.xml file is located.
+	 */
+	public void runDependencyAnalyzer(String codebaseAddress){
+
+		if(codebaseAddress != "" && codebaseAddress != null){
+			mavenCommand = buildMavenCommand(codebaseAddress);
+			System.out.println("Maven Command: " + mavenCommand);
+		}
+		else{
+			System.err.println("Codebase path cannot be null or empty. Please, enter a correct path.");
+			return;
+		}
+
+		try{
+			if(mavenCommand != null){
+
+				// ------- Run Maven ----------/
+				Runtime rt = Runtime.getRuntime();
+				Process proc = rt.exec(mavenCommand);
+				// Handle error messages via a gobbler
+				StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR");            
+				// Handle any output via a gobbler
+				StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUTPUT");
+				// Start gobblers  
+				errorGobbler.start();
+				outputGobbler.start();
+				// Check exit value
+				mavenExitValue = proc.waitFor(); 
+				System.out.println("Maven Exit Value: " + mavenExitValue);
+
+				if(mavenExitValue == 0){ // process exited successfully
+				}
+				else{
+					System.out.println("Problem: Maven did not exit correctly. Please try again.");
+				}
+			}
+			else{
+				System.out.println("Problem: Maven string was not built right. Please try again.");
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		catch(IllegalThreadStateException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Builds a Maven command string given the base address of the codebase.
+	 * Formats the command like "cmd /C mvn -f {address}/pom.xml compile"
+	 * @param address A relative address of the codebase.
+	 * @return A compile command for Maven.
+	 */
+	private static String buildMavenCommand(String address){
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("cmd /C mvn -f ");
+		stringBuilder.append(address);
+		stringBuilder.append("/pom.xml compile");
+		String finalString = stringBuilder.toString();
+		return finalString;
+	}
+
+
 }
+
+/**
+ * Helper class to handle output and errors that occur while running Runtime.exec()
+ * Reference: http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html
+ */
+class StreamGobbler extends Thread {
+	InputStream is;
+	String type;
+
+	StreamGobbler(InputStream is, String type){
+		this.is = is;
+		this.type = type;
+	}
+
+	public void run(){
+		try{
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String line=null;
+			while ( (line = br.readLine()) != null)
+				System.out.println(type + ">" + line);    
+		} catch (IOException ioe){
+			System.err.println("Stream Gobbler exception.");
+			System.err.println(ioe);  
+		}
+	}
+}
+
