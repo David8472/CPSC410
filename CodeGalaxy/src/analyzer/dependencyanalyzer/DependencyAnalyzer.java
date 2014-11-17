@@ -31,8 +31,6 @@ public class DependencyAnalyzer {
 	private static String mavenCommand;
 	private static int mavenExitValue;
 
-	private String daMessage = "Hola you so Helper"; // helper string for development
-
 	/**
 	 * Default constructor.
 	 */
@@ -339,12 +337,6 @@ public class DependencyAnalyzer {
 		return finalString;
 	}
 
-	/**
-	 * Helper method for development.
-	 */
-	public String getDAMessage(){
-		return daMessage;
-	}
 
 	/**
 	 * Entry point for Maven-based projects analysis.
