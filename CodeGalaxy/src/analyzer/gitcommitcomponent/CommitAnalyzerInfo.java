@@ -10,6 +10,7 @@ public class CommitAnalyzerInfo {
 	private ArrayList<String> allJavaFiles = new ArrayList<String>();
 	private ArrayList<String> filesDeleted = new ArrayList<String>();
 	private ArrayList<String> filePaths = new ArrayList<String>();
+	private ArrayList<String> filesChanged = new ArrayList<String>();
 
 	private String authorName;
 	private String commitID;
@@ -93,6 +94,14 @@ public class CommitAnalyzerInfo {
 
 	protected void setFilePaths(ArrayList<String> filePaths) {
 		this.filePaths.addAll(filePaths);
+	}
+
+	public ArrayList<String> getFilesChanged() {
+		return filesChanged;
+	}
+
+	protected void setFilesChanged(ArrayList<String> filesChanged) {
+		this.filesChanged = filesChanged;
 	}
 	
 }

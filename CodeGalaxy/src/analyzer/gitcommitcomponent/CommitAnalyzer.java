@@ -15,19 +15,21 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 
 public class CommitAnalyzer{
 	private String repoDirectory;
+	private RepositoryBuilder builder = new RepositoryBuilder();
+    private Repository repository;
+    private File directory;
+    
 	private ArrayList<CommitAnalyzerInfo> commitAnalyzerInfo = new ArrayList<CommitAnalyzerInfo>();
 	
-	private int numberOfJavaCommits=0;
-	private int numberOfAllCommits=0;
+	private int numberOfJavaCommits = 0;
+	private int numberOfAllCommits = 0;
 	
 	public CommitAnalyzer(String repoDirectory){//The Constructor
-		this.repoDirectory=repoDirectory;		
+		this.repoDirectory = repoDirectory;
+		this.directory = new File(repoDirectory);
 	}
 	//http://stackoverflow.com/questions/19941597/jgit-use-treewalk-to-list-files-and-folders
 	public ArrayList<CommitAnalyzerInfo> analyzeCommits(){//This will analyze the commits of the Repository
-		File directory = new File(repoDirectory);
-	    RepositoryBuilder builder = new RepositoryBuilder();
-	    Repository repository;
 	    
 		try {
 			repository = builder.setGitDir(directory).readEnvironment().findGitDir().build();
@@ -59,8 +61,6 @@ public class CommitAnalyzer{
 			        	if(treeWalk.getNameString().contains(".java")){//Will only bother with Java files
 			        		tempFilePaths.add(new String(treeWalk.getPathString()));
 			        		tempFileNames.add(new String(obtainFileName(treeWalk.getPathString())));
-			        		//System.out.println(parsePathName(treeWalk.getPathString()));
-			        		//System.out.println(tempStringArray.toString());
 			        	}
 			        }
 			        
