@@ -25,7 +25,7 @@ public class GlobalController {
     	ArrayList<CommitAnalyzerInfo> commitMetaData = new ArrayList<CommitAnalyzerInfo>();
     	commitMetaData = commitAnalyzer.analyzeCommits();
     	
-    	DataAggregator dataAggregator = new DataAggregator("CodeGalaxy");
+    	DataAggregator dataAggregator = new DataAggregator("data.yml");
     	
     	HashMap<String, Integer> previousCommit = new HashMap<String, Integer>();//For tracking information
     	
