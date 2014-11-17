@@ -52,8 +52,8 @@ public class DependencyAnalyzerHelper{
 					parser.analyzeXmlPackageInfo();
 					classesDepInfo = parser.getClassesXmlSummary();
 					packagesDepInfo = parser.getPackagesXmlSummary();
-					printClassSummary();
-					printPackageSummary();
+					//printClassSummary();
+					//printPackageSummary();
 				}
 				else{
 					System.out.println("Using a real XML Parser...");

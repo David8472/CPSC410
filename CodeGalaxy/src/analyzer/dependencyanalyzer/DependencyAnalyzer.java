@@ -127,9 +127,7 @@ public class DependencyAnalyzer {
 							parser.analyzeXmlClassInfo();
 							parser.analyzeXmlPackageInfo();
 							classesDepInfo = parser.getClassesXmlSummary();
-							packagesDepInfo = parser.getPackagesXmlSummary();	
-							//printClassSummary();
-							//printPackageSummary();
+							packagesDepInfo = parser.getPackagesXmlSummary();
 						}
 						else{
 							System.out.println("Using a real XML Parser...");
@@ -264,11 +262,9 @@ public class DependencyAnalyzer {
 	private static void listJavaFiles(Path dir) throws IOException{
 
 		Vector<String> singleFileVector;
-
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (Path file: stream) {
 				File myFile = file.toFile();
-				
 				if(myFile.isFile()){
 					if(myFile.getName().endsWith(".java")){
 
@@ -404,22 +400,12 @@ public class DependencyAnalyzer {
 							parser.analyzeXmlClassInfo();
 							parser.analyzeXmlPackageInfo();
 							classesDepInfo = parser.getClassesXmlSummary();
-							packagesDepInfo = parser.getPackagesXmlSummary();	
-							//printClassSummary();
-							//printPackageSummary();
+							packagesDepInfo = parser.getPackagesXmlSummary();
 						}
 						else{
 							System.out.println("Using a real XML Parser...");
 							XmlParser realParser = new XmlParser(this);
 							realParser.startXmlParser("samplereport.xml", this);
-
-							System.out.println(" ");
-							System.out.println("***** ORIGINAL DA *****");
-							printClassSummary();
-							System.out.println(" ");
-							printPackageSummary();
-							System.out.println("***** END ORIGINAL DA *****");
-							System.out.println(" ");
 						}
 					}
 					else{
