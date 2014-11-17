@@ -13,6 +13,13 @@ public class DependencyAnalyzerMavenTest{
 
 	private DependencyAnalyzer analyzer;
 
+	/**
+	 * Tests if the component compiles and analyzes the code correctly
+	 * 		given a valid path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: valid address that contains a pom.xml file.
+	 * Expected output: Maven and Classycle run successfully.
+	 */
 	@Test
 	public void succesfulMavenTest(){
 		// given
@@ -27,7 +34,14 @@ public class DependencyAnalyzerMavenTest{
 		assertEquals(0, analyzer.getClassycleExitStatus());
 	}
 
-
+	/**
+	 * Tests if the component behaves correctly
+	 * 		given a null address to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: null address string.
+	 * Expected output: Null path terminates the component in a graceful way.
+	 * 					Maven and Classycle are not able to run successfully.
+	 */
 	@Test
 	public void nullCodeBaseAddressTest(){
 		// given
@@ -42,6 +56,14 @@ public class DependencyAnalyzerMavenTest{
 		assertNotEquals(0, analyzer.getClassycleExitStatus());
 	}
 	
+	/**
+	 * Tests if the component behaves correctly
+	 * 		given an empty path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: empty address string.
+	 * Expected output: Empty address terminates the component in a graceful way.
+	 * 					Maven and Classycle are not able to run successfully.
+	 */
 	@Test
 	public void emptyCodeBaseAddressCommandTest(){
 		// given
@@ -56,7 +78,13 @@ public class DependencyAnalyzerMavenTest{
 		assertNotEquals(0, analyzer.getClassycleExitStatus());
 	}
 	
-
+	/**
+	 * Tests if the compiler fails given an incorrect path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: path that does not contain a pom.xml file.
+	 * Expected output: Incorrect path terminates the component in a graceful way.
+	 * 					Maven is not able to run successfully.
+	 */
 	@Test
 	public void incorrectCodeBaseAddressCommandTest(){
 		// given
@@ -71,6 +99,13 @@ public class DependencyAnalyzerMavenTest{
 		assertEquals(1, analyzer.getMavenExitStatus());
 	}
 	
+	/**
+	 * Tests if the component behaves correctly
+	 * 		given an invalid path to the source code.
+	 * Notation: 0 = successful exit, non-zero = error.
+	 * Input: invalid address string.
+	 * Expected output: Invalid address results in no Maven or Classycle execution.
+	 */
 	@Test
 	public void invalidAddressCommandTest(){
 		// given
