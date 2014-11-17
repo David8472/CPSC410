@@ -425,6 +425,8 @@ public class DependencyAnalyzer {
 
 	/**
 	 * Entry point for Maven-based projects analysis.
+	 * Reference for Maven: http://maven.apache.org/guides/getting-started/index.html
+	 * Reference for Classycle: http://classycle.sourceforge.net/index.html
 	 * @param codebaseAddress A codebase directory address, where a pom.xml file is located.
 	 */
 	public void runDependencyAnalyzer(String codebaseAddress){
@@ -456,6 +458,46 @@ public class DependencyAnalyzer {
 				System.out.println("Maven Exit Value: " + mavenExitValue);
 
 				if(mavenExitValue == 0){ // process exited successfully
+
+					// ------- Run the Classycle tool ----------//
+					String classycleCommand = buildClassycleCommand(codebaseAddress);
+					System.out.println("Classycle Command: " + classycleCommand);
+
+					proc = rt.exec(classycleCommand);
+					classycleExitValue = proc.waitFor();
+					System.out.println("Classycle Process exit value: " + classycleExitValue);
+
+					if(classycleExitValue == 0){ // process exited successfully
+						
+						// Gatekeeper
+						if(XmlParserInProgress){
+							System.out.println("Using a mock XML Parser...");
+							parser = new MockXmlParser();
+							parser = new MockXmlParser();
+							parser.analyzeXmlClassInfo();
+							parser.analyzeXmlPackageInfo();
+							classesDepInfo = parser.getClassesXmlSummary();
+							packagesDepInfo = parser.getPackagesXmlSummary();	
+							//printClassSummary();
+							//printPackageSummary();
+						}
+						else{
+							System.out.println("Using a real XML Parser...");
+							XmlParser realParser = new XmlParser(this);
+							realParser.startXmlParser("samplereport.xml", this);
+
+							System.out.println(" ");
+							System.out.println("***** ORIGINAL DA *****");
+							printClassSummary();
+							System.out.println(" ");
+							printPackageSummary();
+							System.out.println("***** END ORIGINAL DA *****");
+							System.out.println(" ");
+						}
+					}
+					else{
+						System.out.println("Problem: Classycle did not exit correctly. Please try again.");
+					}
 				}
 				else{
 					System.out.println("Problem: Maven did not exit correctly. Please try again.");
@@ -464,13 +506,14 @@ public class DependencyAnalyzer {
 			else{
 				System.out.println("Problem: Maven string was not built right. Please try again.");
 			}
-		}
-		catch (IOException e) {
+		} catch (XmlParserException e) {
+			System.err.println("XML Parser did not run successfully. Please, try again.");
+			System.err.println(e);
+		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-		catch(IllegalThreadStateException e){
+		} catch(IllegalThreadStateException e){
 			e.printStackTrace();
 		}
 	}
@@ -488,6 +531,31 @@ public class DependencyAnalyzer {
 		stringBuilder.append("/pom.xml compile");
 		String finalString = stringBuilder.toString();
 		return finalString;
+	}
+
+	/**
+	 * Builds a command for Classycle.
+	 * Formats the command like "java -jar classycle\\classycle.jar -xmlFile=samplereport.xml {path}/target/classes"
+	 * @param address A relative address of the compiled class files.
+	 * @return A command for the Classycle.
+	 */
+	private static String buildClassycleCommand(String path){
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("java -jar classycle\\classycle.jar -xmlFile=samplereport.xml ");
+		stringBuilder.append(path);
+		stringBuilder.append("/target/classes");
+
+		String finalString = stringBuilder.toString();
+		//System.out.println("We've built classycle command: " + finalString);
+		return finalString;
+	}
+	
+	/**
+	 * Returns the status of Maven execution.
+	 * @return Maven exit status.
+	 */
+	public int getMavenExitStatus(){
+		return mavenExitValue;
 	}
 
 
