@@ -12,7 +12,8 @@ var #{author_hash[:author].gsub(" ", "_")} = new Ship({
     else
         text += "            visible: true,
             destination: #{author_hash[:commits].first.first[:indexed_name]},
-            ships: [#{(author_hash[:commits].first[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
+            ships: [#{probe_list.join(", ")}],
+            probes: [#{(author_hash[:commits].first[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
     end
     text += "        }),
         end: new State({\n"
@@ -21,7 +22,8 @@ var #{author_hash[:author].gsub(" ", "_")} = new Ship({
     else
         text += "            visible: true,
             destination: #{author_hash[:commits].last.first[:indexed_name]},
-            ships: [#{(author_hash[:commits].last[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
+            ships: [#{probe_list.join(", ")}],
+            probes: [#{(author_hash[:commits].last[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
     end
     text += "        }),
         states: [\n"
@@ -32,7 +34,8 @@ var #{author_hash[:author].gsub(" ", "_")} = new Ship({
         else
             text += "                visible: true,
                 destination: #{commit.first[:indexed_name]},
-                ships: [#{(commit[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
+                ships: [#{probe_list.join(", ")}],
+                probes: [#{(commit[1..-1].map{|v| v[:indexed_name]}).join(", ")}]\n"
         end
         text += "            })#{(idx == (author_hash[:commits][1..-2].length - 1))? "" : ","}\n"
     end
@@ -56,7 +59,9 @@ def probe_ship_gen(probe_count, probe_array)
     dis_at_end: true
 });
 scene.add(author_probe_#{temp}.spr);
-probes[probes.length] = author_probe_#{temp};\n\n"
+author_probe_#{temp}.spr.visible = false;
+probes[probes.length] = author_probe_#{temp};
+author_probe_#{temp}.spr.scale.set(2,2,2);\n\n"
         probe_array.push("author_probe_#{temp}")
     end
     return text

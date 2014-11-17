@@ -26,7 +26,7 @@ def html_start (title)
 var scene = new THREE.Scene(); 
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000); 
 var renderer = new THREE.WebGLRenderer(); 
-renderer.setSize(window.innerWidth*0.9, window.innerHeight*0.9); 
+renderer.setSize(window.innerWidth*0.95, window.innerHeight*0.95); 
 document.body.appendChild(renderer.domElement); 
 var planet_texture = THREE.ImageUtils.loadTexture('textures/planet.jpg');
 var star_texture = THREE.ImageUtils.loadTexture('textures/star.jpg');

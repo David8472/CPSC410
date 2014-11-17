@@ -83,17 +83,22 @@ var Ship = function(parameters) {
     this.dis_at_end = false;
     this.orbit = false;
     this.his = false;
+    this.at_end = false;
     
     this.setValues(parameters);
 
 };
 
 Ship.prototype.initializeAuthor = function(z) {
-    this.target = this.his.start.destination;
-    this.spr.position.x = this.target.mesh.position.x;
-    this.spr.position.y = this.target.mesh.position.y;
+    if(this.his.start.visible != false) {
+        this.target = this.his.start.destination;
+        this.spr.position.x = this.target.mesh.position.x;
+        this.spr.position.y = this.target.mesh.position.y;
+        this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+    } else {
+        this.spr.visible = false;
+    }
     this.spr.position.z = z;
-    this.orbit = this.target.mesh.geometry.parameters.radius + 1;
 }
 
 Ship.prototype.setValues = function(values) {
@@ -139,6 +144,19 @@ Ship.prototype.updatepos = function(time, speedx) {
                             this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
                             this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
                         }
+                    }
+                    if(this.at_end == false) {
+                        var temp_idx = 0;
+                        for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                            the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                            the_state.ships[temp_idx].origin = this.spr;
+                            the_state.ships[temp_idx].start = this.spr.position.clone();
+                            the_state.ships[temp_idx].target = the_state.probes[temp_idx];
+                            the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                        }
+                    }
+                    if(the_state == this.his.end) {
+                        this.at_end = true;
                     }
                 } else {
                     if(this.orbit == false) {
