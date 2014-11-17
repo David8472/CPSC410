@@ -21,7 +21,7 @@ In the visualization, starship(s) representing author(s) are exploring a codebas
 - Authors editing previously committed classes/methods are represented as starships visiting previously discovered planets/moons
 - Dependencies between packages are represented as trade routes between systems
 
-Initially, before any commits are made, the galaxy is covered in fog. Gradually, as commits are made and packages/classes/methods are added, the fog lifts as their corresponding celestial objects are “discovered” by ship(s). If an author interacts with more than one object during a commit, the spaceship will visit one object and send probes to the others. Finally, when all commits are traced through, the fog is cleared, and the current state of the codebase is reached.
+Initially, before any commits are made, the galaxy will be empty. Gradually, as commits are made and packages/classes/methods are added, parts of the galaxy will start to appear as celestial objects are “discovered” by ship(s) that represent authors. If an author interacts with more than one object during a commit, the spaceship will visit one celestial body and send probes to the others. Finally, when all commits are traced through, the entire galaxy will be visible, and the current state of the codebase is reached.
 
 Analysis Performed (Per Git Commit)
 ------------------
