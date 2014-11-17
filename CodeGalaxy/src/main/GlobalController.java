@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
@@ -19,8 +20,8 @@ public class GlobalController {
     	String repoDirectory = input.next();
     	input.close();
     	
-    	CommitAnalyzer commitAnalyzer = new CommitAnalyzer(repoDirectory+"\\.git");
-    	CommitCheckout commitCheckout = new CommitCheckout(repoDirectory+"\\.git");
+    	CommitAnalyzer commitAnalyzer = new CommitAnalyzer(repoDirectory+"/.git");
+    	CommitCheckout commitCheckout = new CommitCheckout(repoDirectory+"/.git");
     	
     	ArrayList<CommitAnalyzerInfo> commitMetaData = new ArrayList<CommitAnalyzerInfo>();
     	commitMetaData = commitAnalyzer.analyzeCommits();
@@ -40,7 +41,7 @@ public class GlobalController {
     		analyzer.runClassycle();
     		
     		if(previousCommit!=null){
-	    		Iterator<HashMap.Entry<String, Integer>> iterator = previousCommit.entrySet().iterator();
+	    		Iterator<Map.Entry<String, Integer>> iterator = previousCommit.entrySet().iterator();
 	    		currentCommit = codebaseStats.getClassToLOCMap();
 	    		
 	    		while(iterator.hasNext()){
