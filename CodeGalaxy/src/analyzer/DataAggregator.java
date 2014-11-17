@@ -10,6 +10,7 @@ import analyzer.miscstaticanalyzer.PackageInfo;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class DataAggregator {
@@ -171,7 +172,7 @@ public class DataAggregator {
         writer.println("modified:");
 
         /* Writes all modified classes including added classes to output YAML file */
-        for(HashMap.Entry<String, Integer> cursor : modifiedClassesWithLOCchanges.entrySet()) {
+        for(Map.Entry<String, Integer> cursor : modifiedClassesWithLOCchanges.entrySet()) {
             writeSpacesCorrespondingToNestedLevel(COMMIT_METADATA_NEST_LEVEL + 1);
             String className = cursor.getKey();
             writer.println(className + ":");
