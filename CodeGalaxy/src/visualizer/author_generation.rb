@@ -4,6 +4,7 @@
 def author_ship_gen(author_hash, max_dist, probe_list) 
     text = "// Author ship for #{author_hash[:author]}
 var #{author_hash[:author].downcase.gsub(" ", "_")} = new Ship({
+    name: \"#{author_hash[:author].downcase.gsub(" ", "_")}\",
     material: new THREE.SpriteMaterial({map: author_texture, color: 0xffffff, fog: true}),
     his: new History({
         start: new State({\n"
@@ -57,7 +58,8 @@ def probe_ship_gen(probe_count, probe_array)
         temp = ("a".."zz").to_a[v]
         text += "var author_probe_#{temp} = new Ship({
     material: new THREE.SpriteMaterial({map: probe_texture, color: 0xffffff, fog: true}),
-    dis_at_end: true
+    dis_at_end: true,
+    name: \"author_probe_#{temp}\"
 });
 scene.add(author_probe_#{temp}.spr);
 author_probe_#{temp}.spr.visible = false;

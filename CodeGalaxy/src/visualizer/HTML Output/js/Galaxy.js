@@ -70,7 +70,7 @@ State.prototype.setValues = function(values) {
 * Should be able to work as a sprite for both author ships and trade ships
 */
 var Ship = function(parameters) {
-    
+    this.name = "";
     this.origin = false;
     this.start = false;
     this.destination = false;
@@ -144,11 +144,12 @@ Ship.prototype.updatepos = function(time, speedx) {
                         } else
                             this.spr.visible = false;
                     } else {
+                        var tt_t = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL
                         if(the_state.destination != this.target) {
-                            this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                            this.eta = tt_t;
                             this.start = this.spr.position.clone();
                             this.target = the_state.destination;
-                            this.destination = this.target.projectedpos(this.eta);
+                            this.destination = this.target.projectedpos(tt_t);
                             this.orbit = this.target.mesh.geometry.parameters.radius + 1;
                         } else {
                             if(this.orbit == false) {
@@ -159,17 +160,18 @@ Ship.prototype.updatepos = function(time, speedx) {
                                 this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
                             }
                         }
-                        if(true) {
+                        if(!this.at_end) {
                             var temp_idx = 0;
                             for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
-                                the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                                the_state.ships[temp_idx].eta = tt_t;
                                 the_state.ships[temp_idx].origin = true;
                                 the_state.ships[temp_idx].start = new THREE.Vector3(
-                                    this.spr.position.x, 
-                                    this.spr.position.y, 
-                                    this.spr.position.z);
+                                    this.spr.position.x,
+                                    this.spr.position.y,
+                                    this.spr.position.z
+                                    );
                                 the_state.ships[temp_idx].target = the_state.probes[temp_idx];
-                                the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                                the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(tt_t);
                             }
                         }
                         if(the_state == this.his.end) {
@@ -205,7 +207,6 @@ Ship.prototype.updatepos = function(time, speedx) {
                 this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*temp_t;
                 this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*temp_t;
             } else {
-                //debug((this.destination.x - this.start.x)/TIME_INTERVAL);
                 this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/TIME_INTERVAL*(time % TIME_INTERVAL);
                 this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/TIME_INTERVAL*(time % TIME_INTERVAL);
             }
@@ -244,7 +245,7 @@ Ship.prototype.updatepos = function(time, speedx) {
 */
 
 var Celestial = function(parameters) {
-
+    this.name = "";
     this.geometry = new THREE.SphereGeometry(0.1, 8, 8);
     this.material = new THREE.MeshLambertMaterial({color:0xffffff});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -304,9 +305,9 @@ Celestial.prototype.projectedpos = function ( time ) {
     var x = 0;
     var y = 0;
     var z = 0;
-    var temp = new THREE.Vector3();
+    var temp = this.mesh.position;
     if(this.origin != false) {
-        temp = this.origin.mesh.position;
+        temp = this.origin.projectedpos(time);
     }
     if(this.xsin == true) {
         x = temp.x + this.orbitoffx + this.orbitradx * Math.sin(time * this.tfactor + this.toffx);

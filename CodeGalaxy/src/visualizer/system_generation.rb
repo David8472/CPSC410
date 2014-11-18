@@ -13,6 +13,7 @@ def gen_planet(class_map)
     class_map["colour"] = COLOURS[class_map["type"]]
     text = "//#{class_map["package"]} class: #{class_map["name"]}
 #{class_map["indexed_name"]}.setValues({
+    name: \"#{class_map["indexed_name"]}\",
     geometry: new THREE.SphereGeometry(#{class_map["radius"]}, 10, 10),
     material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: #{class_map["colour"]}, map: planet_texture}),
     origin: #{class_map["package"]}, 
@@ -33,6 +34,7 @@ end
 def gen_moon(method_map)
     text = "//#{method_map["class"]} function: #{method_map["name"]}
 var #{method_map["indexed_name"]} = new Celestial({
+    name: \"#{method_map["indexed_name"]}\",
     geometry: new THREE.SphereGeometry(#{method_map["radius"]}, 8, 8),
     material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xbb8800, map: planet_texture}),
     origin: #{method_map["class"]},
@@ -53,6 +55,7 @@ end
 def gen_star(package_map)
     text = "//#{package_map["name"]}
 var #{package_map["indexed_name"]} = new Celestial({
+    name: \"#{package_map["indexed_name"]}\",
     geometry: new THREE.SphereGeometry(#{package_map["radius"]}, 12, 12),
     material: new THREE.MeshBasicMaterial({color: 0xffdd22, map: star_texture}),
     light: new THREE.PointLight( 0xffddbb, 1, 1000 ),
@@ -72,6 +75,7 @@ def gen_route(dep_map)
     eta = 100
     while(temp < dep_map["strength"])
         text += "var #{dep_map["indexed_name"]}_#{temp} = new Ship({
+        name: \"#{dep_map["indexed_name"]}_#{temp}\",
         material: new THREE.SpriteMaterial({map: trade_texture, color: 0xffffff, fog: true}),
         origin: #{dep_map["class_indexed_name"]}.mesh,
         target: #{dep_map["dclass_indexed_name"]},
