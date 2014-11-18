@@ -112,7 +112,7 @@ public class DependencyAnalyzer {
 				if(compilerExitValue == 0){ // process exited successfully
 
 					// ------- Run the Classycle tool ----------//
-					proc = rt.exec("java -jar classycle\\classycle.jar -xmlFile=samplereport.xml samplebytecode");
+					proc = rt.exec("java -jar classycle/classycle.jar -xmlFile=samplereport.xml samplebytecode");
 					classycleExitValue = proc.waitFor();
 					System.out.println("Classycle Process exit value: " + classycleExitValue);
 
@@ -446,7 +446,7 @@ public class DependencyAnalyzer {
 	 */
 	private static String buildClassycleCommand(String path){
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("java -jar classycle\\classycle.jar -xmlFile=samplereport.xml ");
+		stringBuilder.append("java -jar classycle/classycle.jar -xmlFile=samplereport.xml ");
 		stringBuilder.append(path);
 		stringBuilder.append("/target/classes");
 		String finalString = stringBuilder.toString();
