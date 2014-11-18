@@ -37,8 +37,8 @@ public class GlobalController {
     		ArrayList<String> classesRemoved = new ArrayList<String>();
     		HashMap<String, Integer> currentCommit = new HashMap<String, Integer>();
     		
-    		DependencyAnalyzer analyzer = new DependencyAnalyzer(repoDirectory);
-    		analyzer.runClassycle();
+    		DependencyAnalyzer analyzer = new DependencyAnalyzer();
+    		analyzer.runDependencyAnalyzer(repoDirectory);
     		
     		if(previousCommit!=null){
 	    		Iterator<Map.Entry<String, Integer>> iterator = previousCommit.entrySet().iterator();
