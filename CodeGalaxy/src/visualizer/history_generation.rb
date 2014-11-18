@@ -43,7 +43,7 @@ def gen_celestial_map( cel_indexed_name, commits, max_version )
         else
             map[:states].push({radius: commit["radius"],
                 present: true,
-                colour: (commit["type"].nil?) ? nil : COLOURS[commit["type"]],
+                colour: (commit["type"].nil?) ? nil : PLANET_COLOURS[commit["type"]],
                 ships: ship_array_gen(commit["dependencies"], max_version["dependencies"])})
         end
     end

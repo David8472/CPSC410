@@ -1,16 +1,16 @@
 #########################################
 # Hash object to hold colour references #
 #########################################
-COLOURS = Hash.new("0xffffff")
-COLOURS["concrete"] = "0x00ff00"
-COLOURS["abstract"] = "0x4444ff"
-COLOURS["interface"] = "0xff8844"
+PLANET_COLOURS = Hash.new("0xffffff")
+PLANET_COLOURS["concrete"] = "0x00ff00"
+PLANET_COLOURS["abstract"] = "0x4444ff"
+PLANET_COLOURS["interface"] = "0xff8844"
 
 ##################################
 # Helper method to generate planets
 ##################################
 def gen_planet(class_map)
-    class_map["colour"] = COLOURS[class_map["type"]]
+    class_map["colour"] = PLANET_COLOURS[class_map["type"]]
     text = "//#{class_map["package"]} class: #{class_map["name"]}
 #{class_map["indexed_name"]}.setValues({
     name: \"#{class_map["indexed_name"]}\",

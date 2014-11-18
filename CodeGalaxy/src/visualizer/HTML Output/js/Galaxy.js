@@ -163,6 +163,7 @@ Ship.prototype.updatepos = function(time, speedx) {
                         if(!this.at_end) {
                             var temp_idx = 0;
                             for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                                the_state.ships[temp_idx].spr.material.setValues({color: this.spr.material.color});
                                 the_state.ships[temp_idx].eta = tt_t;
                                 the_state.ships[temp_idx].origin = true;
                                 the_state.ships[temp_idx].start = new THREE.Vector3(
@@ -214,7 +215,8 @@ Ship.prototype.updatepos = function(time, speedx) {
     } else if(this.his != false) {
         var the_state = this.his.getNextState(time);
         if(the_state.visible != false) {
-            this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+            var tt_t = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+            this.eta = tt_t;
             this.start = this.spr.position.clone();
             this.target = the_state.destination;
             this.destination = this.target.projectedpos(this.eta);
@@ -222,14 +224,15 @@ Ship.prototype.updatepos = function(time, speedx) {
             if(true) {
                 var temp_idx = 0;
                 for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
-                    the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                    the_state.ships[temp_idx].spr.material.setValues({color: this.spr.material.color});
+                    the_state.ships[temp_idx].eta = tt_t;
                     the_state.ships[temp_idx].origin = true;
                     the_state.ships[temp_idx].start = new THREE.Vector3(
                         this.spr.position.x, 
                         this.spr.position.y, 
                         this.spr.position.z);
                     the_state.ships[temp_idx].target = the_state.probes[temp_idx];
-                    the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                    the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(tt_t);
                 }
             }
             if(the_state == this.his.end) {

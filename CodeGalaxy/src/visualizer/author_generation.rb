@@ -1,11 +1,16 @@
 ###########################################################
+# Colour List
+###########################################################
+COLOURS = YAML.load_file("author_colours.yml")
+
+###########################################################
 # Helper method to generate author ship
 ###########################################################
 def author_ship_gen(author_hash, max_dist, probe_list) 
     text = "// Author ship for #{author_hash[:author]}
 var #{author_hash[:author].downcase.gsub(" ", "_")} = new Ship({
     name: \"#{author_hash[:author].downcase.gsub(" ", "_")}\",
-    material: new THREE.SpriteMaterial({map: author_texture, color: 0xffffff, fog: true}),
+    material: new THREE.SpriteMaterial({map: author_texture, color: #{author_hash[:colour]}, fog: true}),
     his: new History({
         start: new State({\n"
     if(author_hash[:commits].first.empty?)

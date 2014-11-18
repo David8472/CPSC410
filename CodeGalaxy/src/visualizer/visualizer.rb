@@ -46,7 +46,7 @@ ARGV.each do |filename|
     val = 0
     commit_keys.each do |key|
         if(authors[data[key]["author"]].nil?)
-            authors[data[key]["author"]] = {author: data[key]["author"], commits: [], index: val}
+            authors[data[key]["author"]] = {author: data[key]["author"], commits: [], index: val, colour: COLOURS[authors.length%COLOURS.length]}
         end
         val += 1
         combined_present = combination_merge(combined_present, data[key]["present"]["packages"])
