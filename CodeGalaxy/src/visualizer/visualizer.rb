@@ -38,11 +38,17 @@ ARGV.each do |filename|
     output = html_start(filename)
     # Keep track of maximum of distance spanned along x or y axis for determining starting camera position
     total_dist = {x: 0, y: 0, z: 0}
+    authors = {}
     #################################################################
     # Generate the combined history to gather ALL generated objects #
     #################################################################
     combined_present = {}
+    val = 0
     commit_keys.each do |key|
+        if(authors[data[key]["author"]].nil?)
+            authors[data[key]["author"]] = {author: data[key]["author"], commits: [], index: val}
+        end
+        val += 1
         combined_present = combination_merge(combined_present, data[key]["present"]["packages"])
     end
     # Initialize counters at 0
@@ -175,12 +181,8 @@ ARGV.each do |filename|
     #########################
     # Generate Author Ships #
     #########################
-    authors = {}
     max_probes = 0
     commit_keys.each do |commit_key|
-        if(authors[data[commit_key]["author"]].nil?)
-            authors[data[commit_key]["author"]] = {author: data[commit_key]["author"], commits: []}
-        end
         temp = []
         data[commit_key]["modified"].each do |key, value|
             path = key.split(".")

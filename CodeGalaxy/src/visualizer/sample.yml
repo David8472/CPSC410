@@ -28,7 +28,7 @@ commit_10:
                 classes:
                     MainClass:
                         lines: 300
-                        type: full
+                        type: concrete
                         methods:
                             sin:
                                 lines: 25
@@ -76,7 +76,7 @@ commit_10:
                 classes:
                     PClass:
                         lines: 30
-                        type: full
+                        type: concrete
                         methods:
                             afun:
                                 lines: 15
@@ -104,7 +104,7 @@ commit_10:
                 dependencies:
                     
 commit_3:
-    author: Oddish
+    author: Akali
     modified:
         MainPackage.MainClass:
             lines_added: 105
@@ -133,7 +133,7 @@ commit_3:
                 classes:
                     MainClass:
                         lines: 150
-                        type: full
+                        type: concrete
                         methods:
                             sin:
                                 lines: 25
@@ -199,7 +199,7 @@ commit_2:
                 classes:
                     MainClass:
                         lines: 45
-                        type: full
+                        type: concrete
                         methods:
                             sin:
                                 lines: 5
@@ -237,7 +237,7 @@ commit_1:
                 classes:
                     MainClass:
                         lines: 40
-                        type: full
+                        type: concrete
                         methods:
                             sin:
                                 lines: 5

@@ -2,7 +2,7 @@
 # Hash object to hold colour references #
 #########################################
 COLOURS = Hash.new("0xffffff")
-COLOURS["full"] = "0x00ff00"
+COLOURS["concrete"] = "0x00ff00"
 COLOURS["abstract"] = "0x4444ff"
 COLOURS["interface"] = "0xff8844"
 

@@ -70,7 +70,7 @@ State.prototype.setValues = function(values) {
 * Should be able to work as a sprite for both author ships and trade ships
 */
 var Ship = function(parameters) {
-
+    
     this.origin = false;
     this.start = false;
     this.destination = false;
@@ -84,6 +84,7 @@ var Ship = function(parameters) {
     this.orbit = false;
     this.his = false;
     this.at_end = false;
+    this.auth_offset = 0;
     
     this.setValues(parameters);
 
@@ -131,40 +132,57 @@ Ship.prototype.updatepos = function(time, speedx) {
             } else {
                 if(this.his != false) {
                     var the_state = this.his.getNextState(time);
-                    if(the_state.destination != this.target) {
-                        this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
-                        this.start = this.spr.position.clone();
-                        this.target = the_state.destination;
-                        this.destination = this.target.projectedpos(this.eta);
+                    if(the_state.visible == false) {
+                        if(this.target != false) {
+                            if(this.orbit == false) {
+                                this.spr.position.x = this.target.mesh.position.x;
+                                this.spr.position.y = this.target.mesh.position.y;
+                            } else {
+                                this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                                this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
+                            }
+                        } else
+                            this.spr.visible = false;
                     } else {
-                        if(this.orbit == false) {
-                            this.spr.position.x = this.target.mesh.position.x;
-                            this.spr.position.y = this.target.mesh.position.y;
+                        if(the_state.destination != this.target) {
+                            this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                            this.start = this.spr.position.clone();
+                            this.target = the_state.destination;
+                            this.destination = this.target.projectedpos(this.eta);
+                            this.orbit = this.target.mesh.geometry.parameters.radius + 1;
                         } else {
-                            this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
-                            this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
+                            if(this.orbit == false) {
+                                this.spr.position.x = this.target.mesh.position.x;
+                                this.spr.position.y = this.target.mesh.position.y;
+                            } else {
+                                this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                                this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
+                            }
                         }
-                    }
-                    if(this.at_end == false) {
-                        var temp_idx = 0;
-                        for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
-                            the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
-                            the_state.ships[temp_idx].origin = this.spr;
-                            the_state.ships[temp_idx].start = this.spr.position.clone();
-                            the_state.ships[temp_idx].target = the_state.probes[temp_idx];
-                            the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                        if(true) {
+                            var temp_idx = 0;
+                            for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                                the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                                the_state.ships[temp_idx].origin = true;
+                                the_state.ships[temp_idx].start = new THREE.Vector3(
+                                    this.spr.position.x, 
+                                    this.spr.position.y, 
+                                    this.spr.position.z);
+                                the_state.ships[temp_idx].target = the_state.probes[temp_idx];
+                                the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                            }
                         }
-                    }
-                    if(the_state == this.his.end) {
-                        this.at_end = true;
+                        if(the_state == this.his.end) {
+                            this.at_end = true;
+                        }
                     }
                 } else {
                     if(this.orbit == false) {
                         this.spr.position.x = this.target.mesh.position.x;
                         this.spr.position.y = this.target.mesh.position.y;
                     } else {
-                        this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time);
-                        this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time);
+                        this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                        this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
                     }
                 }
             }
@@ -174,7 +192,8 @@ Ship.prototype.updatepos = function(time, speedx) {
             if(this.loop == true)
                 temp_t = temp_t % this.eta;
             if(temp_t < 0.01 * speedx) {
-                this.start = this.origin.position.clone();
+                if(this.origin != true)
+                    this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
                 var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, 0)).normalize();
                 this.spr.material.rotation = Math.acos(s_up.dot(y));
@@ -189,6 +208,31 @@ Ship.prototype.updatepos = function(time, speedx) {
                 //debug((this.destination.x - this.start.x)/TIME_INTERVAL);
                 this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/TIME_INTERVAL*(time % TIME_INTERVAL);
                 this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/TIME_INTERVAL*(time % TIME_INTERVAL);
+            }
+        }
+    } else if(this.his != false) {
+        var the_state = this.his.getNextState(time);
+        if(the_state.visible != false) {
+            this.eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+            this.start = this.spr.position.clone();
+            this.target = the_state.destination;
+            this.destination = this.target.projectedpos(this.eta);
+            this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+            if(true) {
+                var temp_idx = 0;
+                for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                    the_state.ships[temp_idx].eta = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+                    the_state.ships[temp_idx].origin = true;
+                    the_state.ships[temp_idx].start = new THREE.Vector3(
+                        this.spr.position.x, 
+                        this.spr.position.y, 
+                        this.spr.position.z);
+                    the_state.ships[temp_idx].target = the_state.probes[temp_idx];
+                    the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(the_state.ships[temp_idx].eta);
+                }
+            }
+            if(the_state == this.his.end) {
+                this.at_end = true;
             }
         }
     }

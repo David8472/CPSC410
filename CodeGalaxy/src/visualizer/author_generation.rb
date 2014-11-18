@@ -3,7 +3,7 @@
 ###########################################################
 def author_ship_gen(author_hash, max_dist, probe_list) 
     text = "// Author ship for #{author_hash[:author]}
-var #{author_hash[:author].gsub(" ", "_")} = new Ship({
+var #{author_hash[:author].downcase.gsub(" ", "_")} = new Ship({
     material: new THREE.SpriteMaterial({map: author_texture, color: 0xffffff, fog: true}),
     his: new History({
         start: new State({\n"
@@ -40,10 +40,11 @@ var #{author_hash[:author].gsub(" ", "_")} = new Ship({
         text += "            })#{(idx == (author_hash[:commits][1..-2].length - 1))? "" : ","}\n"
     end
     text += "]})});
-authors[authors.length] = #{author_hash[:author].gsub(" ", "_")};
-scene.add(#{author_hash[:author].gsub(" ", "_")}.spr);
-#{author_hash[:author].gsub(" ", "_")}.initializeAuthor(#{max_dist[:z] + 1});
-#{author_hash[:author].gsub(" ", "_")}.spr.scale.set(4,4,4);\n\n"
+authors[authors.length] = #{author_hash[:author].downcase.gsub(" ", "_")};
+scene.add(#{author_hash[:author].downcase.gsub(" ", "_")}.spr);
+#{author_hash[:author].downcase.gsub(" ", "_")}.initializeAuthor(#{max_dist[:z] + 1});
+#{author_hash[:author].downcase.gsub(" ", "_")}.auth_offset = #{author_hash[:index]};
+#{author_hash[:author].downcase.gsub(" ", "_")}.spr.scale.set(4,4,4);\n\n"
     return text
 end
 
