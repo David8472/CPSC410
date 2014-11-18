@@ -2,8 +2,75 @@
 * @author Raela
 */
 
-var Ship = function(parameters) {
+/**
+* History definition
+* Encapsulation of a number of states, including special states 'start' and 'end'
+*/
+var TIME_INTERVAL = 200;
+var History = function(parameters) {
+    this.start = false;
+    this.end = false;
+    this.states = [];
+    
+    this.setValues(parameters);
+};
 
+History.prototype.getState = function(time) {
+    if(time <= TIME_INTERVAL) {
+        return this.start;
+    } else if(time > (this.states.length+1)*TIME_INTERVAL) {
+        return this.end;
+    } else {
+        return this.states[parseInt(time/TIME_INTERVAL)-1];
+    }
+};
+
+History.prototype.getNextState = function(time) {
+    if(time <= 0) {
+        return this.start;
+    } else if(time > (this.states.length)*TIME_INTERVAL) {
+        return this.end;
+    } else {
+        return this.states[parseInt(time/TIME_INTERVAL)];
+    }
+};
+
+History.prototype.setValues = function(values) {
+    for ( var key in values) {
+        var nValue = values[key];
+        if(key in this)
+            this[key] = nValue;
+    }
+};
+
+/**
+* State definition
+* Encapsulation of a single state, may include destination, radius, and visible trade ships
+*/
+var State = function(parameters) {
+    this.radius = 0;
+    this.visible = false;
+    this.destination = false;
+    this.colour = false;
+    this.ships = [];
+    this.probes = [];
+    this.setValues(parameters);
+};
+
+State.prototype.setValues = function(values) {
+    for ( var key in values) {
+        var nValue = values[key];
+        if(key in this)
+            this[key] = nValue;
+    }
+};
+
+/**
+* Ship definition
+* Should be able to work as a sprite for both author ships and trade ships
+*/
+var Ship = function(parameters) {
+    this.name = "";
     this.origin = false;
     this.start = false;
     this.destination = false;
@@ -13,20 +80,38 @@ var Ship = function(parameters) {
     this.material = new THREE.SpriteMaterial( { color: 0xffffff, fog: true} );
     this.spr = new THREE.Sprite(this.material);
     this.loop = false;
+    this.dis_at_end = false;
+    this.orbit = false;
+    this.his = false;
+    this.at_end = false;
+    this.auth_offset = 0;
     
     this.setValues(parameters);
 
 };
+
+Ship.prototype.initializeAuthor = function(z) {
+    if(this.his.start.visible != false) {
+        this.target = this.his.start.destination;
+        this.spr.position.x = this.target.mesh.position.x;
+        this.spr.position.y = this.target.mesh.position.y;
+        this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+    } else {
+        this.spr.visible = false;
+    }
+    this.spr.position.z = z;
+}
 
 Ship.prototype.setValues = function(values) {
     for ( var key in values) {
         var nValue = values[key];
         if(key in this) {
             if(key == 'material') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.spr.material = nValue;
             } else if(key == 'eta' || key == 'offset') {
-                this[key] = nValue * Math.PI;
+                this[key] = nValue * speed_base;
             } else {
                 this[key] = nValue;
             }
@@ -36,34 +121,134 @@ Ship.prototype.setValues = function(values) {
 
 var s_up = new THREE.Vector3(0,1,0);
 
-Ship.prototype.updatepos = function(time) {
+Ship.prototype.updatepos = function(time, speedx) {
     if(this.origin == false) {
-        this.origin = this.spr.clone();
+        this.origin = this.spr;
     }
     if(this.target != false) {
         if((time > this.eta && this.loop == false) || this.eta <= 0) {
-            this.spr.position = this.target.position;
+            if(this.dis_at_end == true) {
+                this.spr.visible = false;
+            } else {
+                if(this.his != false) {
+                    var the_state = this.his.getNextState(time);
+                    if(the_state.visible == false) {
+                        if(this.target != false) {
+                            if(this.orbit == false) {
+                                this.spr.position.x = this.target.mesh.position.x;
+                                this.spr.position.y = this.target.mesh.position.y;
+                            } else {
+                                this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                                this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
+                            }
+                        } else
+                            this.spr.visible = false;
+                    } else {
+                        var tt_t = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL
+                        if(the_state.destination != this.target) {
+                            this.eta = tt_t;
+                            this.start = this.spr.position.clone();
+                            this.target = the_state.destination;
+                            this.destination = this.target.projectedpos(tt_t);
+                            this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+                        } else {
+                            if(this.orbit == false) {
+                                this.spr.position.x = this.target.mesh.position.x;
+                                this.spr.position.y = this.target.mesh.position.y;
+                            } else {
+                                this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                                this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
+                            }
+                        }
+                        if(!this.at_end) {
+                            var temp_idx = 0;
+                            for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                                the_state.ships[temp_idx].spr.material.setValues({color: this.spr.material.color});
+                                the_state.ships[temp_idx].eta = tt_t;
+                                the_state.ships[temp_idx].origin = true;
+                                the_state.ships[temp_idx].start = new THREE.Vector3(
+                                    this.spr.position.x,
+                                    this.spr.position.y,
+                                    this.spr.position.z
+                                    );
+                                the_state.ships[temp_idx].target = the_state.probes[temp_idx];
+                                the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(tt_t);
+                            }
+                        }
+                        if(the_state == this.his.end) {
+                            this.at_end = true;
+                        }
+                    }
+                } else {
+                    if(this.orbit == false) {
+                        this.spr.position.x = this.target.mesh.position.x;
+                        this.spr.position.y = this.target.mesh.position.y;
+                    } else {
+                        this.spr.position.x = this.target.mesh.position.x + this.orbit*Math.cos(2*time + this.auth_offset);
+                        this.spr.position.y = this.target.mesh.position.y + this.orbit*Math.sin(2*time + this.auth_offset);
+                    }
+                }
+            }
         } else {
-            var t = time + this.offset;
+            this.spr.visible = true;
+            var temp_t = time + this.offset;
             if(this.loop == true)
-                t = t % this.eta;
-            if(t < 0.01) {
-                this.start = this.origin.position.clone();
+                temp_t = temp_t % this.eta;
+            if(temp_t < 0.01 * speedx) {
+                if(this.origin != true)
+                    this.start = this.origin.position.clone();
                 this.destination = this.target.projectedpos(time + this.eta);
-                var y = this.destination.clone().normalize();
+                var y = (new THREE.Vector3(this.destination.x - this.start.x, this.destination.y - this.start.y, 0)).normalize();
                 this.spr.material.rotation = Math.acos(s_up.dot(y));
                 if(this.start.x <= this.destination.x) {
                     this.spr.material.rotation = 2*Math.PI - this.spr.material.rotation;
                 }
             } 
-            this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*t;
-            this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*t;
+            if(this.loop == true) {
+                this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/this.eta*temp_t;
+                this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/this.eta*temp_t;
+            } else {
+                this.spr.position.x = this.start.x + (this.destination.x - this.start.x)/TIME_INTERVAL*(time % TIME_INTERVAL);
+                this.spr.position.y = this.start.y + (this.destination.y - this.start.y)/TIME_INTERVAL*(time % TIME_INTERVAL);
+            }
+        }
+    } else if(this.his != false) {
+        var the_state = this.his.getNextState(time);
+        if(the_state.visible != false) {
+            var tt_t = (parseInt(time/TIME_INTERVAL)+1) * TIME_INTERVAL;
+            this.eta = tt_t;
+            this.start = this.spr.position.clone();
+            this.target = the_state.destination;
+            this.destination = this.target.projectedpos(this.eta);
+            this.orbit = this.target.mesh.geometry.parameters.radius + 1;
+            if(true) {
+                var temp_idx = 0;
+                for(temp_idx = 0; temp_idx < the_state.probes.length; temp_idx++) {
+                    the_state.ships[temp_idx].spr.material.setValues({color: this.spr.material.color});
+                    the_state.ships[temp_idx].eta = tt_t;
+                    the_state.ships[temp_idx].origin = true;
+                    the_state.ships[temp_idx].start = new THREE.Vector3(
+                        this.spr.position.x, 
+                        this.spr.position.y, 
+                        this.spr.position.z);
+                    the_state.ships[temp_idx].target = the_state.probes[temp_idx];
+                    the_state.ships[temp_idx].destination = the_state.probes[temp_idx].projectedpos(tt_t);
+                }
+            }
+            if(the_state == this.his.end) {
+                this.at_end = true;
+            }
         }
     }
 };
 
-var Celestial = function(parameters) {
+/**
+* Celestial definition
+* For Stars, Planets and Moons, anything with a repeating orbit
+*/
 
+var Celestial = function(parameters) {
+    this.name = "";
     this.geometry = new THREE.SphereGeometry(0.1, 8, 8);
     this.material = new THREE.MeshLambertMaterial({color:0xffffff});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -93,6 +278,7 @@ var Celestial = function(parameters) {
     this.light = false;
     
     this.trade = [];
+    this.his = false;
     
     this.setValues(parameters);
 
@@ -104,9 +290,11 @@ Celestial.prototype.setValues = function (values) {
         var nValue = values[key];
         if(key in this) {
             if(key == 'material') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.mesh.material = nValue;
             } else if(key == 'geometry') {
+                this[key].dispose();
                 this[key] = nValue;
                 this.mesh.geometry = nValue;
             } else {
@@ -120,9 +308,9 @@ Celestial.prototype.projectedpos = function ( time ) {
     var x = 0;
     var y = 0;
     var z = 0;
-    var temp = new THREE.Vector3();
+    var temp = this.mesh.position;
     if(this.origin != false) {
-        temp = this.origin.mesh.position;
+        temp = this.origin.projectedpos(time);
     }
     if(this.xsin == true) {
         x = temp.x + this.orbitoffx + this.orbitradx * Math.sin(time * this.tfactor + this.toffx);
@@ -142,7 +330,7 @@ Celestial.prototype.projectedpos = function ( time ) {
     return new THREE.Vector3(x, y, z);
 };
 
-Celestial.prototype.updatepos = function ( time ) {
+Celestial.prototype.updatepos = function ( time, speedx ) {
     var temp = this.mesh.position;
     if(this.origin != false) {
         temp = this.origin.mesh.position;
@@ -169,9 +357,37 @@ Celestial.prototype.updatepos = function ( time ) {
         this.light.position.x = this.mesh.position.x;
         this.light.position.y = this.mesh.position.y;
     }
-    var i = 0;
-    for(i = 0; i < this.trade.length; i++) {
-        this.trade[i].updatepos(time);
+    if(this.his == false) {
+        var i = 0;
+        for(i = 0; i < this.trade.length; i++) {
+            this.trade[i].updatepos(time, speedx);
+        }
+    } else {
+        var the_st = this.his.getState(time);
+        if(the_st.radius != false) {
+            var scale = the_st.radius/this.mesh.geometry.parameters.radius;
+            this.mesh.scale.set(scale, scale, scale);
+        }
+        if(the_st.colour != false) {
+            this.mesh.material.setValues({color: the_st.colour});
+        }
+        if(the_st.visible == true) {
+            this.mesh.visible = true;
+            if(this.light != false)
+                this.light.intensity = 1;
+        } else {
+            this.mesh.visible = false;
+            if(this.light != false)
+                this.light.intensity = 0;
+        }
+        var i = 0;
+        for(i = 0; i < this.trade.length; i++) {
+            this.trade[i].updatepos(time, speedx);
+            if(the_st.ships.indexOf(i) < 0)
+                this.trade[i].spr.visible = false;
+            else
+                this.trade[i].spr.visible = true;
+        }
     }
 };
 
@@ -185,4 +401,5 @@ THREE.Scene.prototype.addC = function( celes ) {
     }
 };
 
+// These constants are required to prevent a bug in OrbitalControls.js
 THREE.MOUSE={LEFT:0,MIDDLE:1,RIGHT:2};
