@@ -330,18 +330,25 @@ public class DataAggregator {
         writer.println("uses:");
         for(String classDependency : classesDependedOn) {
 
-            /* Writes class dependency name followed by ':' */
-            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
-
             int lastDecimal = classDependency.lastIndexOf(".");
             String classDependencyName = classDependency.substring(lastDecimal + 1);
             String pkgOfClassDependency = classDependency.substring(0, lastDecimal);
 
-            writer.println(classDependencyName + ":");
+            /* Only writes the class dependency if it does not end with a '$'.
+             * Dependency Analyzer tool will return dependencies even for anonymous inner classes which
+             * will have a $ appended to the end of the name. These classes are ignored in the analysis.
+             */
+            if(!classDependencyName.endsWith("$")) {
+                /* Writes class dependency name followed by ':' */
+                writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
+                writer.println(classDependencyName + ":");
 
-            /* Writes package the dependency belongs to */
-            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
-            writer.println("package: " + pkgOfClassDependency);
+                /* Writes package the dependency belongs to */
+                writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
+                writer.println("package: " + pkgOfClassDependency);
+            }
+
+
         }
 
         /* Writes all classes that depend on this class plus their packages */
@@ -350,18 +357,23 @@ public class DataAggregator {
         writer.println("usedBy:");
         for(String classDependency : classesThatDependOnThisClass) {
 
-            /* Writes class dependency name followed by ':' */
-            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
-
             int lastDecimal = classDependency.lastIndexOf(".");
             String classDependencyName = classDependency.substring(lastDecimal + 1);
             String pkgOfClassDependency = classDependency.substring(0, lastDecimal);
 
-            writer.println(classDependencyName + ":");
+            /* Only writes the class dependency if it does not end with a '$'.
+             * Dependency Analyzer tool will return dependencies even for anonymous inner classes which
+             * will have a $ appended to the end of the name. These classes are ignored in the analysis.
+             */
+            if(!classDependencyName.endsWith("$")) {
+                /* Writes class dependency name followed by ':' */
+                writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
+                writer.println(classDependencyName + ":");
 
-            /* Writes package the dependency belongs to */
-            writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
-            writer.println("package: " + pkgOfClassDependency);
+                /* Writes package the dependency belongs to */
+                writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL + 1);
+                writer.println("package: " + pkgOfClassDependency);
+            }
         }
     }
 
