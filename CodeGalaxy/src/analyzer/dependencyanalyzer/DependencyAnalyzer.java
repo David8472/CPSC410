@@ -269,7 +269,7 @@ public class DependencyAnalyzer {
 						// --- 1. Extract String representations ---//
 						String fileNameStr = myFile.getName();
 						String pathStr = file.getParent().toString();
-						
+
 						// --- 2. Parse the strings into pieces (store in a vector) --- //
 						singleFileVector = new Vector<String>();
 						for (String retval: pathStr.split("/")){
@@ -289,7 +289,7 @@ public class DependencyAnalyzer {
 				else{
 					listJavaFiles(myFile.toPath());
 				}
-			}		
+			}
 		}
 	}
 
@@ -362,14 +362,14 @@ public class DependencyAnalyzer {
 				Runtime rt = Runtime.getRuntime();
 				Process proc = rt.exec(mavenCommand);
 				// Handle error messages via a gobbler
-				StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR");            
+				StreamGobbler errorGobbler = new StreamGobbler(proc.getErrorStream(), "ERROR");
 				// Handle any output via a gobbler
 				StreamGobbler outputGobbler = new StreamGobbler(proc.getInputStream(), "OUTPUT");
-				// Start gobblers  
+				// Start gobblers
 				errorGobbler.start();
 				outputGobbler.start();
 				// Check exit value
-				mavenExitValue = proc.waitFor(); 
+				mavenExitValue = proc.waitFor();
 				System.out.println("Maven Exit Value: " + mavenExitValue);
 
 				if(mavenExitValue == 0){ // process exited successfully
@@ -383,7 +383,7 @@ public class DependencyAnalyzer {
 					System.out.println("Classycle Process exit value: " + classycleExitValue);
 
 					if(classycleExitValue == 0){ // process exited successfully
-						
+
 						// Gatekeeper
 						if(XmlParserInProgress){
 							System.out.println("Using a mock XML Parser...");
@@ -431,8 +431,18 @@ public class DependencyAnalyzer {
 	 */
 	private static String buildMavenCommand(String address){
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("cmd /C mvn -f ");
-		stringBuilder.append(address);
+
+        String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+		if(operatingSystem.contains("win")) {
+            // Running on Windows
+            stringBuilder.append("cmd /C mvn -f ");
+        } else {
+            // Running on non-Windows OS
+            stringBuilder.append("mvn -f ");
+        }
+
+        stringBuilder.append(address);
 		stringBuilder.append("/pom.xml compile");
 		String finalString = stringBuilder.toString();
 		return finalString;
@@ -452,7 +462,7 @@ public class DependencyAnalyzer {
 		String finalString = stringBuilder.toString();
 		return finalString;
 	}
-	
+
 	/**
 	 * Returns the status of Maven execution.
 	 * @return Maven exit status.
@@ -483,10 +493,10 @@ class StreamGobbler extends Thread {
 			BufferedReader br = new BufferedReader(isr);
 			String line=null;
 			while ( (line = br.readLine()) != null)
-				System.out.println(type + ">" + line);    
+				System.out.println(type + ">" + line);
 		} catch (IOException ioe){
 			System.err.println("Stream Gobbler exception.");
-			System.err.println(ioe);  
+			System.err.println(ioe);
 		}
 	}
 }
