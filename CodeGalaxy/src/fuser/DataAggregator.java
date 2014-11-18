@@ -325,10 +325,10 @@ public class DataAggregator {
     private void writeClassDependencies(ClassDependencyInfo classDependencyInfo) {
 
         /* Writes all classes depended on plus their packages */
-        Vector<String> classesDependendOn = classDependencyInfo.getEfferentClassDependencies();
+        Vector<String> classesDependedOn = classDependencyInfo.getEfferentClassDependencies();
         writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_INFO_NEST_LEVEL);
         writer.println("uses:");
-        for(String classDependency : classesDependendOn) {
+        for(String classDependency : classesDependedOn) {
 
             /* Writes class dependency name followed by ':' */
             writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
