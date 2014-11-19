@@ -10,12 +10,12 @@ PLANET_COLOURS["interface"] = "0xff8844"
 # Helper method to generate planets
 ##################################
 def gen_planet(class_map)
-    class_map["colour"] = PLANET_COLOURS[class_map["type"]]
+    class_map["colour"] = PLANET_COLOURS[class_map["type"].downcase]
     text = "//#{class_map["package"]} class: #{class_map["name"]}
 #{class_map["indexed_name"]}.setValues({
     name: \"#{class_map["indexed_name"]}\",
-    geometry: new THREE.SphereGeometry(#{class_map["radius"]}, 10, 10),
-    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: #{class_map["colour"]}, map: planet_texture}),
+    geometry: new THREE.SphereGeometry(#{class_map["radius"]+0.01}, 10, 10),
+    material: new THREE.MeshLambertMaterial({emissive: 0x888888, color: #{class_map["colour"]}, map: planet_texture}),
     origin: #{class_map["package"]}, 
     orbitradx: #{(Random.rand(2) == 0)? "" : "-"}#{class_map["orbit"]}, 
     orbitrady: #{(Random.rand(2) == 0)? "" : "-"}#{class_map["orbit"]}, 
@@ -35,8 +35,8 @@ def gen_moon(method_map)
     text = "//#{method_map["class"]} function: #{method_map["name"]}
 var #{method_map["indexed_name"]} = new Celestial({
     name: \"#{method_map["indexed_name"]}\",
-    geometry: new THREE.SphereGeometry(#{method_map["radius"]}, 8, 8),
-    material: new THREE.MeshLambertMaterial({emissive: 0x666666, color: 0xbb8800, map: planet_texture}),
+    geometry: new THREE.SphereGeometry(#{method_map["radius"]+0.01}, 8, 8),
+    material: new THREE.MeshLambertMaterial({emissive: 0x888888, color: 0xbb8800, map: planet_texture}),
     origin: #{method_map["class"]},
     orbitradx: #{(Random.rand(2) == 0)? "" : "-"}#{method_map["orbit"]}, 
     orbitrady: #{(Random.rand(2) == 0)? "" : "-"}#{method_map["orbit"]}, 
@@ -56,9 +56,9 @@ def gen_star(package_map)
     text = "//#{package_map["name"]}
 var #{package_map["indexed_name"]} = new Celestial({
     name: \"#{package_map["indexed_name"]}\",
-    geometry: new THREE.SphereGeometry(#{package_map["radius"]}, 12, 12),
+    geometry: new THREE.SphereGeometry(#{package_map["radius"]+0.01}, 12, 12),
     material: new THREE.MeshBasicMaterial({color: 0xffdd22, map: star_texture}),
-    light: new THREE.PointLight( 0xffddbb, 1, 1000 ),
+    light: new THREE.PointLight( 0xffddbb, 1, 0 ),
     rotx: 0.01, 
     roty: 0.01, 
     rotz: 0.01});
@@ -73,6 +73,9 @@ def gen_route(dep_map)
     text = "// Dependency Route: #{dep_map["class_indexed_name"]} -> #{dep_map["dclass_indexed_name"]}\n"
     temp = 0
     eta = 100
+    if(dep_map["strength"].nil?)
+        dep_map["strength"] = 7
+    end
     while(temp < dep_map["strength"])
         text += "var #{dep_map["indexed_name"]}_#{temp} = new Ship({
         name: \"#{dep_map["indexed_name"]}_#{temp}\",
@@ -96,8 +99,8 @@ def gen_star_positions(packages, max_dist_map)
     size = Math.sqrt(packages.length).ceil
     cols = Array.new(size, 0)
     rows = Array.new(size, 0)
-    for i in 0..size
-        for j in 0..size
+    for i in 0..(size-1)
+        for j in 0..(size-1)
             temp_package = packages.values[size*i+j]
             unless(temp_package.nil?)
                 cols[j] = (cols[j] < temp_package["orbit_radius"] * 2) ? temp_package["orbit_radius"] * 2 : cols[j]
@@ -106,8 +109,8 @@ def gen_star_positions(packages, max_dist_map)
         end
     end
     text = ""
-    for i in 0..size
-        for j in 0..size
+    for i in 0..(size-1)
+        for j in 0..(size-1)
             temp_package = packages.values[size*i+j]
             unless(temp_package.nil?)
                 sum_x = (j > 0)? cols[0..(j-1)].inject{|sum, x| sum + x} : 0
