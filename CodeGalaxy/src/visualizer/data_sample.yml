@@ -1,0 +1,1630 @@
+commit_0:
+    author: Arie van Deursen
+    modified:
+        org.jpacman.test.framework.model.SpriteTest:
+            lines_added: 113
+        org.jpacman.framework.model.Game:
+            lines_added: 227
+        org.jpacman.test.framework.model.BoardTileAtTest:
+            lines_added: 71
+        org.jpacman.framework.model.Tile:
+            lines_added: 114
+        org.jpacman.framework.model.Level:
+            lines_added: 89
+        org.jpacman.framework.model.IBoardInspector:
+            lines_added: 62
+        org.jpacman.framework.ui.IPacmanInteraction:
+            lines_added: 55
+        org.jpacman.test.framework.model.GameTest:
+            lines_added: 299
+        org.jpacman.framework.factory.DefaultGameFactory:
+            lines_added: 60
+        org.jpacman.framework.ui.PointsPanel:
+            lines_added: 49
+        org.jpacman.framework.model.Board:
+            lines_added: 211
+        org.jpacman.test.framework.view.ImageLoaderTest:
+            lines_added: 37
+        org.jpacman.framework.view.ImageLoader:
+            lines_added: 140
+        org.jpacman.framework.model.Sprite:
+            lines_added: 94
+        org.jpacman.framework.ui.ButtonPanel:
+            lines_added: 188
+        org.jpacman.test.framework.ui.ButtonPanelTest:
+            lines_added: 23
+        org.jpacman.framework.ui.MainUI:
+            lines_added: 316
+        org.jpacman.framework.controller.IController:
+            lines_added: 22
+        org.jpacman.test.framework.ui.MainUISmokeTest:
+            lines_added: 45
+        org.jpacman.test.framework.factory.FactoryIntegrationTest:
+            lines_added: 50
+        org.jpacman.framework.model.Player:
+            lines_added: 99
+        org.jpacman.framework.model.IGameInteractor:
+            lines_added: 67
+        org.jpacman.framework.factory.FactoryException:
+            lines_added: 27
+        org.jpacman.framework.model.PointManager:
+            lines_added: 90
+        org.jpacman.framework.model.Ghost:
+            lines_added: 20
+        org.jpacman.framework.controller.AbstractGhostMover:
+            lines_added: 103
+        org.jpacman.framework.factory.IGameFactory:
+            lines_added: 57
+        org.jpacman.framework.ui.PacmanKeyListener:
+            lines_added: 70
+        org.jpacman.test.framework.accept.MoveGhostStoryTest:
+            lines_added: 92
+        org.jpacman.framework.controller.RandomGhostMover:
+            lines_added: 29
+        org.jpacman.framework.model.Wall:
+            lines_added: 20
+        org.jpacman.framework.view.Animator:
+            lines_added: 55
+        org.jpacman.test.framework.accept.AbstractAcceptanceTest:
+            lines_added: 159
+        org.jpacman.test.framework.model.PointManagerTest:
+            lines_added: 53
+        org.jpacman.framework.ui.IDisposable:
+            lines_added: 17
+        org.jpacman.framework.model.IPointInspector:
+            lines_added: 31
+        org.jpacman.framework.factory.MapParser:
+            lines_added: 221
+        org.jpacman.framework.view.BoardView:
+            lines_added: 260
+        org.jpacman.framework.model.Food:
+            lines_added: 43
+        org.jpacman.framework.ui.PacmanInteraction:
+            lines_added: 187
+    removed: 
+    present:
+        packages:
+            org.jpacman.framework.view:
+                lines: 455
+                packageDependencies:
+                    PackagesDependedOn: org.jpacman.framework.view|org.jpacman.framework.controller|org.jpacman.framework.model|org.jpacman.framework.factory
+                    PackagesThatDependOnThisPackage: org.jpacman.framework.view|org.jpacman.framework.controller|org.jpacman.framework.model|org.jpacman.framework.factory
+                classes:
+                    BoardView:
+                        lines: 260
+                        type: Concrete
+                        methods:
+                            worldWidth:
+                                lines: 8
+                                accessorType: private
+                            worldHeight:
+                                lines: 8
+                                accessorType: private
+                            windowWidth:
+                                lines: 12
+                                accessorType: public
+                            windowHeight:
+                                lines: 12
+                                accessorType: public
+                            createDrawArea:
+                                lines: 17
+                                accessorType: private
+                            paint:
+                                lines: 14
+                                accessorType: public
+                            drawCells:
+                                lines: 16
+                                accessorType: private
+                            drawCell:
+                                lines: 21
+                                accessorType: private
+                            fullArea:
+                                lines: 5
+                                accessorType: private
+                            centeredArea:
+                                lines: 6
+                                accessorType: private
+                            spriteColor:
+                                lines: 27
+                                accessorType: private
+                            spriteImage:
+                                lines: 19
+                                accessorType: private
+                            nextAnimation:
+                                lines: 13
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                ImageLoader:
+                                    package: org.jpacman.framework.view
+                                Player:
+                                    package: org.jpacman.framework.model
+                                BoardView$1:
+                                    package: org.jpacman.framework.view
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                                FactoryException:
+                                    package: org.jpacman.framework.factory
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                Animator:
+                                    package: org.jpacman.framework.view
+                                Animator$1:
+                                    package: org.jpacman.framework.view
+                                BoardView$1:
+                                    package: org.jpacman.framework.view
+                    Animator:
+                        lines: 55
+                        type: Concrete
+                        methods:
+                            stop:
+                                lines: 7
+                                accessorType: public
+                            start:
+                                lines: 7
+                                accessorType: public
+                            doTick:
+                                lines: 4
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Animator$1:
+                                    package: org.jpacman.framework.view
+                                IController:
+                                    package: org.jpacman.framework.controller
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                Animator$1:
+                                    package: org.jpacman.framework.view
+                    ImageLoader:
+                        lines: 140
+                        type: Concrete
+                        methods:
+                            loadImages:
+                                lines: 22
+                                accessorType: public
+                            monsterAnimationCount:
+                                lines: 9
+                                accessorType: public
+                            playerAnimationCount:
+                                lines: 8
+                                accessorType: public
+                            player:
+                                lines: 16
+                                accessorType: public
+                            monster:
+                                lines: 9
+                                accessorType: public
+                            getImage:
+                                lines: 18
+                                accessorType: private
+                            resize:
+                                lines: 18
+                                accessorType: 
+                        dependencies:
+                            uses:
+                                FactoryException:
+                                    package: org.jpacman.framework.factory
+                                Direction:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                BoardView:
+                                    package: org.jpacman.framework.view
+            org.jpacman.framework.controller:
+                lines: 154
+                packageDependencies:
+                    PackagesDependedOn: org.jpacman.framework.model|org.jpacman.framework.controller
+                    PackagesThatDependOnThisPackage: org.jpacman.framework.model|org.jpacman.framework.controller
+                classes:
+                    RandomGhostMover:
+                        lines: 29
+                        type: Concrete
+                        methods:
+                            doTick:
+                                lines: 14
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                AbstractGhostMover:
+                                    package: org.jpacman.framework.controller
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                    AbstractGhostMover:
+                        lines: 103
+                        type: Abstract
+                        methods:
+                            controllerInvariant:
+                                lines: 7
+                                accessorType: protected
+                            actionPerformed:
+                                lines: 12
+                                accessorType: public
+                            start:
+                                lines: 10
+                                accessorType: public
+                            stop:
+                                lines: 6
+                                accessorType: public
+                            getRandomGhost:
+                                lines: 13
+                                accessorType: protected
+                            getRandomizer:
+                                lines: 7
+                                accessorType: protected
+                            gameInteraction:
+                                lines: 6
+                                accessorType: protected
+                        dependencies:
+                            uses:
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                IController:
+                                    package: org.jpacman.framework.controller
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                RandomGhostMover:
+                                    package: org.jpacman.framework.controller
+                    IController:
+                        lines: 22
+                        type: Interface
+                        methods:
+                            start:
+                                lines: 4
+                                accessorType: 
+                            stop:
+                                lines: 4
+                                accessorType: 
+                            doTick:
+                                lines: 4
+                                accessorType: 
+                        dependencies:
+                            uses:
+                            usedBy:
+                                AbstractGhostMover:
+                                    package: org.jpacman.framework.controller
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                Animator:
+                                    package: org.jpacman.framework.view
+            org.jpacman.framework.model:
+                lines: 1167
+                packageDependencies:
+                    PackagesDependedOn: org.jpacman.framework.model|org.jpacman.framework.factory
+                    PackagesThatDependOnThisPackage: org.jpacman.framework.model|org.jpacman.framework.factory
+                classes:
+                    Tile:
+                        lines: 114
+                        type: Concrete
+                        methods:
+                            tileInvariant:
+                                lines: 16
+                                accessorType: protected
+                            getX:
+                                lines: 8
+                                accessorType: public
+                            getY:
+                                lines: 8
+                                accessorType: public
+                            topSprite:
+                                lines: 8
+                                accessorType: public
+                            containsSprite:
+                                lines: 10
+                                accessorType: public
+                            dropSprite:
+                                lines: 13
+                                accessorType: protected
+                            addSprite:
+                                lines: 15
+                                accessorType: protected
+                            toString:
+                                lines: 4
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Game:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                    Level:
+                        lines: 89
+                        type: Concrete
+                        methods:
+                            setMapFile:
+                                lines: 11
+                                accessorType: public
+                            setFactory:
+                                lines: 11
+                                accessorType: public
+                            parseMap:
+                                lines: 16
+                                accessorType: public
+                            getMapFile:
+                                lines: 8
+                                accessorType: public
+                            getGame:
+                                lines: 8
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                Game:
+                                    package: org.jpacman.framework.model
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                FactoryException:
+                                    package: org.jpacman.framework.factory
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                    IGameInteractor:
+                        lines: 67
+                        type: Interface
+                        methods:
+                            movePlayer:
+                                lines: 8
+                                accessorType: 
+                            attach:
+                                lines: 8
+                                accessorType: 
+                            moveGhost:
+                                lines: 10
+                                accessorType: 
+                            getGhosts:
+                                lines: 6
+                                accessorType: 
+                            getPointManager:
+                                lines: 6
+                                accessorType: 
+                            getBoardInspector:
+                                lines: 6
+                                accessorType: 
+                            died:
+                                lines: 6
+                                accessorType: 
+                            won:
+                                lines: 6
+                                accessorType: 
+                        dependencies:
+                            uses:
+                                Direction:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                IPointInspector:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                AbstractGhostMover:
+                                    package: org.jpacman.framework.controller
+                                RandomGhostMover:
+                                    package: org.jpacman.framework.controller
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Level:
+                                    package: org.jpacman.framework.model
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                    Player:
+                        lines: 99
+                        type: Concrete
+                        methods:
+                            getPoints:
+                                lines: 8
+                                accessorType: public
+                            playerInvariant:
+                                lines: 8
+                                accessorType: protected
+                            addPoints:
+                                lines: 16
+                                accessorType: public
+                            die:
+                                lines: 8
+                                accessorType: public
+                            isAlive:
+                                lines: 8
+                                accessorType: public
+                            getSpriteType:
+                                lines: 9
+                                accessorType: public
+                            getDirection:
+                                lines: 8
+                                accessorType: public
+                            setDirection:
+                                lines: 8
+                                accessorType: public
+                            resurrect:
+                                lines: 8
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Game:
+                                    package: org.jpacman.framework.model
+                                PointManager:
+                                    package: org.jpacman.framework.model
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                    Game:
+                        lines: 227
+                        type: Concrete
+                        methods:
+                            setBoard:
+                                lines: 9
+                                accessorType: public
+                            movePlayer:
+                                lines: 14
+                                accessorType: public
+                            eatFood:
+                                lines: 18
+                                accessorType: private
+                            dieIfGhost:
+                                lines: 16
+                                accessorType: private
+                            moveGhost:
+                                lines: 13
+                                accessorType: public
+                            tileCanBeOccupied:
+                                lines: 14
+                                accessorType: private
+                            addPlayer:
+                                lines: 10
+                                accessorType: public
+                            addGhost:
+                                lines: 10
+                                accessorType: public
+                            addFood:
+                                lines: 10
+                                accessorType: public
+                            getBoard:
+                                lines: 8
+                                accessorType: public
+                            getPlayer:
+                                lines: 8
+                                accessorType: public
+                            attach:
+                                lines: 12
+                                accessorType: public
+                            notifyViewers:
+                                lines: 9
+                                accessorType: protected
+                            getPointManager:
+                                lines: 8
+                                accessorType: public
+                            getGhosts:
+                                lines: 11
+                                accessorType: public
+                            getBoardInspector:
+                                lines: 4
+                                accessorType: public
+                            died:
+                                lines: 4
+                                accessorType: public
+                            won:
+                                lines: 4
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                PointManager:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Tile:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                                IPointInspector:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Level:
+                                    package: org.jpacman.framework.model
+                    Board:
+                        lines: 211
+                        type: Concrete
+                        methods:
+                            tileInvariant:
+                                lines: 26
+                                accessorType: protected
+                            getHeight:
+                                lines: 4
+                                accessorType: public
+                            getWidth:
+                                lines: 4
+                                accessorType: public
+                            put:
+                                lines: 17
+                                accessorType: public
+                            withinBorders:
+                                lines: 16
+                                accessorType: public
+                            spriteAt:
+                                lines: 5
+                                accessorType: public
+                            spriteTypeAt:
+                                lines: 12
+                                accessorType: public
+                            tileAt:
+                                lines: 13
+                                accessorType: public
+                            tileAtOffset:
+                                lines: 25
+                                accessorType: public
+                            tunnelledCoordinate:
+                                lines: 23
+                                accessorType: private
+                            tileAtDirection:
+                                lines: 14
+                                accessorType: public
+                            onBoardMessage:
+                                lines: 16
+                                accessorType: private
+                        dependencies:
+                            uses:
+                                Tile:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Game:
+                                    package: org.jpacman.framework.model
+                    PointManager:
+                        lines: 90
+                        type: Concrete
+                        methods:
+                            invariant:
+                                lines: 8
+                                accessorType: protected
+                            addPointsToBoard:
+                                lines: 14
+                                accessorType: public
+                            consumePointsOnBoard:
+                                lines: 11
+                                accessorType: private
+                            consumePointsOnBoard:
+                                lines: 14
+                                accessorType: public
+                            allEaten:
+                                lines: 12
+                                accessorType: public
+                            getFoodEaten:
+                                lines: 9
+                                accessorType: public
+                            totalFoodInGame:
+                                lines: 9
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                IPointInspector:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                Game:
+                                    package: org.jpacman.framework.model
+                    Food:
+                        lines: 43
+                        type: Concrete
+                        methods:
+                            getPoints:
+                                lines: 8
+                                accessorType: public
+                            setPoints:
+                                lines: 8
+                                accessorType: public
+                            getSpriteType:
+                                lines: 9
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Game:
+                                    package: org.jpacman.framework.model
+                    IPointInspector:
+                        lines: 31
+                        type: Interface
+                        methods:
+                            getFoodEaten:
+                                lines: 6
+                                accessorType: 
+                            totalFoodInGame:
+                                lines: 6
+                                accessorType: 
+                            allEaten:
+                                lines: 6
+                                accessorType: 
+                        dependencies:
+                            uses:
+                            usedBy:
+                                Game:
+                                    package: org.jpacman.framework.model
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                PointManager:
+                                    package: org.jpacman.framework.model
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PointsPanel:
+                                    package: org.jpacman.framework.ui
+                    Wall:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            getSpriteType:
+                                lines: 9
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                    Sprite:
+                        lines: 94
+                        type: Concrete
+                        methods:
+                            spriteInvariant:
+                                lines: 12
+                                accessorType: protected
+                            getTile:
+                                lines: 8
+                                accessorType: public
+                            occupy:
+                                lines: 18
+                                accessorType: public
+                            deoccupy:
+                                lines: 12
+                                accessorType: public
+                            getSpriteType:
+                                lines: 8
+                                accessorType: public
+                            toString:
+                                lines: 4
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Tile:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                Tile:
+                                    package: org.jpacman.framework.model
+                                Wall:
+                                    package: org.jpacman.framework.model
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                    IBoardInspector:
+                        lines: 62
+                        type: Interface
+                        methods:
+                            getWidth:
+                                lines: 6
+                                accessorType: 
+                            getHeight:
+                                lines: 6
+                                accessorType: 
+                            spriteAt:
+                                lines: 10
+                                accessorType: 
+                            spriteTypeAt:
+                                lines: 10
+                                accessorType: 
+                            tileAt:
+                                lines: 10
+                                accessorType: 
+                        dependencies:
+                            uses:
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Tile:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Wall:
+                                    package: org.jpacman.framework.model
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                                BoardView$1:
+                                    package: org.jpacman.framework.view
+                    Ghost:
+                        lines: 20
+                        type: Concrete
+                        methods:
+                            getSpriteType:
+                                lines: 9
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector$SpriteType:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                AbstractGhostMover:
+                                    package: org.jpacman.framework.controller
+                                RandomGhostMover:
+                                    package: org.jpacman.framework.controller
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Game:
+                                    package: org.jpacman.framework.model
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+            org.jpacman.framework.factory:
+                lines: 365
+                packageDependencies:
+                    PackagesDependedOn: org.jpacman.framework.model|org.jpacman.framework.factory
+                    PackagesThatDependOnThisPackage: org.jpacman.framework.model|org.jpacman.framework.factory
+                classes:
+                    MapParser:
+                        lines: 221
+                        type: Concrete
+                        methods:
+                            parseMap:
+                                lines: 37
+                                accessorType: public
+                            addSprite:
+                                lines: 18
+                                accessorType: protected
+                            getSprite:
+                                lines: 33
+                                accessorType: protected
+                            invalidSprite:
+                                lines: 12
+                                accessorType: protected
+                            getResourceStream:
+                                lines: 19
+                                accessorType: private
+                            parseFromFile:
+                                lines: 14
+                                accessorType: public
+                            getMap:
+                                lines: 16
+                                accessorType: private
+                            getMap:
+                                lines: 27
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                FactoryException:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Sprite:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                Wall:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                Level:
+                                    package: org.jpacman.framework.model
+                    IGameFactory:
+                        lines: 57
+                        type: Interface
+                        methods:
+                            makeGame:
+                                lines: 6
+                                accessorType: 
+                            makeBoard:
+                                lines: 12
+                                accessorType: 
+                            makePlayer:
+                                lines: 6
+                                accessorType: 
+                            makeGhost:
+                                lines: 6
+                                accessorType: 
+                            makeFood:
+                                lines: 6
+                                accessorType: 
+                            makeWall:
+                                lines: 6
+                                accessorType: 
+                        dependencies:
+                            uses:
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Board:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                                Wall:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                DefaultGameFactory:
+                                    package: org.jpacman.framework.factory
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Level:
+                                    package: org.jpacman.framework.model
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                    FactoryException:
+                        lines: 27
+                        type: Concrete
+                        methods:
+                        dependencies:
+                            uses:
+                            usedBy:
+                                MapParser:
+                                    package: org.jpacman.framework.factory
+                                Level:
+                                    package: org.jpacman.framework.model
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                                ImageLoader:
+                                    package: org.jpacman.framework.view
+                    DefaultGameFactory:
+                        lines: 60
+                        type: Concrete
+                        methods:
+                            makeGame:
+                                lines: 5
+                                accessorType: public
+                            makePlayer:
+                                lines: 7
+                                accessorType: public
+                            makeGhost:
+                                lines: 7
+                                accessorType: public
+                            makeFood:
+                                lines: 7
+                                accessorType: public
+                            makeWall:
+                                lines: 4
+                                accessorType: public
+                            makeBoard:
+                                lines: 7
+                                accessorType: public
+                            getGame:
+                                lines: 9
+                                accessorType: protected
+                        dependencies:
+                            uses:
+                                Game:
+                                    package: org.jpacman.framework.model
+                                Player:
+                                    package: org.jpacman.framework.model
+                                Ghost:
+                                    package: org.jpacman.framework.model
+                                Food:
+                                    package: org.jpacman.framework.model
+                                Wall:
+                                    package: org.jpacman.framework.model
+                                Board:
+                                    package: org.jpacman.framework.model
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                            usedBy:
+                                Level:
+                                    package: org.jpacman.framework.model
+            org.jpacman.framework.ui:
+                lines: 882
+                packageDependencies:
+                    PackagesDependedOn: org.jpacman.framework.ui|org.jpacman.framework.model|org.jpacman.framework.view|org.jpacman.framework.controller|org.jpacman.framework.factory
+                    PackagesThatDependOnThisPackage: org.jpacman.framework.ui|org.jpacman.framework.model|org.jpacman.framework.view|org.jpacman.framework.controller|org.jpacman.framework.factory
+                classes:
+                    PacmanInteraction:
+                        lines: 187
+                        type: Concrete
+                        methods:
+                            start:
+                                lines: 7
+                                accessorType: public
+                            stop:
+                                lines: 7
+                                accessorType: public
+                            exit:
+                                lines: 5
+                                accessorType: public
+                            up:
+                                lines: 4
+                                accessorType: public
+                            down:
+                                lines: 4
+                                accessorType: public
+                            left:
+                                lines: 4
+                                accessorType: public
+                            right:
+                                lines: 4
+                                accessorType: public
+                            movePlayer:
+                                lines: 15
+                                accessorType: private
+                            controlling:
+                                lines: 15
+                                accessorType: public
+                            getCurrentState:
+                                lines: 8
+                                accessorType: public
+                            withDisposable:
+                                lines: 13
+                                accessorType: public
+                            withGameInteractor:
+                                lines: 13
+                                accessorType: public
+                            stopControllers:
+                                lines: 5
+                                accessorType: private
+                            startControllers:
+                                lines: 5
+                                accessorType: private
+                            getGame:
+                                lines: 3
+                                accessorType: protected
+                            update:
+                                lines: 4
+                                accessorType: public
+                            updateState:
+                                lines: 12
+                                accessorType: public
+                            updateState:
+                                lines: 5
+                                accessorType: private
+                        dependencies:
+                            uses:
+                                IController:
+                                    package: org.jpacman.framework.controller
+                                IPacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction$MatchState:
+                                    package: org.jpacman.framework.ui
+                                IDisposable:
+                                    package: org.jpacman.framework.ui
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                Direction:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                ButtonPanel:
+                                    package: org.jpacman.framework.ui
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction$MatchState:
+                                    package: org.jpacman.framework.ui
+                    PointsPanel:
+                        lines: 49
+                        type: Concrete
+                        methods:
+                            initialize:
+                                lines: 24
+                                accessorType: public
+                            update:
+                                lines: 4
+                                accessorType: public
+                            displayPoints:
+                                lines: 5
+                                accessorType: private
+                        dependencies:
+                            uses:
+                                IPointInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                    IDisposable:
+                        lines: 17
+                        type: Interface
+                        methods:
+                            dispose:
+                                lines: 6
+                                accessorType: 
+                        dependencies:
+                            uses:
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                    MainUI:
+                        lines: 316
+                        type: Concrete
+                        methods:
+                            createUI:
+                                lines: 26
+                                accessorType: private
+                            createButtonPanel:
+                                lines: 16
+                                accessorType: protected
+                            createMainGrid:
+                                lines: 16
+                                accessorType: private
+                            setGridSize:
+                                lines: 12
+                                accessorType: private
+                            createStatusField:
+                                lines: 7
+                                accessorType: private
+                            createStatusPanel:
+                                lines: 10
+                                accessorType: protected
+                            update:
+                                lines: 16
+                                accessorType: public
+                            initialize:
+                                lines: 16
+                                accessorType: public
+                            start:
+                                lines: 10
+                                accessorType: public
+                            createBoardView:
+                                lines: 3
+                                accessorType: private
+                            createModel:
+                                lines: 12
+                                accessorType: private
+                            eventHandler:
+                                lines: 8
+                                accessorType: public
+                            getGame:
+                                lines: 8
+                                accessorType: public
+                            withGhostController:
+                                lines: 14
+                                accessorType: public
+                            withBoard:
+                                lines: 14
+                                accessorType: public
+                            withFactory:
+                                lines: 15
+                                accessorType: public
+                            withButtonPanel:
+                                lines: 14
+                                accessorType: public
+                            withModelInteractor:
+                                lines: 14
+                                accessorType: public
+                            main:
+                                lines: 13
+                                accessorType: public
+                            main:
+                                lines: 12
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                Level:
+                                    package: org.jpacman.framework.model
+                                Animator:
+                                    package: org.jpacman.framework.view
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                PacmanKeyListener:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel:
+                                    package: org.jpacman.framework.ui
+                                PointsPanel:
+                                    package: org.jpacman.framework.ui
+                                RandomGhostMover:
+                                    package: org.jpacman.framework.controller
+                                BoardView:
+                                    package: org.jpacman.framework.view
+                                IDisposable:
+                                    package: org.jpacman.framework.ui
+                                IGameInteractor:
+                                    package: org.jpacman.framework.model
+                                IController:
+                                    package: org.jpacman.framework.controller
+                                FactoryException:
+                                    package: org.jpacman.framework.factory
+                                IGameFactory:
+                                    package: org.jpacman.framework.factory
+                                PacmanInteraction$MatchState:
+                                    package: org.jpacman.framework.ui
+                                IPacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                IPointInspector:
+                                    package: org.jpacman.framework.model
+                                IBoardInspector:
+                                    package: org.jpacman.framework.model
+                            usedBy:
+                    IPacmanInteraction:
+                        lines: 55
+                        type: Interface
+                        methods:
+                            up:
+                                lines: 6
+                                accessorType: 
+                            down:
+                                lines: 6
+                                accessorType: 
+                            left:
+                                lines: 6
+                                accessorType: 
+                            right:
+                                lines: 6
+                                accessorType: 
+                            start:
+                                lines: 6
+                                accessorType: 
+                            stop:
+                                lines: 6
+                                accessorType: 
+                            exit:
+                                lines: 6
+                                accessorType: 
+                        dependencies:
+                            uses:
+                            usedBy:
+                                ButtonPanel:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel$3:
+                                    package: org.jpacman.framework.ui
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                PacmanKeyListener:
+                                    package: org.jpacman.framework.ui
+                    ButtonPanel:
+                        lines: 188
+                        type: Concrete
+                        methods:
+                            withInteractor:
+                                lines: 16
+                                accessorType: public
+                            getPacmanInteractor:
+                                lines: 12
+                                accessorType: public
+                            invariant:
+                                lines: 8
+                                accessorType: protected
+                            initialize:
+                                lines: 16
+                                accessorType: public
+                            addButton:
+                                lines: 15
+                                accessorType: public
+                            setPanelSize:
+                                lines: 10
+                                accessorType: protected
+                            initializeStartButton:
+                                lines: 15
+                                accessorType: protected
+                            initializeStopButton:
+                                lines: 15
+                                accessorType: protected
+                            createExitButton:
+                                lines: 15
+                                accessorType: protected
+                            pause:
+                                lines: 7
+                                accessorType: public
+                            start:
+                                lines: 8
+                                accessorType: public
+                            withParent:
+                                lines: 13
+                                accessorType: public
+                            update:
+                                lines: 4
+                                accessorType: public
+                            enableStartStop:
+                                lines: 13
+                                accessorType: private
+                        dependencies:
+                            uses:
+                                ButtonPanel$1:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel$2:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel$3:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                IPacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                                PacmanInteraction$MatchState:
+                                    package: org.jpacman.framework.ui
+                            usedBy:
+                                ButtonPanel$1:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel$2:
+                                    package: org.jpacman.framework.ui
+                                ButtonPanel$3:
+                                    package: org.jpacman.framework.ui
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+                    PacmanKeyListener:
+                        lines: 70
+                        type: Concrete
+                        methods:
+                            keyTyped:
+                                lines: 3
+                                accessorType: public
+                            keyPressed:
+                                lines: 33
+                                accessorType: public
+                            keyReleased:
+                                lines: 3
+                                accessorType: public
+                        dependencies:
+                            uses:
+                                IPacmanInteraction:
+                                    package: org.jpacman.framework.ui
+                            usedBy:
+                                MainUI:
+                                    package: org.jpacman.framework.ui
+            org.jpacman.framework:
+                lines: 0
+                packageDependencies:
+                classes:
+            org.jpacman.test.framework.view:
+                lines: 37
+                packageDependencies:
+                classes:
+                    ImageLoaderTest:
+                        lines: 37
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 9
+                                accessorType: public
+                            testPlayer:
+                                lines: 9
+                                accessorType: public
+                            testMonster:
+                                lines: 9
+                                accessorType: public
+                        dependencies:
+            org.jpacman.test.framework.model:
+                lines: 536
+                packageDependencies:
+                classes:
+                    GameTest:
+                        lines: 299
+                        type: Concrete
+                        methods:
+                            makeFactory:
+                                lines: 14
+                                accessorType: public
+                            makePlay:
+                                lines: 22
+                                accessorType: protected
+                            testInitialSetting:
+                                lines: 19
+                                accessorType: public
+                            testC1a_PlayerMovesToEmpty:
+                                lines: 19
+                                accessorType: public
+                            testC1b_GhostMovesToEmpty:
+                                lines: 18
+                                accessorType: public
+                            testC2a_PlayerMovesToWall:
+                                lines: 17
+                                accessorType: public
+                            testC2b_GhostMovesToWall:
+                                lines: 18
+                                accessorType: public
+                            testC3_PlayerMovesToGhost:
+                                lines: 17
+                                accessorType: public
+                            testC5_PlayerMovesToFood:
+                                lines: 20
+                                accessorType: public
+                            testC4_GhostMovesToPlayer:
+                                lines: 18
+                                accessorType: public
+                            testC6_GhostMovesToFood:
+                                lines: 20
+                                accessorType: public
+                            testObserverAfterPlayerMove:
+                                lines: 17
+                                accessorType: public
+                            testObserverAfterGhostMove:
+                                lines: 18
+                                accessorType: public
+                            testTunneledMove:
+                                lines: 18
+                                accessorType: public
+                            tileAt:
+                                lines: 18
+                                accessorType: protected
+                        dependencies:
+                    SpriteTest:
+                        lines: 113
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 9
+                                accessorType: public
+                            testOccupy:
+                                lines: 11
+                                accessorType: public
+                            relocateSprite:
+                                lines: 13
+                                accessorType: public
+                            multipleSprites:
+                                lines: 14
+                                accessorType: public
+                            testMoveWithMatchers:
+                                lines: 13
+                                accessorType: public
+                            testDeoccupy:
+                                lines: 10
+                                accessorType: public
+                            occupies:
+                                lines: 29
+                                accessorType: private
+                        dependencies:
+                    BoardTileAtTest:
+                        lines: 71
+                        type: Concrete
+                        methods:
+                            testTileAtDirection:
+                                lines: 12
+                                accessorType: public
+                            data:
+                                lines: 12
+                                accessorType: public
+                        dependencies:
+                    PointManagerTest:
+                        lines: 53
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 10
+                                accessorType: public
+                            testAdd:
+                                lines: 9
+                                accessorType: public
+                            testEatHalf:
+                                lines: 10
+                                accessorType: public
+                            testEatAll:
+                                lines: 10
+                                accessorType: public
+                        dependencies:
+            org.jpacman.test.framework.accept:
+                lines: 251
+                packageDependencies:
+                classes:
+                    AbstractAcceptanceTest:
+                        lines: 159
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 20
+                                accessorType: public
+                            makeUI:
+                                lines: 10
+                                accessorType: public
+                            closeUI:
+                                lines: 13
+                                accessorType: public
+                            getPlayer:
+                                lines: 9
+                                accessorType: protected
+                            getMockedGhostMover:
+                                lines: 8
+                                accessorType: protected
+                            getEngine:
+                                lines: 8
+                                accessorType: protected
+                            getUI:
+                                lines: 8
+                                accessorType: protected
+                            tileAt:
+                                lines: 16
+                                accessorType: protected
+                            testInitialSetup:
+                                lines: 12
+                                accessorType: public
+                            theGhost:
+                                lines: 8
+                                accessorType: public
+                        dependencies:
+                    MoveGhostStoryTest:
+                        lines: 92
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 20
+                                accessorType: public
+                            test_S3_1_GhostEmpty:
+                                lines: 11
+                                accessorType: public
+                            test_S3_2_GhostFood:
+                                lines: 12
+                                accessorType: public
+                            test_S3_3_GhostLeavesFood:
+                                lines: 11
+                                accessorType: public
+                            test_S3_4_GhostKillsPlayer:
+                                lines: 11
+                                accessorType: public
+                        dependencies:
+            org.jpacman.test.framework.factory:
+                lines: 50
+                packageDependencies:
+                classes:
+                    FactoryIntegrationTest:
+                        lines: 50
+                        type: Concrete
+                        methods:
+                            setUp:
+                                lines: 10
+                                accessorType: public
+                            testFullMap:
+                                lines: 25
+                                accessorType: public
+                        dependencies:
+            org.jpacman.test.framework.ui:
+                lines: 68
+                packageDependencies:
+                classes:
+                    ButtonPanelTest:
+                        lines: 23
+                        type: Concrete
+                        methods:
+                            buttonPanelSmokeTest:
+                                lines: 12
+                                accessorType: public
+                        dependencies:
+                    MainUISmokeTest:
+                        lines: 45
+                        type: Concrete
+                        methods:
+                            testUIActions:
+                                lines: 30
+                                accessorType: public
+                        dependencies:
+
