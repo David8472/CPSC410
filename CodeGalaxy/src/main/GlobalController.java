@@ -28,7 +28,9 @@ public class GlobalController {
     	ArrayList<CommitAnalyzerInfo> commitMetaData = new ArrayList<CommitAnalyzerInfo>();
     	commitMetaData = commitAnalyzer.analyzeCommits();
 
-    	DataAggregator dataAggregator = new DataAggregator("src/visualizer/data.yml");
+        String prefix_yaml_path = "src/visualizer/";
+        String yaml_file_name = "data.yml";
+    	DataAggregator dataAggregator = new DataAggregator(prefix_yaml_path + yaml_file_name);
 
     	HashMap<String, Integer> previousCommit = new HashMap<String, Integer>();//For tracking information
 
@@ -78,7 +80,7 @@ public class GlobalController {
                 // Running on non-Windows OS
 
                 execCmd("chmod u+x scripts/runVisualizer.sh");
-                System.out.println(execCmd("sh scripts/runVisualizer.sh"));
+                System.out.println(execCmd("sh scripts/runVisualizer.sh " + yaml_file_name));
             }
 
 

@@ -5,4 +5,4 @@ echo 'Running Visualizer...'
 cd src/visualizer
 
 chmod u+x visualizer.rb
-ruby visualizer.rb ../../data.yml
+ruby visualizer.rb $1
