@@ -1,4 +1,4 @@
-package fuser;
+package dataaggregation;
 
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
