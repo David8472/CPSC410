@@ -1,4 +1,9 @@
 #########################################
+# Default number of ships per route
+#########################################
+DEFAULT_SHIPS = 25
+
+#########################################
 # Hash object to hold colour references #
 #########################################
 PLANET_COLOURS = Hash.new("0xffffff")
@@ -74,7 +79,7 @@ def gen_route(dep_map)
     temp = 0
     eta = 100
     if(dep_map["strength"].nil?)
-        dep_map["strength"] = 7
+        dep_map["strength"] = DEFAULT_SHIPS
     end
     while(temp < dep_map["strength"])
         text += "var #{dep_map["indexed_name"]}_#{temp} = new Ship({

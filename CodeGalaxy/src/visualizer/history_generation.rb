@@ -8,7 +8,7 @@ def ship_array_gen(cur_dep_map, max_dep_map)
         max_dep_map.each do |dep_name, dep_map|
             if(cur_dep_map.keys.include? dep_name)
                 if(cur_dep_map[dep_name]["strength"].nil?)
-                    cur_dep_map[dep_name]["strength"] = 7
+                    cur_dep_map[dep_name]["strength"] = DEFAULT_SHIPS
                 end
                 count = cur_dep_map[dep_name]["strength"]
                 x = 0
