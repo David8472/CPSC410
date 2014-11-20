@@ -202,7 +202,16 @@ ARGV.each do |filename|
     max_probes = 0
     commit_keys.each do |commit_key|
         temp = []
-        data[commit_key]["modified"].each do |key, value|
+        gathered = data[commit_key]["modified"]
+        if(gathered.nil?)
+            gathered = {}
+        end
+        unless( data[commit_key]["removed"].nil? )
+            data[commit_key]["removed"].split("|").each do |key|
+                gathered[key] = {lines: 0}
+            end
+        end
+        gathered.each do |key, value|
             path = key.split(".")
             map = nil
             package_key = nil
