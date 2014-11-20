@@ -72,20 +72,17 @@ public class GlobalController {
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
             if(operatingSystem.contains("win")) {
-                // Running on Windows
+                // Running on Windows - Run batch file which will run ruby visualizer script
+                System.out.println(execCmd("cmd /C scripts\\runVisualizer.bat " + yaml_file_name));
 
-
-
-            } else {
-                // Running on non-Windows OS
-
+            } else if(operatingSystem.contains("mac") || operatingSystem.contains("nix") || operatingSystem.contains("nux")) {
+                // Running UNIX-based OS - Run bash script which will run ruby visualizer script
                 execCmd("chmod u+x scripts/runVisualizer.sh");
                 System.out.println(execCmd("sh scripts/runVisualizer.sh " + yaml_file_name));
+            } else {
+                System.out.println("OS not supported");
+                System.exit(-1);
             }
-
-
-
-
 
         } catch(IOException e) {
             e.printStackTrace();
