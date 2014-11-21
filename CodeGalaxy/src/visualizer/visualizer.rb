@@ -214,19 +214,19 @@ ARGV.each do |filename|
         gathered.each do |key, value|
             path = key.split(".")
             map = nil
-            package_key = nil
-            idx = path.length-1
+            package_key = ""
+            idx = 0
             combined_present.keys.each do |p_key|
                 path.length.times.with_index do |i|
-                    if(path[0..(idx - i)].join(".") == p_key)
-                        package_key = p_key
+                    if(path[0..i].join(".") == p_key)
+                        if(p_key.split(".").length > package_key.split(".").length)
+                            package_key = p_key
+                        end
+                        idx = i + 1
                     end
                 end
-                unless (package_key.nil?)
-                    break
-                end
             end
-            if(package_key.nil?)
+            if(package_key.empty?)
                 puts "Error: Package not found. Path given: #{path}"
                 return
             end
