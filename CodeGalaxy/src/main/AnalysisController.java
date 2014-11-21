@@ -16,23 +16,23 @@ import analyzer.dependencyanalyzer.*;
 public class AnalysisController {
 
     public static void main(String[] args) {
-    	Scanner input = new Scanner(System.in);
+    	Scanner input = new Scanner(System.in);//input stream for user input
     	System.out.print("Please Enter Repository Directory:");
-    	String repoDirectory = input.next();
-    	input.close();
+    	String repoDirectory = input.next();//Stores the user input into repoDirectory
+    	input.close();//closes input stream
 
-    	CommitAnalyzer commitAnalyzer = new CommitAnalyzer(repoDirectory+"/.git");
-    	CommitCheckout commitCheckout = new CommitCheckout(repoDirectory+"/.git");
+    	CommitAnalyzer commitAnalyzer = new CommitAnalyzer(repoDirectory+"/.git");//Object for analyzing commits
+    	CommitCheckout commitCheckout = new CommitCheckout(repoDirectory+"/.git");//Object for checking out to different commits
         commitCheckout.resetHeadToMaster();
 
-    	ArrayList<CommitAnalyzerInfo> commitMetaData = new ArrayList<CommitAnalyzerInfo>();
-    	commitMetaData = commitAnalyzer.analyzeCommits();
+    	ArrayList<CommitAnalyzerInfo> commitMetaData = new ArrayList<CommitAnalyzerInfo>();//Object with author names and unique commit hash id
+    	commitMetaData = commitAnalyzer.analyzeCommits();//Will gather the data for the commit analyzer info
 
         String prefix_yaml_path = "src/visualizer/";
         String yaml_file_name = "data.yml";
     	DataAggregator dataAggregator = new DataAggregator(prefix_yaml_path + yaml_file_name);
 
-    	HashMap<String, Integer> previousCommit = new HashMap<String, Integer>();//For tracking information
+    	HashMap<String, Integer> previousCommit = new HashMap<String, Integer>();//For tracking information of previous commits and comparing to current
 
     	for(int i = 0; i < commitMetaData.size() ; i++){
     		commitCheckout.checkout(commitMetaData.get(i).getCommitID());
@@ -42,11 +42,11 @@ public class AnalysisController {
     		HashMap<String, Integer> currentCommit = new HashMap<String, Integer>();
 
     		DependencyAnalyzer analyzer = new DependencyAnalyzer();
-    		analyzer.runDependencyAnalyzer(repoDirectory);
+    		analyzer.runDependencyAnalyzer(repoDirectory);//Gathers data from dependency analyzer
 
     		if(previousCommit!=null){
-	    		Iterator<Map.Entry<String, Integer>> iterator = previousCommit.entrySet().iterator();
-	    		currentCommit = codebaseStats.getClassToLOCMap();
+	    		Iterator<Map.Entry<String, Integer>> iterator = previousCommit.entrySet().iterator();//iterator for the map of the previous commit's lines of code
+	    		currentCommit = codebaseStats.getClassToLOCMap();//mapping of lines of code to class name
 
 	    		while(iterator.hasNext()){
 	    			Entry<String, Integer> mapping = iterator.next();
@@ -65,7 +65,7 @@ public class AnalysisController {
     		dataAggregator.writeCommitDataToYAMLFile(commitMetaData.get(i), codebaseStats.getPackagesInfo(), currentCommit, classesRemoved, analyzer.getAllPackagesDependencies(), analyzer.getAllClassesDependencies());
     		previousCommit = new HashMap<String, Integer>(codebaseStats.getClassToLOCMap());
     	}
-    	commitCheckout.resetHeadToMaster();
+    	commitCheckout.resetHeadToMaster();//Makes sure the head is reset at master and not stuck elsewhere
 
         try {
 

@@ -18,7 +18,7 @@ public class CommitCheckout {
     private Repository repository;
     private Git git;
     
-	public CommitCheckout(String repoDirectory){
+	public CommitCheckout(String repoDirectory){//Constructor to create a new CommitCheckout object
 		directory = new File(repoDirectory);
 		try {
 			repository = builder.setGitDir(directory).readEnvironment().findGitDir().build();
@@ -28,7 +28,7 @@ public class CommitCheckout {
 		git = new Git(repository);
 	}
 	
-	public void checkout(String commitHashID){
+	public void checkout(String commitHashID){//Checkout to a specific commit, depending on the unique ID entered
 		
 		try {
 			git.checkout().setName(commitHashID).call();
@@ -47,7 +47,7 @@ public class CommitCheckout {
 		
 	}
 	
-	public void resetHeadToMaster(){
+	public void resetHeadToMaster(){//Resets the head to master
 		try {
 			git.checkout().setName("master").call();
 		} catch (RefAlreadyExistsException e) {

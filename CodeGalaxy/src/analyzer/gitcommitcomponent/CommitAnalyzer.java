@@ -17,12 +17,12 @@ public class CommitAnalyzer{
 	private String repoDirectory;
 	private RepositoryBuilder builder = new RepositoryBuilder();
     private Repository repository;
-    private File directory;
+    private File directory;//
     
-	private ArrayList<CommitAnalyzerInfo> commitAnalyzerInfo = new ArrayList<CommitAnalyzerInfo>();
+	private ArrayList<CommitAnalyzerInfo> commitAnalyzerInfo = new ArrayList<CommitAnalyzerInfo>();//ArrayList to store all the information gathered
 	
-	private int numberOfJavaCommits = 0;
-	private int numberOfAllCommits = 0;
+	private int numberOfJavaCommits = 0;//Number of commits where Java files are affected
+	private int numberOfAllCommits = 0;//Number of commits where ANY files are affected
 	
 	public CommitAnalyzer(String repoDirectory){//The Constructor
 		this.repoDirectory = repoDirectory;
@@ -36,17 +36,17 @@ public class CommitAnalyzer{
 			Git git = new Git(repository);
 		    RevCommit revCommit = null;
 		    
-		    if(repository.getRef("master") != null){
+		    if(repository.getRef("master") != null){//Checks whether the repository is null
 			    Iterable<RevCommit> logs = git.log().call();
 			    
 			    while(logs.iterator().hasNext()) {
 			    	CommitAnalyzerInfo tempCommitAnalyzerInfo = new CommitAnalyzerInfo(repoDirectory);
 				    ArrayList<String> tempFileNames = new ArrayList<String>();
 			        revCommit = logs.iterator().next();
-			        if(revCommit == null){
+			        if(revCommit == null){//Checks if the revCommit 
 			        	continue;
 			        }
-			        RevTree tree = revCommit.getTree();
+			        RevTree tree = revCommit.getTree();//tree for traversing file structure in commit
 			        TreeWalk treeWalk = new TreeWalk(repository);
 			        treeWalk.addTree(tree);
 			        treeWalk.setRecursive(true);
@@ -65,15 +65,15 @@ public class CommitAnalyzer{
 			        	}
 			        }
 			        
-			        if(tempFileNames.size() > 0){
-			        	tempCommitAnalyzerInfo.setAuthorName(revCommit.getAuthorIdent().getName());
-			        	tempCommitAnalyzerInfo.setCommitID(revCommit.getId().getName());			        	
+			        if(tempFileNames.size() > 0){//Only bothers with commits where Java files are affected
+			        	tempCommitAnalyzerInfo.setAuthorName(revCommit.getAuthorIdent().getName());//stores author name in temp
+			        	tempCommitAnalyzerInfo.setCommitID(revCommit.getId().getName());//stores commitID in temp		        	
 			        	tempFileNames.clear();
 			        	
 			        	numberOfJavaCommits++;
 			        	tempCommitAnalyzerInfo.setCommitNumber(numberOfJavaCommits);
 			        	
-			        	commitAnalyzerInfo.add(new CommitAnalyzerInfo(tempCommitAnalyzerInfo));
+			        	commitAnalyzerInfo.add(new CommitAnalyzerInfo(tempCommitAnalyzerInfo));//Adds temp to ArrayList
 			        }
 			        tempCommitAnalyzerInfo.clear();
 			        tempFileNames.clear();
@@ -99,15 +99,15 @@ public class CommitAnalyzer{
 		return commitAnalyzerInfo;
 	}
 	
-	public int getNumberOfJavaCommits() {
+	public int getNumberOfJavaCommits() {//Getter for number of Java Commits
 		return numberOfJavaCommits;
 	}
 	
-	public int getNumberOfAllCommits() {
+	public int getNumberOfAllCommits() {//Getter for number of all commits.
 		return numberOfAllCommits;
 	}
 	
-	public String getRepoDirectory(){
+	public String getRepoDirectory(){//Gets the repo directory
 		return repoDirectory;
 	}
 }
