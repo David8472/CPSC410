@@ -6,7 +6,7 @@ import java.util.Vector;
 
 /**
  * Created on November 17, 2014 by Ellina.
- * 
+ * Contains a helper class that is used in DependencyAnalyzerTest tests.
  */
 
 public class DependencyAnalyzerHelper{
