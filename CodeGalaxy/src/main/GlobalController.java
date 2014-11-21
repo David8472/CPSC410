@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +89,14 @@ public class GlobalController {
         } catch(IOException e) {
             e.printStackTrace();
         }
+        
+        File htmlFile = new File("src/visualizer/HTML Output/data_yml_output.html");
+        try {
+			Desktop.getDesktop().browse(htmlFile.toURI());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    
     }
 
 
