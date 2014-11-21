@@ -10,6 +10,9 @@ def ship_array_gen(cur_dep_map, max_dep_map)
                 if(cur_dep_map[dep_name]["strength"].nil?)
                     cur_dep_map[dep_name]["strength"] = DEFAULT_SHIPS
                 end
+                if(dep_map["strength"].nil?)
+                    dep_map["strength"] = DEFAULT_SHIPS
+                end
                 count = cur_dep_map[dep_name]["strength"]
                 x = 0
                 while( count > 0 and x < dep_map["strength"])

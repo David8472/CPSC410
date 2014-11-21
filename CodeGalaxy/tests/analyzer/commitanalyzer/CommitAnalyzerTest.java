@@ -17,14 +17,12 @@ public class CommitAnalyzerTest {
 		String repoDirectory = commitAnalyzer.getRepoDirectory();
 		String author = commitAnalyzerInfo.get(0).getAuthorName();
 		int commitNumber = commitAnalyzerInfo.get(0).getCommitNumber();
-		ArrayList<String> filesAdded = commitAnalyzerInfo.get(3).getFilesAdded();
 		
 		assertEquals(commitAnalyzer.getNumberOfJavaCommits(),21);
 		assertEquals(commitAnalyzer.getNumberOfAllCommits(),21);
 		assertTrue(repoDirectory.contentEquals("test_resources\\PacMan\\.git"));
 		assertTrue(author.contentEquals("Thiago Nunes"));
 		assertEquals(commitNumber,0);
-		assertTrue(filesAdded.contains("entity.Direction.java"));
 	}
 
 	@Test
