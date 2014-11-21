@@ -50,13 +50,11 @@ Analysis Performed (Per Git Commit)
   
 How to run the project
 --------------
-
-1. Ensure the following is installed first: Ruby, Java, and Maven
-    - Additional instructions for Windows
-Ensure that the ruby/bin directory and the maven/bin directory are on the machine’s system path
+1. Ensure the following is installed first: Ruby, Java, and Maven.
+    - Additional instructions for Windows: Ensure that the ruby/bin directory and the maven/bin directory are on the machine’s system path.
 2. Run `GlobalController.java` and enter the path to a git repo stored on the local machine.
     - NOTE: It is important that the git repo selected uses Maven as its build system for the Java project. It is also assumed that a Maven instructions file is named “pom.xml”. Other git repos that use other build systems or do not use any build system are currently not supported.
-3. The visualization output will be generated in an HTML file in the HTML_Output directory in the visualizer directory (location and name of HTML file will be provided in the console as well if needed), which the user can then manually open in a browser.
+3. The visualization output will be generated in an HTML file in the `HTML_Output` directory in the visualizer directory (location and name of HTML file will be provided in the console as well if needed), which the user can then manually open in a browser.
     - NOTE: Currently the visualization HTML works on Firefox. To open in Chrome, a new shortcut needs to be used that invokes the --allow-file-access-from-files option.
 
 Libraries / Tools Used
@@ -66,6 +64,3 @@ Libraries / Tools Used
 - JGit - http://www.eclipse.org/jgit/
 - three.js - http://threejs.org/
 - SAX API - http://sax.sourceforge.net/
-
-
-
