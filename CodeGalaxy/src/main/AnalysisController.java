@@ -15,7 +15,7 @@ import analyzer.gitcommitcomponent.*;
 import analyzer.miscstaticanalyzer.*;
 import analyzer.dependencyanalyzer.*;
 
-public class GlobalController {
+public class AnalysisController {
 
     public static void main(String[] args) {
     	Scanner input = new Scanner(System.in);
