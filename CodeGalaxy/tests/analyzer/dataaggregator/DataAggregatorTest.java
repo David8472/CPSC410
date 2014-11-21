@@ -1,6 +1,6 @@
 package analyzer.dataaggregator;
 
-import fuser.DataAggregator;
+import dataaggregation.DataAggregator;
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
 import analyzer.gitcommitcomponent.CommitAnalyzerInfo;
