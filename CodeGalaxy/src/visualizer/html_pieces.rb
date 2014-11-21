@@ -24,7 +24,6 @@ def html_start (title)
 };" : ""}
 
 var scene = new THREE.Scene(); 
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000); 
 var renderer = new THREE.WebGLRenderer(); 
 renderer.setSize(window.innerWidth*0.95, window.innerHeight*0.95); 
 document.body.appendChild(renderer.domElement); 
@@ -36,10 +35,6 @@ var probe_texture = THREE.ImageUtils.loadTexture('textures/probe_ufo.png');
 var celestials = [];
 var authors = [];
 var probes = [];\n\n
-
-var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
-cameraControls.maxDistance = 1500;
-cameraControls.minDistance = 10;
 
 var t = 0;
 var speed_val = 0;
@@ -81,6 +76,10 @@ var restart = function () {
 
 var index;
 
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, #{(max_dist[:x] > max_dist[:y]) ? max_dist[:x]*0.75 : max_dist[:y]*0.75}); 
+var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
+cameraControls.maxDistance = #{(max_dist[:x] > max_dist[:y]) ? max_dist[:x]*0.75 : max_dist[:y]*0.75};
+cameraControls.minDistance = 10;
 cameraControls.target.set(#{max_dist[:x]/2.0},#{max_dist[:y]/2.0},0);
 camera.position.set(#{max_dist[:x]/2.0}, #{max_dist[:y]/2.0}, #{(max_dist[:x] > max_dist[:y]) ? max_dist[:x]*0.75 : max_dist[:y]*0.75}); 
 cameraControls.update();

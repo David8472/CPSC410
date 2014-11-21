@@ -1,4 +1,4 @@
-package fuser;
+package dataaggregation;
 
 import analyzer.dependencyanalyzer.ClassDependencyInfo;
 import analyzer.dependencyanalyzer.PackageDependencyInfo;
@@ -338,7 +338,7 @@ public class DataAggregator {
              * Dependency Analyzer tool will return dependencies even for anonymous inner classes which
              * will have a $ appended to the end of the name. These classes are ignored in the analysis.
              */
-            if(!classDependencyName.endsWith("$")) {
+            if(!classDependencyName.contains("$")) {
                 /* Writes class dependency name followed by ':' */
                 writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
                 writer.println(classDependencyName + ":");
@@ -365,7 +365,7 @@ public class DataAggregator {
              * Dependency Analyzer tool will return dependencies even for anonymous inner classes which
              * will have a $ appended to the end of the name. These classes are ignored in the analysis.
              */
-            if(!classDependencyName.endsWith("$")) {
+            if(!classDependencyName.contains("$")) {
                 /* Writes class dependency name followed by ':' */
                 writeSpacesCorrespondingToNestedLevel(CLASS_DEPENDENCY_NAME_NEST_LEVEL);
                 writer.println(classDependencyName + ":");

@@ -16,10 +16,10 @@ Code Galaxy creates a dynamic space-themed visualization of a Git repository con
 In the visualization, starship(s) representing author(s) are exploring a codebase represented by a galaxy with the following mappings:
 - Packages are represented as stars
 - Classes within packages are represented as planets orbiting stars
-- Methods within classes are represented as satellites orbiting planets
+- Methods within classes are represented as moons orbiting planets
 - Authors adding new packages/classes/methods are represented as starships exploring the galaxy and discovering new stars/planets/moons
 - Authors editing previously committed classes/methods are represented as starships visiting previously discovered planets/moons
-- Dependencies between packages are represented as trade routes between systems
+- Dependencies between classes are represented as trade routes between planets where tiny trade ships will be moving from planet to planet 
 
 Initially, before any commits are made, the galaxy will be empty. Gradually, as commits are made and packages/classes/methods are added, parts of the galaxy will start to appear as celestial objects are “discovered” by ship(s) that represent authors. If an author interacts with more than one object during a commit, the spaceship will visit one celestial body and send probes to the others. Finally, when all commits are traced through, the entire galaxy will be visible, and the current state of the codebase is reached.
 

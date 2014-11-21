@@ -7,6 +7,9 @@ def ship_array_gen(cur_dep_map, max_dep_map)
         i = 0
         max_dep_map.each do |dep_name, dep_map|
             if(cur_dep_map.keys.include? dep_name)
+                if(cur_dep_map[dep_name]["strength"].nil?)
+                    cur_dep_map[dep_name]["strength"] = DEFAULT_SHIPS
+                end
                 count = cur_dep_map[dep_name]["strength"]
                 x = 0
                 while( count > 0 and x < dep_map["strength"])
@@ -44,7 +47,7 @@ def gen_celestial_map( cel_indexed_name, commits, max_version )
             map[:states].push({radius: commit["radius"],
                 present: true,
                 colour: (commit["type"].nil?) ? nil : PLANET_COLOURS[commit["type"]],
-                ships: ship_array_gen(commit["dependencies"], max_version["dependencies"])})
+                ships: ship_array_gen((commit["dependencies"]["uses"] rescue nil), (max_version["dependencies"]["uses"] rescue Hash.new))})
         end
     end
     return map
