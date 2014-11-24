@@ -10,7 +10,10 @@ import analyzer.gitcommitcomponent.*;
 
 public class CommitCheckoutTest {
 	
-	
+	/*Checks if the checkout method will correctly checkout to the right commit
+	 * Correct value of the SHA-1 Hash is found by using Git Log
+	 * Asserts that the SHA-1 hash is the same
+	 */
 	
 	@Test
 	public void checkoutTest(){
@@ -21,6 +24,11 @@ public class CommitCheckoutTest {
 		commitCheckout.resetHeadToMaster();
 		assertTrue(checkoutID.contentEquals("5687e5fafb877ded820fd7bace31427dd27d438f"));
 	}
+	
+	/*Checks if the checkout method will correctly checkout to the MASTER commit head
+	 * Correct value of the SHA-1 Hash of MASTER head is found by using Git Log
+	 * Asserts that the SHA-1 hash is the same
+	 */
 	
 	@Test
 	public void resetHeadToMasterTest(){
